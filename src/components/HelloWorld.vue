@@ -1,6 +1,15 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <h1>{{ msgCn }}</h1>
+    <div>
+      <p>
+        If Element is successfully added to this project, you'll see an
+        <code v-text="'<el-button>'"></code>
+        below
+      </p>
+      <el-button @click="elClick">el-button</el-button>
+    </div>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -36,7 +45,16 @@
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String
+    msg: String,
+    msgCn: {
+      type: String,
+      default: '欢迎来到 Vue.js 教程'
+    }
+  },
+  methods: {
+    elClick: function () {
+      alert('element-ui button click event')
+    }
   }
 }
 </script>
