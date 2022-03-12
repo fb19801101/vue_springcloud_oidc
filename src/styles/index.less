@@ -1,0 +1,382 @@
+@import './variables.less';
+@import './mixin.less';
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0
+}
+
+/*-------------------------------------
+┆   text style title|content|align    ┆
+└------------------------------------*/
+each(@font-size {
+  .text-title-{@value} {
+    margin: @value px 0 @value px 0;
+    font-size: @value px;
+    font-weight: 700;
+    color: @white;
+  }
+
+  .text-content-{@value} {
+    margin: @value px 0 @value px 0;
+    font-size: @value px;
+    font-weight: 400;
+    color: @white;
+  }
+})
+each(@box-align {
+    .text-align-{@value} {
+    text-align: @value;
+  }
+})
+
+/*-------------------------------------
+┆   box layout border|margin          ┆
+└------------------------------------*/
+each(@prop-border {
+  .box-{@value} {
+  {@value}: 1px solid @gray-white;
+  }
+})
+each(@prop-margin {
+  @prop: @value
+  each(@font-size {
+    .box-{@prop}'-'{@value} {
+      {@prop}: @value px;
+    }
+  })
+})
+
+/*-------------------------------------
+┆   box size width|height             ┆
+└------------------------------------*/
+each(@box-size {
+  .box-width-{@value} {
+    width: @value*1%;
+  }
+  .box-width-{@value}'vh' {
+    width: @value vw;
+  }
+  .box-width-{@value}'px' {
+    width: @value px;
+  }
+  .box-height-{@value} {
+    height: @value*1%;
+  }
+  .box-height-{@value}'vh' {
+    height: @value vh;
+  }
+  .box-height-{@value}'px' {
+    height: @value px;
+  }
+})
+
+
+/*-------------------------------------
+┆   flex layout                       ┆
+└------------------------------------*/
+.flex-container {
+  flex-display();
+  flex-direction(column);
+  flex-justify-content(space-between);
+  .flex-row {
+    flex-display();
+    flex-justify-content(space-between);
+    flex(0 0 $textFlexColHeight);
+    background-color: $white;
+    color: $gray-black;
+    .flex-col-left {
+      flex-display();
+      flex-justify-content(right);
+      flex(1);
+      margin-left: $textFlexRowWidth;
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-col-center {
+      flex-display();
+      flex-justify-content(center);
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-col-right {
+      flex-display();
+      flex-justify-content(left);
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+}
+.flex-container-column {
+  flex-display();
+  flex-direction(column);
+  height: 300px;
+  width: 300px;
+  .flex-row {
+    flex-display();
+    height: 100px;
+  }
+  .flex-left, .flex-center, .flex-right {
+    flex(1);
+    height: 100px;
+  }
+}
+.flex-container-article {
+  flex-display();
+  flex-direction(column);
+  flex-justify-content(space-between);
+  .flex-header, .flex-footer {
+    flex(0 0 $headBarHeight);
+    background-color: $dark-blue;
+  }
+  .flex-article {
+    flex-display();
+    flex(1);
+    background-color: $white;
+    color: $gray-black;
+    .flex-nav {
+      flex(0 0 $sideBarWidth);
+      background-color: $light-blue;
+      color: $gray-black;
+    }
+    .flex-aside {
+      flex(0 0 $sideBarWidth);
+      background-color: $light-blue;
+      color: $gray-black;
+    }
+    .flex-body {
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+}
+.flex-container-admin {
+  flex-display();
+  flex-direction(column);
+  flex-justify-content(space-between);
+  widht: 100%;
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  .flex-header {
+    flex-display();
+    flex-justify-content(space-between);
+    flex-align-items(center);
+    flex(0 0 $headBarHeight);
+    background-color: $dark-blue;
+    color: $white;
+    .flex-icon {
+      flex-display();
+      flex-justify-content(center);
+      flex-align-items(center);
+      flex(0 0 $headBarIconWidth);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+    .flex-title {
+      flex-display();
+      flex-justify-content(left);
+      flex-align-items(center);
+      flex(0 0 $headBarTitleWidth);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+    .flex-info {
+      flex-display();
+      flex-justify-content(left);
+      flex-align-items(center);
+      flex(0 0 $headBarInfoWidth);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+    .flex-menu {
+      flex-display();
+      flex-justify-content(right);
+      flex-align-items(center);
+      flex(1);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+    .flex-login {
+      flex-display();
+      flex-justify-content(center);
+      flex-align-items(center);
+      flex(0 0 $headBarLoginWidth);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+  }
+  .flex-admin {
+    flex-display();
+    flex-justify-content(space-between);
+    flex(1);
+    background-color: $light-blue;
+    color: $white;
+    .flex-aside {
+      flex-display();
+      flex-wrap(wrap);
+      flex-align-content(flex-start);
+      flex(0 0 $sideBarWidth);
+      background-color: $light-blue;
+      color: $white;
+      .flex-title {
+        flex-display();
+        flex-justify-content(center);
+        flex-align-items(center);
+        flex(1);
+        background-color: $light-blue;
+        color: $white;
+        min-height: $textFlexRowHeight;
+      }
+      .flex-menu {
+        flex-display();
+        flex-justify-content(center);
+        flex(1);
+        background-color: $light-blue;
+        color: $white;
+      }
+    }
+    .flex-body {
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+  .flex-footer {
+    flex-display();
+    flex-justify-content(space-between);
+    flex-align-items(center);
+    flex(0 0 $headBarHeight);
+    background-color: $dark-blue;
+    color: $white;
+  }
+}
+.flex-container-body {
+  flex-display();
+  flex-justify-content(space-between);
+  flex(1);
+  widht: 100%;
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  .flex-aside-tree {
+    flex-display();
+    flex-direction(column);
+    flex(0 0 $sideBarWidth);
+    background-color: $white;
+    color: $gray-black;
+    min-height: $bodyTableHeight;
+    .flex-tree-title {
+      flex-align-self(center);
+      flex(0 0 $textFlexRowHeight);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-tree-content {
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+      border: 1px solid $gray-white;
+      border-radius: 5px;
+    }
+  }
+  .flex-body-table {
+    flex-display();
+    flex-direction(column);
+    flex-justify-content(space-between);
+    flex(1);
+    background-color: $white;
+    color: $gray-black;
+    margin: 0 5px 0 5px;
+    .flex-table-title {
+      flex-display();
+      flex(0 0 $textFlexRowHeight);
+      background-color: $white;
+      color: $gray-black;
+      .flex-title-left {
+        flex(0 0 $textFlexColWidth);
+        background-color: $white;
+        color: $gray-black;
+      }
+      .flex-title-center {
+        flex-display();
+        flex-direction(column);
+        flex-justify-content(space-between);
+        flex(1);
+        background-color: $white;
+        color: $gray-black;
+      }
+      .flex-title-right {
+        flex-display();
+        flex-justify-content(right);
+        flex(1);
+        background-color: $white;
+        color: $gray-black;
+      }
+    }
+    .flex-table-content {
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-image-content {
+      flex-align-self(center);
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+}
+.flex-container-table {
+  flex-display();
+  flex-direction(column);
+  flex-justify-content(space-between);
+  flex(1);
+  widht: 100%;
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: $white;
+  color: $gray-black;
+  margin: 0 5px 0 5px;
+  .flex-table-title {
+    flex-display();
+    flex(0 0 $textFlexRowHeight);
+    background-color: $white;
+    color: $gray-black;
+    .flex-title-left {
+      flex(0 0 $textFlexColWidth);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-center {
+      flex-display();
+      flex-direction(column);
+      flex-justify-content(space-between);
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-right {
+      flex-display();
+      flex-justify-content(right);
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+  .flex-table-content {
+    flex(1);
+    background-color: $white;
+    color: $gray-black;
+  }
+}

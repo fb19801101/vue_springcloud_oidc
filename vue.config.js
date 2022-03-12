@@ -15,7 +15,8 @@ module.exports = {
     hot: true,
     hotOnly: true, // 是否热更新
     open: true, // 设置自动打开
-    port: 8880, // 设置端口
+    host: process.env.VUE_APP_LOCAL_HOST,
+    port: process.env.VUE_APP_LOCAL_PORT, // 设置端口
     proxy: { // 设置多个代理跨域
       [process.env.VUE_APP_BASE_API]: {
         target: process.env.VUE_APP_REQUEST_URL,
@@ -26,40 +27,18 @@ module.exports = {
         }
       },
 
-      '/consumer': { // axios 后端加载
-        target: 'http://localhost:8085',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/consumer': ''
-        }
-      },
-
-      '/curve-element': { // axios 后端加载
-        target: 'http://localhost:8087',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/curve-element': ''
-        }
-      },
-
-      '/login': { // axios 后端加载
-        target: 'http://localhost:8089',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/login': ''
-        }
-      },
-
-      '/ws': { // 拦截所有以‘ws’开头请求的websocket进行转发(新手可以不配置)
-        ws: true,
-        target: 'ws://localhost:8085'
-      },
-
       '/api': { // 拦截所有 HTTP 请求，将之转发到后端服务器上（前端默认端口是 8880），后端的端口是 8085，如果大家有统一的请求前缀那么可以写成/xxx
-        target: 'http://localhost:8085',
+        target: process.env.VUE_APP_REQUEST_URL,
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
+        }
+      },
+      '/authorization_callback': { // 拦截所有 HTTP 请求，将之转发到后端服务器上（前端默认端口是 8880），后端的端口是 8085，如果大家有统一的请求前缀那么可以写成/xxx
+        target: [process.env.VUE_APP_REQUEST_URL + '/authorization_callback'],
+        changeOrigin: true,
+        pathRewrite: {
+          '^/authorization_callback': ''
         }
       }
     },
@@ -72,10 +51,10 @@ module.exports = {
    * process.env.NODE_ENV==='development' (开发环境)
    * publicPath: process.env.NODE_ENV==='production'?"https://cdn.aliyun.com/front/":'front/',
    */
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  publicPath: IS_PROD ? './' : process.env.VUE_APP_LOCAL_PAHT + '/',
 
   // 输出目录（打包位置） build时构建文件的目录 构建时传入 --no-clean 可关闭该行为
-  outputDir: 'dist',
+  outputDir: 'dist' + process.env.VUE_APP_LOCAL_PAHT,
 
   // build时放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录
   assetsDir: 'static',
@@ -113,7 +92,7 @@ module.exports = {
   // 是否开启eslint保存检测，有效值： true | false | 'error'
   // 设置为 true 时，eslint-loader 会将 lint 错误输出为编译警告。默认情况下，警告仅仅会被输出到命令行，且不会使得编译失败
   // 希望让 lint 错误在开发时直接显示在浏览器中，可以使用 lintOnSave: 'error'。这会强制 eslint-loader 将 lint 错误输出为编译错误
-  lintOnSave: process.env.NODE_ENV !== 'production',
+  lintOnSave: !IS_PROD,
 
   // 是否使用包含运行时编译器的 Vue 构建版本
   runtimeCompiler: false,
@@ -147,21 +126,23 @@ module.exports = {
     config.resolve.alias // 添加别名
       .set('@', resolve('src'))
       .set('@assets', resolve('src/assets'))
+      .set('@styles', resolve('src/styles'))
       .set('@components', resolve('src/components'))
+      .set('@icons', resolve('src/icons'))
       .set('@views', resolve('src/views'))
       .set('@store', resolve('src/store'))
 
     // 已有配置排除掉svg
-    config.module.rule("svg")
+    config.module.rule('svg')
       .exclude.add(resolve('src/icons'))
 
-    //配置svg
+    // 配置svg
     config.module.rule('icons')
       .test(/\.svg$/)
       .include.add(resolve('src/icons')).end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
-      .options({symbolId: 'icon-[name]'})
+      .options({ symbolId: 'icon-[name]' })
   },
 
   // css的处理
@@ -177,7 +158,20 @@ module.exports = {
     // 向 CSS 相关的 loader 传递选项(支持 css-loader postcss-loader sass-loader less-loader stylus-loader)
     loaderOptions: {
       css: {},
-      less: {}
+      stylus: {
+        import: '~@/styles/index.styl'
+      },
+      scss: {
+        import: '~@/styles/index.scss'
+      },
+      less: {
+        lessOptions: {
+          modifyVars: {
+            'primary-color': '#ec6800'
+          },
+          javascriptEnabled: true,
+        }
+      }
     }
   },
 
@@ -188,5 +182,12 @@ module.exports = {
   pwa: {},
 
   // 可以用来传递任何第三方插件选项
-  pluginOptions: {}
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'stylus',
+      patterns: [
+        path.resolve(__dirname, './src/styles/index.styl')
+      ]
+    }
+  }
 }

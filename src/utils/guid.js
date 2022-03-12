@@ -47,7 +47,7 @@ export function GUID () {
 
     // 功能：格式化32位的字符串为GUID模式的字符串 * 参数：第1个参数表示32位的字符串 * 返回值：标准GUID格式的字符串
     GUID.prototype.formatGUID = function (guidStr) {
-      var str1 = guidStr.slice(0, 8) + '-', str2 = guidStr.slice(8, 12) + '-', str3 = guidStr.slice(12, 16) + '-', str4 = guidStr.slice(16, 20) + '-', str5 = guidStr.slice(20)
+      var str1 = guidStr.slice(0, 8) + '-'; var str2 = guidStr.slice(8, 12) + '-'; var str3 = guidStr.slice(12, 16) + '-'; var str4 = guidStr.slice(16, 20) + '-'; var str5 = guidStr.slice(20)
       return str1 + str2 + str3 + str4 + str5
     }
   }

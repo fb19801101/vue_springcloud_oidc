@@ -1,0 +1,100 @@
+/*-------------------------------------
+┆   back ground color                 ┆
+└------------------------------------*/
+bg-red() { /*赤*/
+  background-color: #ff5722 !important;
+  color: #fff !important;
+}
+bg-orange() { /*橙*/
+  background-color: #ffb800 !important;
+  color: #fff !important;
+}
+bg-green() { /*绿*/
+  background-color: #009688 !important;
+  color: #fff !important;
+}
+bg-cyan() { /*青*/
+  background-color: #2f4056 !important;
+  color: #fff !important;
+}
+bg-blue() { /*蓝*/
+  background-color: #1e9fff !important;
+  color: #fff !important;
+}
+bg-black() { /*黑*/
+  background-color: #393d49 !important;
+  color: #fff !important;
+}
+bg-gray() { /*灰*/
+  background-color: #eee !important;
+  color: #666 !important;
+}
+/*-------------------------------------
+┆   flex layout                       ┆
+└------------------------------------*/
+flex-display() {//定义弹性盒容器
+  display: flex;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+}
+flex-direction($val) {//定义主轴方向
+  flex-direction:  $val;
+  -webkit-flex-direction:  $val;
+  -moz-flex-direction:  $val;
+  -webkit-box-orient: $val;
+  -moz-box-orient: $val;
+  -ms-flex-direction:  $val;
+}
+flex-wrap($val) {//定义交叉轴方向单行或多行
+  flex-wrap: $val;
+  -webkit-flex-wrap: $val;
+  -moz-flex-wrap: $val;
+  -ms-flex-wrap: $val;
+}
+flex-justify-content($val) {//定义主轴上元素的对齐方式
+  justify-content:  $val;
+  -webkit-justify-content:  $val;
+  -moz-justify-content:  $val;
+  -webkit-box-pack: $val;
+  -moz-box-pack: $val;
+  -ms-flex-pack:  $val;
+}
+flex-align-content($val) {//定义交叉轴的对齐方式
+  align-content:  $val;
+  -webkit-align-content:  $val;
+  -moz-align-content:  $val;
+  -ms-flex-line-pack:  $val;
+}
+flex-align-items($val) {//定义交叉轴上元素的对齐方式
+  align-items:  $val;
+  -webkit-align-items:  $val;
+  -moz-align-items:  $val;
+  -webkit-box-align: $val;
+  -moz-box-align: $val;
+  -ms-flex-align:  $val;
+}
+flex($val) {//定义父元素拉伸时子元素的放大、缩小、初始比例值
+  flex:  $val;
+  -webkit-flex:  $val;
+  -moz-flex:  $val;
+  -webkit-box-flex: $val;
+  -moz-box-flex: $val;
+  -ms-flex:  $val;
+}
+flex-order($val) {//定义子元素的排列顺序
+  order: $val;
+  -webkit-order: $val;
+  -moz-order: $val;
+  -webkit-box-ordinal-group: $val;
+  -moz-box-ordinal-group: $val;
+  -ms-flex-order: $val;
+}
+flex-align-self($val) {//定义单个子元素覆盖父元素align-items值的能力
+  align-self:  $val;
+  -webkit-align-self:  $val;
+  -moz-align-self:  $val;
+  -ms-flex-item-align:  $val;
+}

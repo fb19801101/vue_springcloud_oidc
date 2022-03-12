@@ -8,7 +8,10 @@
         <code v-text="'<el-button>'"></code>
         below
       </p>
-      <el-button @click="elClick">el-button</el-button>
+      <el-button @click="loginClick">Login</el-button>
+      <el-button @click="logoutClick">Logout</el-button>
+      <el-button @click="currentUserInfo">CurrentUserInfo</el-button>
+      <el-button @click="getUserInfo">GetUserInfo</el-button>
     </div>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
@@ -38,12 +41,117 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
+    <el-form label-width="100px">
+      <h3>客户端登录</h3>
+      <br>
+      <el-row type="flex" justify="center">
+        <el-col :span="6">
+          <el-form-item label="providerId">
+            <el-input
+              v-model="providerId"
+              placeholder="股份公司HR系统用户所在二级单位ID"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="userId">
+            <el-input
+              v-model="userId"
+              placeholder="股份公司HR系统用户ID"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <h3>用户信息</h3>
+      <br>
+      <el-row type="flex" justify="center">
+        <el-col :span="6">
+          <el-form-item label="id">
+            <el-input
+              v-model="userInfo.id"
+              placeholder="用户的ID"
+              readonly="readonly"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="name">
+            <el-input
+              v-model="userInfo.name"
+              placeholder="用户的姓名"
+              readonly="readonly"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="6">
+          <el-form-item label="gender">
+            <el-input
+              v-model="userInfo.gender"
+              placeholder="用户的性别"
+              readonly="readonly"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="category">
+            <el-input
+              v-model="userInfo.catagory"
+              placeholder="用户的人员类别"
+              readonly="readonly"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="6">
+          <el-form-item label="positionStatus">
+            <el-input
+              v-model="userInfo.positionStatus"
+              placeholder="用户的岗位状态"
+              readonly="readonly"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="order">
+            <el-input
+              v-model="userInfo.order"
+              placeholder="用户的排序号"
+              readonly="readonly"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
   </div>
 </template>
 
 <script>
+import LoginApi from '@/api/login'
+
 export default {
   name: 'HelloWorld',
+  data () {
+    return {
+      providerId: '',
+      userId: 0,
+      userInfo: [],
+      message: {
+        data: {
+          id: 1,
+          name: '张三'
+        },
+        browse: 1,
+        authorizationManage: 1,
+        log: 1,
+        authorizationInquire: 1,
+        jobChangeInquire: 1,
+        jobDeleteInquire: 1
+      }
+    }
+  },
   props: {
     msg: String,
     msgCn: {
@@ -52,8 +160,46 @@ export default {
     }
   },
   methods: {
-    elClick: function () {
-      alert('element-ui button click event')
+    loginClick: function () {
+      LoginApi.redirectLogin()
+        .then(res => {
+          window.location = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      this.$store.commit('Login', this.message)
+      this.$router.replace('/demo/browser')
+    },
+    logoutClick: function () {
+      LoginApi.redirectLogout()
+        .then(res => {
+          window.location = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    currentUserInfo: function () {
+      LoginApi.currentUserInfo()
+        .then(res => {
+          console.log(res.data)
+          this.providerId = res.data.providerId
+          this.userId = res.data.userId
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getUserInfo: function () {
+      LoginApi.getUserInfo(this.providerId, this.userId)
+        .then(res => {
+          console.log(res.data)
+          this.userInfo = res.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

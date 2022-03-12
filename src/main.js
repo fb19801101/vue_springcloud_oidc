@@ -5,8 +5,12 @@ import './icons/index.js'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import global from '@/utils/global'
+import http from 'vue-resource'
 
+Vue.use(http)
 Vue.config.productionTip = false
+Vue.prototype.global = global
 
 new Vue({
   router,
