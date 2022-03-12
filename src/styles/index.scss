@@ -1,0 +1,381 @@
+@import './variables.scss';
+@import './mixin.scss';
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0
+}
+
+/*-------------------------------------
+┆   text style title|content|align    ┆
+└------------------------------------*/
+@each $size in $font-size {
+  .text-title-#{$size} {
+    margin: $size+px 0 $size+px 0;
+    font-size: $size+px;
+    font-weight: 700;
+  }
+
+  .text-content-#{$size} {
+    margin: $size+px 0 $size+px 0;
+    font-size: $size+px;
+    font-weight: 400;
+  }
+}
+
+@each $align in $box-align {
+  .text-align-#{$align} {
+    text-align: $align;
+  }
+}
+
+/*-------------------------------------
+┆   box layout border|margin          ┆
+└------------------------------------*/
+@each $prop in $prop-border {
+  .box-#{$prop} {
+    #{$prop}: 1px solid $gray-white;
+  }
+}
+
+@each $prop in $prop-margin {
+  @each $size in $font-size {
+    .box-#{$prop}-#{$size} {
+      #{$prop}: $size+px;
+    }
+  }
+}
+
+/*-------------------------------------
+┆   box size width|height             ┆
+└------------------------------------*/
+@each $size in $box-size {
+  .box-width-#{$size} {
+    width: $size*1%;
+  }
+  .box-width-#{$size}vh {
+    width: $size+vw;
+  }
+  .box-width-#{$size}px {
+    width: $size+px;
+  }
+
+  .box-height-#{$size} {
+    height: $size*1%;
+  }
+  .box-height-#{$size}vh {
+    height: $size+vh;
+  }
+  .box-height-#{$size}px {
+    height: $size+px;
+  }
+}
+
+/*-------------------------------------
+┆   flex layout                       ┆
+└------------------------------------*/
+.flex-container {
+  @include flex-display();
+  @include flex-direction(column);
+  @include flex-justify-content(space-between);
+  .flex-row {
+    @include flex-display();
+    @include flex-justify-content(space-between);
+    @include flex(0 0 $textFlexColHeight);
+    background-color: $white;
+    color: $gray-black;
+    .flex-col-left {
+      @include flex-display();
+      @include flex-justify-content(right);
+      @include flex(1);
+      margin-left: $textFlexRowWidth;
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-col-center {
+      @include flex-display();
+      @include flex-justify-content(center);
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-col-right {
+      @include flex-display();
+      @include flex-justify-content(left);
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+}
+.flex-container-column {
+  @include flex-display();
+  @include flex-direction(column);
+  height: 300px;
+  width: 300px;
+  .flex-row {
+    @include flex-display();
+    height: 100px;
+  }
+  .flex-left, .flex-center, .flex-right {
+    @include flex(1);
+    height: 100px;
+  }
+}
+.flex-container-article {
+  @include flex-display();
+  @include flex-direction(column);
+  @include flex-justify-content(space-between);
+  .flex-header, .flex-footer {
+    @include flex(0 0 $headBarHeight);
+    background-color: $dark-blue;
+  }
+  .flex-article {
+    @include flex-display();
+    @include flex(1);
+    background-color: $white;
+    color: $gray-black;
+    .flex-nav {
+      @include flex(0 0 $sideBarWidth);
+      background-color: $light-blue;
+      color: $gray-black;
+    }
+    .flex-aside {
+      @include flex(0 0 $sideBarWidth);
+      background-color: $light-blue;
+      color: $gray-black;
+    }
+    .flex-body {
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+}
+.flex-container-admin {
+  @include flex-display();
+  @include flex-direction(column);
+  @include flex-justify-content(space-between);
+  widht: 100%;
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  .flex-header {
+    @include flex-display();
+    @include flex-justify-content(space-between);
+    @include flex-align-items(center);
+    @include flex(0 0 $headBarHeight);
+    background-color: $dark-blue;
+    color: $white;
+    .flex-icon {
+      @include flex-display();
+      @include flex-justify-content(center);
+      @include flex-align-items(center);
+      @include flex(0 0 $headBarIconWidth);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+    .flex-title {
+      @include flex-display();
+      @include flex-justify-content(left);
+      @include flex-align-items(center);
+      @include flex(0 0 $headBarTitleWidth);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+    .flex-info {
+      @include flex-display();
+      @include flex-justify-content(left);
+      @include flex-align-items(center);
+      @include flex(0 0 $headBarInfoWidth);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+    .flex-menu {
+      @include flex-display();
+      @include flex-justify-content(right);
+      @include flex-align-items(center);
+      @include flex(1);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+    .flex-login {
+      @include flex-display();
+      @include flex-justify-content(center);
+      @include flex-align-items(center);
+      @include flex(0 0 $headBarLoginWidth);
+      min-height: $headBarHeight;
+      background-color: $dark-blue;
+      color: $white;
+    }
+  }
+  .flex-admin {
+    @include flex-display();
+    @include flex-justify-content(space-between);
+    @include flex(1);
+    background-color: $light-blue;
+    color: $white;
+    .flex-aside {
+      @include flex-display();
+      @include flex-wrap(wrap);
+      @include flex-align-content(flex-start);
+      @include flex(0 0 $sideBarWidth);
+      background-color: $light-blue;
+      color: $white;
+      .flex-title {
+        @include flex-display();
+        @include flex-justify-content(center);
+        @include flex-align-items(center);
+        @include flex(1);
+        background-color: $light-blue;
+        color: $white;
+        min-height: $textFlexRowHeight;
+      }
+      .flex-menu {
+        @include flex-display();
+        @include flex-justify-content(center);
+        @include flex(1);
+        background-color: $light-blue;
+        color: $white;
+      }
+    }
+    .flex-body {
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+  .flex-footer {
+    @include flex-display();
+    @include flex-justify-content(space-between);
+    @include flex-align-items(center);
+    @include flex(0 0 $headBarHeight);
+    background-color: $dark-blue;
+    color: $white;
+  }
+}
+.flex-container-body {
+  @include flex-display();
+  @include flex-justify-content(space-between);
+  @include flex(1);
+  widht: 100%;
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  .flex-aside-tree {
+    @include flex-display();
+    @include flex-direction(column);
+    @include flex(0 0 $sideBarWidth);
+    background-color: $white;
+    color: $gray-black;
+    min-height: $bodyTableHeight;
+    .flex-tree-title {
+      @include flex-align-self(center);
+      @include flex(0 0 $textFlexRowHeight);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-tree-content {
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+      border: 1px solid $gray-white;
+      border-radius: 5px;
+    }
+  }
+  .flex-body-table {
+    @include flex-display();
+    @include flex-direction(column);
+    @include flex-justify-content(space-between);
+    @include flex(1);
+    background-color: $white;
+    color: $gray-black;
+    margin: 0 5px 0 5px;
+    .flex-table-title {
+      @include flex-display();
+      @include flex(0 0 $textFlexRowHeight);
+      background-color: $white;
+      color: $gray-black;
+      .flex-title-left {
+      flex(0 0 $textFlexColWidth);
+        background-color: $white;
+        color: $gray-black;
+      }
+      .flex-title-center {
+        @include flex-display();
+        @include flex-direction(column);
+        @include flex-justify-content(space-between);
+        @include flex(1);
+        background-color: $white;
+        color: $gray-black;
+      }
+      .flex-title-right {
+        @include flex-display();
+        @include flex-justify-content(right);
+        @include flex(1);
+        background-color: $white;
+        color: $gray-black;
+      }
+    }
+    .flex-table-content {
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-image-content {
+      @include flex-align-self(center);
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+}
+.flex-container-table {
+  @include flex-display();
+  @include flex-direction(column);
+  @include flex-justify-content(space-between);
+  @include flex(1);
+  widht: 100%;
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: $white;
+  color: $gray-black;
+  margin: 0 5px 0 5px;
+  .flex-table-title {
+    @include flex-display();
+    @include flex(0 0 $textFlexRowHeight);
+    background-color: $white;
+    color: $gray-black;
+    .flex-title-left {
+      @include flex(0 0 $textFlexColWidth);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-center {
+      @include flex-display();
+      @include flex-direction(column);
+      @include flex-justify-content(space-between);
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-right {
+      @include flex-display();
+      @include flex-justify-content(right);
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+  .flex-table-content {
+    @include flex(1);
+    background-color: $white;
+    color: $gray-black;
+  }
+}

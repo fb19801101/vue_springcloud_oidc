@@ -1,0 +1,71 @@
+/*----------------------------------------------------------
+┆   base color                                             ┆
+└---------------------------------------------------------*/
+$blue: #3A71A8;
+$dark-blue: #324157;
+$light-blue: #1E90FF;
+$red: #C03639;
+$pink: #E65D6E;
+$yellow: #FEC171;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$white: #ffffff;
+$grey-white: #f5f5f5;
+$gray-white: #CCCCCC;
+$grey: #666666;
+$gray: #333333;
+$gray-black: #262626;
+$black: #000000;
+
+/*----------------------------------------------------------
+┆   side bar                                               ┆
+└---------------------------------------------------------*/
+$menuColor: #1E90FF;
+$menuText: #f5f5f5;
+$menuActiveColor: #324157;
+$menuActiveText: #FEC171;
+
+/*----------------------------------------------------------
+┆   box style                                              ┆
+└---------------------------------------------------------*/
+$prop-border: 'border', 'border-left', 'border-right', 'border-top', 'border-bottom';
+$prop-margin: 'margin-left', 'margin-right', 'margin-top', 'margin-bottom';
+$font-size: 40, 38, 36, 34, 32, 30, 28, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2;
+$box-align: 'center', 'left', 'right';
+$box-size: 200, 175, 150, 125, 100, 95, 90, 85, 80, 75, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5;
+
+/*----------------------------------------------------------
+┆   bar size                                               ┆
+└---------------------------------------------------------*/
+$sideBarWidth: 200px;
+$headBarHeight: 60px;
+$headBarIconWidth: 60px;
+$headBarTitleWidth: 250px;
+$headBarInfoWidth: 300px;
+$headBarLoginWidth: 200px;
+$textFlexRowWidth: -200px;
+$textFlexRowHeight: 40px;
+$textFlexColWidth: 200px;
+$textFlexColHeight: 40px;
+$bodyTableWidth: 100vw - $sideBarWidth;
+$bodyTableHeight: 100vh - 12px;
+
+/*----------------------------------------------------------
+┆   pane size                                               ┆
+└---------------------------------------------------------*/
+$sidePaneWidth: 250px;
+$headPaneHeight: 100px;
+
+/*----------------------------------------------------------
+┆   the :export directive is the magic sauce for webpack   ┆
+└---------------------------------------------------------*/
+:export {
+  menuColor: $menuColor;
+  menuText: $menuText;
+  menuActiveColor: $menuActiveColor;
+  menuActiveText: $menuActiveText;
+  sideBarWidth: $sideBarWidth;
+  headBarHeight: $headBarHeight;
+  sidePaneWidth: $sidePaneWidth;
+  headPaneHeight: $headPaneHeight;
+}
