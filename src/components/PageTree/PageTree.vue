@@ -230,7 +230,7 @@ export default {
     refreshLevel: {
       type: Number,
       default: 0
-    },
+    }
   },
   data () {
     return {
@@ -283,7 +283,9 @@ export default {
     defaultHighlightNode (val) {
       const _this = this
       _this.$nextTick(() => {
-        _this.$refs.tree.setCurrentKey(val)
+        if (_this.$refs.tree != null) {
+          _this.$refs.tree.setCurrentKey(val)
+        }
       })
     },
     // 页面默认点击的节点
@@ -448,7 +450,9 @@ export default {
               _this.defaultHighlightNode === 0
             ) {
               _this.$nextTick(() => {
-                _this.$refs.tree.setCurrentKey(_this.defaultHighlightNode)
+                if (_this.$refs.tree != null) {
+                  _this.$refs.tree.setCurrentKey(_this.defaultHighlightNode)
+                }
               })
             }
             // 设置默认点击
@@ -580,7 +584,9 @@ export default {
               _this.defaultHighlightNode === 0
             ) {
               _this.$nextTick(() => {
-                _this.$refs.tree.setCurrentKey(_this.defaultHighlightNode)
+                if (_this.$refs.tree != null) {
+                  _this.$refs.tree.setCurrentKey(_this.defaultHighlightNode)
+                }
               })
             }
             // 设置默认点击

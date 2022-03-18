@@ -168,7 +168,7 @@ export default {
         .catch(err => {
           console.log(err)
         })
-      this.$store.commit('Login', this.message)
+      this.$store.dispatch('updateTabPaneTitle', this.message)
       this.$router.replace('/demo/browser')
     },
     logoutClick: function () {

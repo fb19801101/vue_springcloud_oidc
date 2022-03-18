@@ -159,17 +159,18 @@ module.exports = {
     loaderOptions: {
       css: {},
       stylus: {
-        import: '~@/styles/index.styl'
+        import: '~@/styles/index.styl',
       },
       scss: {
-        import: '~@/styles/index.scss'
+        prependData: '@import "~@/styles/index.scss"'
       },
       less: {
+        prependData: '@import "~@/styles/index.less"',
         lessOptions: {
           modifyVars: {
             'primary-color': '#ec6800'
           },
-          javascriptEnabled: true,
+          javascriptEnabled: true
         }
       }
     }

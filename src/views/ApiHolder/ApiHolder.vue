@@ -8,10 +8,11 @@
         <div class="flex-title-right">
           <el-select v-model="uriFilter" placeholder="请选择调转地址类型" @change="uriChanged">
             <el-option value="localhost" label="http://localhost/"></el-option>
-            <el-option value="102" label="http://192.168.100.102/"></el-option>
+            <el-option value="197" label="http://192.168.100.197/"></el-option>
+            <el-option value="198" label="http://192.168.100.198/"></el-option>
+            <el-option value="199" label="http://192.168.100.199/"></el-option>
             <el-option value="ldsc" label="http://ldsc.cr121.com/"></el-option>
-            <el-option value="88" label="http://192.168.1.88/"></el-option>
-            <el-option value="dx185" label="http://crcc12-ldsc-v2.itest.dx185.com/"></el-option>
+            <el-option value="ames" label="http://ames.cr121.com/"></el-option>
           </el-select>
         </div>
       </div>
@@ -395,9 +396,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .el-table-column >>> .el-table {
-    td:not(.is-hidden):last-child {
-      right: -1px;
-    }
-  }
 </style>

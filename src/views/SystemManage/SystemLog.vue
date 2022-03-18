@@ -74,7 +74,7 @@ export default {
       }
     ]
 
-    this.page = { show: true, total: 0, sizes: [20, 50, 100, 200], size: 20, cur: 1, layout: 'total, sizes, prev, pager, next, jumper'}
+    this.page = { show: true, total: 0, sizes: [20, 50, 100, 200], size: 20, cur: 1, layout: 'total, sizes, prev, pager, next, jumper' }
     this.filters = [{ prop: 'content' }, { prop: 'userPath' }, { prop: 'userName' }, { prop: 'createTime' }]
     this.getData()
   },
@@ -125,9 +125,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .el-table-column >>> .el-table {
-    td:not(.is-hidden):last-child {
-      right: -1px;
-    }
-  }
 </style>

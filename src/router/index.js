@@ -6,6 +6,7 @@ import ReLogin from '@/views/Login/ReLogin'
 
 Vue.use(VueRouter)
 
+const LayoutChild = () => import('@/components/LayoutTabs/LayoutChild')
 const HomePage = () => import('@/views/HomePage/HomePage')
 const BrowserWeb = () => import('@/views/BrowserPage/BrowserWeb')
 const BrowserApp = () => import('@/views/BrowserPage/BrowserApp')
@@ -42,135 +43,235 @@ const routes = [
     children: [
       {
         path: 'home',
-        name: 'Home',
-        components: { TabPage: HomePage },
+        name: 'HomePage',
+        components: { TabPaneView: HomePage },
         meta: {
-          title: '首页'
+          title: '首页',
+          cache: false,
+          affix: false,
+          auth: true,
+          icon: 'el-icon-discount'
         }
       },
       {
-        path: 'web',
-        name: 'BrowserWeb',
-        components: { TabPage: BrowserWeb },
+        path: 'browser',
+        name: 'Browser',
+        components: { TabPaneView: LayoutChild },
         meta: {
-          title: '网页端页面'
-        }
+          title: '组织人员浏览',
+          cache: false,
+          affix: false,
+          auth: true,
+          icon: 'el-icon-user-solid'
+        },
+        children: [
+          {
+            path: 'web',
+            name: 'BrowserWeb',
+            components: { TabPaneChild: BrowserWeb },
+            meta: {
+              title: '网页端页面',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          },
+          {
+            path: 'app',
+            name: 'BrowserApp',
+            components: { TabPaneChild: BrowserApp },
+            meta: {
+              title: '移动端页面',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          }
+        ]
       },
       {
-        path: 'app',
-        name: 'BrowserApp',
-        components: { TabPage: BrowserApp },
+        path: 'system',
+        name: 'System',
+        components: { TabPaneView: LayoutChild },
         meta: {
-          title: '移动端页面'
-        }
+          title: '授权管理',
+          cache: false,
+          affix: false,
+          auth: true,
+          icon: 'el-icon-setting'
+        },
+        children: [
+          {
+            path: 'auth',
+            name: 'SystemAuth',
+            components: { TabPaneChild: SystemAuth },
+            meta: {
+              title: '授权管理',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          },
+          {
+            path: 'log',
+            name: 'SystemLog',
+            components: { TabPaneChild: SystemLog },
+            meta: {
+              title: '系统日志',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          }
+        ]
       },
       {
-        path: 'browser/web',
-        name: 'BrowserWeb',
-        components: { TabPage: BrowserWeb },
+        path: 'query',
+        name: 'Query',
+        components: { TabPaneView: LayoutChild },
         meta: {
-          title: '组织人员浏览'
-        }
+          title: '授权查询',
+          cache: false,
+          affix: false,
+          auth: true,
+          icon: 'el-icon-menu'
+        },
+        children: [
+          {
+            path: 'auth',
+            name: 'QueryAuth',
+            components: { TabPaneChild: QueryAuth },
+            meta: {
+              title: '授权查询',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          },
+          {
+            path: 'post/change',
+            name: 'QueryPostChange',
+            components: { TabPaneChild: QueryPostChange },
+            meta: {
+              title: '岗位变化查询',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          },
+          {
+            path: 'org/delete',
+            name: 'QueryOrgDelete',
+            components: { TabPaneChild: QueryOrgDelete },
+            meta: {
+              title: '组织删除查询',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          }
+        ]
       },
       {
-        path: 'browser/app',
-        name: 'BrowserApp',
-        components: { TabPage: BrowserApp },
+        path: 'plan',
+        name: 'Plan',
+        components: { TabPaneView: LayoutChild },
         meta: {
-          title: '组织人员浏览'
-        }
-      },
-      {
-        path: 'system/auth',
-        name: 'SystemAuth',
-        components: { TabPage: SystemAuth },
-        meta: {
-          title: '授权管理'
-        }
-      },
-      {
-        path: 'system/log',
-        name: 'journal',
-        components: { TabPage: SystemLog },
-        meta: {
-          title: '系统日志'
-        }
-      },
-      {
-        path: 'query/auth',
-        name: 'QueryAuth',
-        components: { TabPage: QueryAuth },
-        meta: {
-          title: '授权查询'
-        }
-      },
-      {
-        path: 'query/post/change',
-        name: 'QueryPostChange',
-        components: { TabPage: QueryPostChange },
-        meta: {
-          title: '岗位变化查询'
-        }
-      },
-      {
-        path: 'query/org/delete',
-        name: 'QueryOrgDelete',
-        components: { TabPage: QueryOrgDelete },
-        meta: {
-          title: '组织删除查询'
-        }
-      },
-      {
-        path: 'plan/params',
-        name: 'PlanParams',
-        components: { TabPage: PlanParams },
-        meta: {
-          title: '网络计算参数'
-        }
-      },
-      {
-        path: 'plan/static',
-        name: 'PlanStatic',
-        components: { TabPage: PlanStatic },
-        meta: {
-          title: '静态网络计算'
-        }
-      },
-      {
-        path: 'plan/estimate',
-        name: 'PlanEstimate',
-        components: { TabPage: PlanEstimate },
-        meta: {
-          title: '动态网络计算'
-        }
-      },
-      {
-        path: 'plan/actual',
-        name: 'PlanActual',
-        components: { TabPage: PlanActual },
-        meta: {
-          title: '实际网络计算'
-        }
-      },
-      {
-        path: 'plan/tree',
-        name: 'PlanTree',
-        components: { TabPage: PlanTree },
-        meta: {
-          title: '树形网络计划'
-        }
+          title: '网络计算参数',
+          cache: false,
+          affix: false,
+          auth: true,
+          icon: 'el-icon-date'
+        },
+        children: [
+          {
+            path: 'params',
+            name: 'PlanParams',
+            components: { TabPaneChild: PlanParams },
+            meta: {
+              title: '网络计算参数',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          },
+          {
+            path: 'static',
+            name: 'PlanStatic',
+            components: { TabPaneChild: PlanStatic },
+            meta: {
+              title: '静态网络计算',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          },
+          {
+            path: 'estimate',
+            name: 'PlanEstimate',
+            components: { TabPaneChild: PlanEstimate },
+            meta: {
+              title: '动态网络计算',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          },
+          {
+            path: 'actual',
+            name: 'PlanActual',
+            components: { TabPaneChild: PlanActual },
+            meta: {
+              title: '实际网络计算',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          },
+          {
+            path: 'tree',
+            name: 'PlanTree',
+            components: { TabPaneChild: PlanTree },
+            meta: {
+              title: '树形网络计划',
+              cache: false,
+              affix: false,
+              auth: true,
+              icon: 'el-icon-document'
+            }
+          }
+        ]
       },
       {
         path: 'api/holder',
         name: 'ApiHolder',
-        components: { TabPage: ApiHolder },
+        components: { TabPaneView: ApiHolder },
         meta: {
-          title: 'API注册信息'
+          title: 'API注册信息',
+          cache: false,
+          affix: false,
+          auth: true,
+          icon: 'el-icon-help'
         }
       }
     ],
     meta: {
-      title: '首页'
+      title: '主页',
+      cache: false,
+      affix: false,
+      auth: true,
+      icon: null
     }
   }
   // {

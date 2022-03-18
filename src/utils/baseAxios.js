@@ -17,7 +17,7 @@ const ajax = axios.create({
 ajax.interceptors.request.use((config) => {
   // 在发送请求前，比如添加用户uid，token等公共的参数,根据实际情况配置
   // 写入token存储，用【localstorage】本地缓存进行存储
-  const token = window.sessionStorage.getItem('accessToken')
+  const token = window.sessionStorage.getItem('AccessToken')
   // 判断是否存在token，如果存在的话，则每个http header都加上token
   // if (token != null) {
   //   token = token + ':' + GUID.newGUID()

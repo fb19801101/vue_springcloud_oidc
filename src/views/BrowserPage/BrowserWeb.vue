@@ -147,6 +147,7 @@ export default {
         id: 6,
         prop: 'positionName',
         label: '岗位',
+        width: 200,
         align: 'center'
       }
     ]
@@ -164,12 +165,12 @@ export default {
       const item = []
       for (let i = 1; i <= 100; i++) {
         item.push({
-          id: (index - 1) * 100 + i,
+          index: (index - 1) * 100 + i,
           name: 'name',
-          gender: '男',
-          company: 'company',
-          department: 'department',
-          position: 'position'
+          genderName: '男',
+          companyName: 'company',
+          departmentName: 'department',
+          positionName: 'position'
         })
       }
 
@@ -193,18 +194,20 @@ export default {
     // 触发事件
     handleEvent (event, node) {
       if (event === 'leftClick') {
-        this.imgShow = false;
+        this.imgShow = false
         this.rows = []
         this.page.cur = 1
         this.page.total = 0
 
         this.refresh = Date.now().toString(36)
 
+        // eslint-disable-next-line camelcase
         const t_begin = new Date()
         console.log('click node begin: ' + t_begin.toLocaleTimeString('chinese', { hour12: false }) + ':' + t_begin.getMilliseconds())
 
         this.initOrgUsers(node.data.provider, node.data.id, node.data.type)
 
+        // eslint-disable-next-line camelcase
         const t_end = new Date()
         console.log('click node end: ' + t_end.toLocaleTimeString('chinese', { hour12: false }) + ':' + t_end.getMilliseconds())
       }
@@ -225,6 +228,7 @@ export default {
             this.getOrgUsers()
             this.getOrgPath(providerId, orgId, 1)
 
+            // eslint-disable-next-line camelcase
             const t_end = new Date()
             console.log('click node end: ' + t_end.toLocaleTimeString('chinese', { hour12: false }) + ':' + t_end.getMilliseconds())
           }
@@ -309,9 +313,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .el-table-column >>> .el-table {
-    td:not(.is-hidden):last-child {
-      right: -1px;
-    }
-  }
 </style>

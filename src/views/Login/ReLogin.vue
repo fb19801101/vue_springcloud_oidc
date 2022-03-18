@@ -24,23 +24,25 @@ export default {
           id: 1,
           name: ''
         },
-        browsePage: 0,
-        browseWeb: 0,
-        browseApp: 0,
-        systemManage: 0,
-        systemAuth: 0,
-        systemLog: 0,
-        systemQuery: 0,
-        queryAuth: 0,
-        queryPostChange: 0,
-        queryOrgDelete: 0,
-        planCompute: 1,
-        planParams: 1,
-        planStatic: 1,
-        planEstimate: 1,
-        planActual: 1,
-        planTree: 1,
-        apiHolder: 2
+        userAuth: {
+          browseWeb: 0,
+          browseApp: 0,
+
+          systemAuth: 0,
+          systemLog: 0,
+
+          queryAuth: 0,
+          queryPostChange: 0,
+          queryOrgDelete: 0,
+
+          planParams: 1,
+          planStatic: 1,
+          planEstimate: 1,
+          planActual: 1,
+          planTree: 1,
+
+          apiHolder: 1
+        }
       }
     }
   },

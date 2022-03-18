@@ -50,7 +50,12 @@ export default {
               this.$router.push('re-login')
             }
 
-            this.$store.commit('updateAccessToken', res.data.data)
+            this.$store.dispatch('updateAccessToken', res.data.data)
+            if (userType === 'portal_app') {
+              this.$store.dispatch('updateLayoutDevice', 'mobile')
+            } else {
+              this.$store.dispatch('updateLayoutDevice', 'browser')
+            }
           }
         }).catch(err => {
           console.log(err)
@@ -150,7 +155,7 @@ export default {
         .then(res => {
           if (res.data.code === 200 && this.$store.state.accessToken == null) {
             this.token = res.data.data
-            this.$store.commit('updateAccessToken', res.data.data)
+            this.$store.dispatch('updateAccessToken', res.data.data)
           }
         }).catch(err => {
           console.log(err)

@@ -1,30 +1,28 @@
 <template>
-  <div class="flex-container-body">
-    <div class="flex-body-table">
-      <div class="flex-table-title">
-        <div class="flex-title-left">
-          <span class="text-title-20">静态网络计划</span>
-        </div>
-        <div class="flex-title-center">
-          <span class="text-content-16">earliestStart: {value:44389.0, date:'2021-07-12 00:00:00', format:'yyyy-MM-dd HH:mm:ss', year:2021, month:7, day:12, hour:0, minute:0, second:0}</span>
-          <span class="text-content-16">netPlanItems: '/demo/planComputeParams'</span>
-        </div>
+  <div class="flex-container-table">
+    <div class="flex-table-title">
+      <div class="flex-title-left">
+        <span class="text-title-20">静态网络计划</span>
       </div>
-      <div class="flex-table-content">
-        <page-table
-          ref="table"
-          :checkbox="false"
-          :cols="cols"
-          :rows="rows"
-          :btree="false"
-          :refresh="refresh"
-          :page="page"
-          :toolbar="{show:{search: true}}"
-          :filters="filters"
-          @handleSize="handleSize"
-          @handlePage="handlePage"
-        />
+      <div class="flex-title-center">
+        <span class="text-content-16">earliestStart: {value:44389.0, date:'2021-07-12 00:00:00', format:'yyyy-MM-dd HH:mm:ss', year:2021, month:7, day:12, hour:0, minute:0, second:0}</span>
+        <span class="text-content-16">netPlanItems: '/demo/planComputeParams'</span>
       </div>
+    </div>
+    <div class="flex-table-content">
+      <page-table
+        ref="table"
+        :checkbox="false"
+        :cols="cols"
+        :rows="rows"
+        :btree="false"
+        :refresh="refresh"
+        :page="page"
+        :toolbar="{show:{search: true}}"
+        :filters="filters"
+        @handleSize="handleSize"
+        @handlePage="handlePage"
+      />
     </div>
   </div>
 </template>
@@ -54,7 +52,7 @@ export default {
         prop: 'id',
         label: '工作ID',
         sort: true,
-        width: 100,
+        width: 80,
         align: 'center'
       },
       {
@@ -62,14 +60,16 @@ export default {
         prop: 'rootid',
         label: '工作父ID',
         sort: true,
-        width: 100
+        width: 80,
+        align: 'center'
       },
       {
         id: 3,
         prop: 'level',
         label: '工作层级',
         sort: true,
-        width: 100
+        width: 80,
+        align: 'center'
       },
       {
         id: 4,
@@ -82,28 +82,28 @@ export default {
         id: 5,
         prop: 'frontids',
         label: '紧前工作',
-        width: 100,
+        width: 80,
         align: 'center'
       },
       {
         id: 6,
         prop: 'backids',
         label: '紧后工作',
-        width: 100,
+        width: 80,
         align: 'center'
       },
       {
         id: 7,
         prop: '_DP',
         label: '工作工期',
-        width: 80,
+        width: 60,
         align: 'center'
       },
       {
         id: 8,
         prop: 'key',
         label: '关键工作',
-        width: 80,
+        width: 60,
         align: 'center'
       },
       {
@@ -124,7 +124,7 @@ export default {
         id: 11,
         prop: '_TL',
         label: '时间间隔',
-        width: 80,
+        width: 50,
         align: 'center'
       },
       {
@@ -145,7 +145,7 @@ export default {
         id: 14,
         prop: '_PG',
         label: '计划工期',
-        width: 80,
+        width: 60,
         align: 'center'
       },
       {
@@ -194,28 +194,28 @@ export default {
         id: 21,
         prop: 'sf',
         label: '完成状态',
-        width: 80,
+        width: 50,
         align: 'center'
       },
       {
         id: 22,
         prop: 'sk',
         label: '分级预警',
-        width: 80,
+        width: 50,
         align: 'center'
       },
       {
         id: 23,
         prop: 'sw',
         label: '进度预警',
-        width: 80,
+        width: 50,
         align: 'center'
       },
       {
         id: 24,
         prop: 'milepost',
         label: '里程碑',
-        width: 80,
+        width: 60,
         align: 'center'
       }
     ]
@@ -274,9 +274,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .el-table-column >>> .el-table {
-    td:not(.is-hidden):last-child {
-      right: -1px;
-    }
-  }
 </style>

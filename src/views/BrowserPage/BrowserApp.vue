@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-container-table">
+  <div class="flex-container-mobile">
     <div class="flex-table-content">
       <page-table
         ref="table"
@@ -45,45 +45,42 @@ export default {
         id: 1,
         prop: 'index',
         label: '序号',
-        sort: true,
-        width: 150,
+        width: 80,
         align: 'center'
       },
       {
         id: 2,
-        prop: 'name',
-        label: '姓名',
-        width: 200,
+        label: '图标',
+        slot: [{
+          type: 'image',
+          name: require('@assets/user.png')
+        }],
+        width: 80,
         align: 'center'
       },
       {
         id: 3,
-        prop: 'genderName',
-        label: '性别',
+        prop: 'name',
+        label: '姓名',
         width: 150,
         align: 'center'
       },
       {
         id: 4,
-        prop: 'companyName',
-        label: '单位',
+        prop: 'genderName',
+        label: '性别',
+        width: 80,
         align: 'center'
       },
       {
         id: 5,
-        prop: 'departmentName',
-        label: '部门',
-        align: 'center'
-      },
-      {
-        id: 6,
-        prop: 'positionName',
+        prop: 'info',
         label: '岗位',
-        align: 'center'
+        align: 'left'
       }
     ]
 
-    this.page = { show: true, total: 0, sizes: [50, 100, 200, 500, 1000, 2000], size: 50, cur: 1, layout: 'total, sizes, prev, pager, next, jumper' }
+    this.page = { show: true, total: 0, size: 200, cur: 1, layout: 'total, prev, pager, next' }
 
     this.filters = [{ prop: 'id' }, { prop: 'name' }, { prop: 'gender' }, { prop: 'company' }, { prop: 'department' }, { prop: 'position' }]
 
@@ -96,12 +93,12 @@ export default {
       const item = []
       for (let i = 1; i <= 100; i++) {
         item.push({
-          id: (index - 1) * 100 + i,
+          index: (index - 1) * 100 + i,
           name: 'name',
-          gender: '男',
-          company: 'company',
-          department: 'department',
-          position: 'position'
+          genderName: '男',
+          companyName: 'company',
+          departmentName: 'department',
+          positionName: 'position'
         })
       }
 
@@ -152,6 +149,10 @@ export default {
           LoginApi.getUsersWithOffsetAndLimit((this.page.cur - 1) * this.page.size, this.page.size).then(res => {
             if (res.data.code === 200) {
               this.rows = res.data.data
+              this.rows.forEach((item) => {
+                item.info = item.companyName + '/' + item.departmentName + '/' + item.positionName
+              })
+
               this.refresh = Date.now().toString(36)
             }
           }).catch(err => {
@@ -217,9 +218,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .el-table-column >>> .el-table {
-    td:not(.is-hidden):last-child {
-      right: -1px;
-    }
-  }
 </style>

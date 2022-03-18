@@ -84,7 +84,7 @@ export default {
       // 表格多选框选择的数据
       selectRows: [],
       clickNode: {},
-      showAuthDialog: this.$store.state.userAuthManage === 2,
+      showAuthDialog: this.$store.state.userAuth.systemAuth === 2,
 
       lazyData: {
         refresh: 1,
@@ -158,19 +158,18 @@ export default {
         slot: [{
           type: 'setAuth',
           name: '授权功能',
-          disabled: this.$store.state.userAuthManage !== 2
+          disabled: this.$store.state.userAuth.systemAuth !== 2
         }, {
           type: 'delAuth',
           name: '删除',
-          disabled: this.$store.state.userAuthManage !== 2
+          disabled: this.$store.state.userAuth.systemAuth !== 2
         }],
         width: 200,
         align: 'center'
       }
     ]
 
-
-    this.page = { show: true, total: 0, sizes: [20, 50, 100, 200], size: 20, cur: 1, layout: 'total, sizes, prev, pager, next, jumper'}
+    this.page = { show: true, total: 0, sizes: [20, 50, 100, 200], size: 20, cur: 1, layout: 'total, sizes, prev, pager, next, jumper' }
     this.filters = [{ prop: 'id' }, { prop: 'objName' }, { prop: 'objType' }, { prop: 'objPath' }]
 
     this.clickNode.provider = this.global.nodeProvider
@@ -187,7 +186,7 @@ export default {
     // 触发事件
     handleEvent (event, node) {
       if (event === 'leftClick') {
-        this.imgShow = false;
+        this.imgShow = false
         this.getOrgPath(node.data.provider, node.data.id, 1)
         this.refreshTable(node.data.provider, node.data.id)
         this.clickNode = node.data

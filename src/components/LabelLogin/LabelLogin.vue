@@ -2,8 +2,8 @@
   <div>
       <span class="text-content-24">|</span>
       <span class="text-content-18 box-margin-left-8">{{userName}}</span>
-      <i class="el-icon-refresh text-content-24 box-margin-left-8" @click="refreshOrganization"/>
-      <i class="el-icon-switch-button text-content-24 box-margin-left-6" @click="loginOut"/>
+      <i class="el-icon-refresh icon-size-24 box-margin-left-8" @click="refreshOrganization"/>
+      <i class="el-icon-switch-button icon-size-24 box-margin-left-6" @click="loginOut"/>
   </div>
 </template>
 
@@ -18,12 +18,23 @@ export default {
   data () {
     return {
       userAuth: {
-        userBrowse: 0,
-        userAuthManage: 0,
-        userSysLog: 0,
-        userAuthQuery: 0,
-        userPostChange: 0,
-        userOrgDelete: 0
+        browseWeb: 0,
+        browseApp: 0,
+
+        systemAuth: 0,
+        systemLog: 0,
+
+        queryAuth: 0,
+        queryPostChange: 0,
+        queryOrgDelete: 0,
+
+        planParams: 1,
+        planStatic: 1,
+        planEstimate: 1,
+        planActual: 1,
+        planTree: 1,
+
+        apiHolder: 1
       }
     }
   },
@@ -53,19 +64,20 @@ export default {
             this.global.setNodeId(res.data.data.nodeId)
             this.global.setNodeType(res.data.data.nodeType)
 
-            this.userAuth.userBrowse = res.data.data.authOrg
-            this.userAuth.userAuthManage = res.data.data.authOpAuth
-            this.userAuth.userSysLog = res.data.data.authLog
-            this.userAuth.userAuthQuery = res.data.data.authQueryAuth
-            this.userAuth.userPostChange = res.data.data.authPostChange
-            this.userAuth.userOrgDelete = res.data.data.authPostDelete
-            this.$store.commit('updateUserAuth', this.userAuth)
+            this.userAuth.browseWeb = res.data.data.authOrg
+            this.userAuth.browseApp = res.data.data.authOrg
+            this.userAuth.systemAuth = res.data.data.authOpAuth
+            this.userAuth.systemLog = res.data.data.authLog
+            this.userAuth.queryAuth = res.data.data.authQueryAuth
+            this.userAuth.queryPostChange = res.data.data.authPostChange
+            this.userAuth.queryOrgDelete = res.data.data.authPostDelete
+            this.$store.dispatch('updateUserAuth', this.userAuth)
           } else {
             this.$message.error('您暂无系统权限')
           }
 
-          this.$store.commit('updateTitle', '首页')
-          this.$store.commit('Login')
+          this.$store.dispatch('updateTabPaneTitle', '首页')
+          this.$store.dispatch('initializeLoginState')
         }).catch(err => {
           console.log(err)
         })
@@ -85,11 +97,19 @@ export default {
         window.location.href = 'http://' + process.env.VUE_APP_LOCAL_HOST + ':' + process.env.VUE_APP_LOCAL_PORT + process.env.VUE_APP_LOCAL_PAHT
       }, 1000) // 半秒钟之后关闭该窗口
 
-      this.$store.commit('initialize')
+      this.$store.dispatch('initializeSessionStorage')
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+  i {
+     cursor: pointer
+   }
+  i:hover {
+    background: $black
+    opacity: 1;
+    color $light-blue
+  }
 </style>

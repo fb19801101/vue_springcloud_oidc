@@ -2,33 +2,44 @@
   <div class="flex-container-admin">
     <div class="flex-header">
       <div class="flex-icon">
-        <i class="el-icon-s-fold text-title-32" @click="boxShow = !boxShow" v-if="boxShow"/>
-        <i class="el-icon-s-unfold text-title-32" @click="boxShow = !boxShow" v-if="!boxShow"/>
+        <svg-icon icon-class="crcc-white" class-name="icon-size-48" style="border: 1px solid #ffffff"></svg-icon>
+      </div>
+      <div class="flex-icon">
+        <i class="el-icon-s-fold icon-size-32" @click="boxShowAside = !boxShowAside" v-if="boxShowAside"/>
+        <i class="el-icon-s-unfold icon-size-32" @click="boxShowAside = !boxShowAside" v-if="!boxShowAside"/>
       </div>
       <div class="flex-title">
         <span class="text-title-24"> DEMO 技术认证</span>
       </div>
-      <div class="flex-info">
-        <span class="text-title-20"> Flex-Info</span>
+      <div class="flex-info" v-if="boxShowAside">
+        <el-select placeholder="请选择调转地址类型" size="mini" value="localhost">
+          <el-option value="localhost" label="http://localhost/"></el-option>
+          <el-option value="197" label="http://192.168.100.197/"></el-option>
+          <el-option value="198" label="http://192.168.100.198/"></el-option>
+          <el-option value="199" label="http://192.168.100.199/"></el-option>
+          <el-option value="ldsc" label="http://ldsc.cr121.com/"></el-option>
+          <el-option value="ames" label="http://ames.cr121.com/"></el-option>
+        </el-select>
       </div>
       <div class="flex-menu">
-        <span class="text-title-20"> Flex-Menu</span>
+          <el-button type="success" class="text-title-16" plain size="mini" @click="clickBrowserApp">组织人员浏览</el-button>
+          <el-button type="info" class="text-title-16" plain size="mini" @click="clickQueryAuth" v-if="boxShowAside">分级授权查询</el-button>
+          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickApiHolder" v-if="boxShowAside"> API注册信息</el-button>
+          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickSystemAuth" v-if="boxShowAside">系统管理</el-button>
       </div>
       <div class="flex-login">
-        <label-login @boxShow="boxShow = $event" :userName="userName"/>
+        <label-login :userName="userName"/>
       </div>
     </div>
     <div class="flex-admin">
       <transition name="draw">
-        <div class="flex-aside" v-if="boxShow">
-          <span class="flex-title text-title-20" @click="boxShowMenu = !boxShowMenu">应用聚合</span>
+        <div class="flex-aside" v-if="boxShowAside">
+          <span class="flex-title text-title-16" @click="boxShowTodoList = !boxShowTodoList, boxShowPresses=false">代办聚合</span>
+          <span class="flex-title text-title-16" @click="boxShowPresses = !boxShowPresses, boxShowTodoList=false">消息聚合</span>
           <navigation-menu class="flex-menu"/>
-          <el-divider v-if="boxShowMenu"></el-divider>
-          <span class="flex-title text-title-20 box-margin-bottom-12" @click="boxShowTodoList = !boxShowTodoList" v-if="boxShowMenu">代办聚合</span>
-          <navigation-todo-list v-if="boxShowTodoList"/>
-          <el-divider v-if="boxShowMenu"></el-divider>
-          <span class="flex-title text-title-20 box-margin-bottom-12" @click="boxShowPresses = !boxShowPresses" v-if="boxShowMenu">消息聚合</span>
-          <navigation-presses v-if="boxShowPresses"/>
+          <el-divider v-if="boxShowTodoList || boxShowPresses"></el-divider>
+          <navigation-todo-list v-if="boxShowTodoList && !boxShowPresses"/>
+          <navigation-presses v-if="boxShowPresses && !boxShowTodoList"/>
         </div>
       </transition>
       <div class="flex-body">
@@ -44,40 +55,59 @@ import NavigationTodoList from '@/components/NavigationMenu/NavigationTodoList'
 import NavigationPresses from '@/components/NavigationMenu/NavigationPresses'
 import LayoutPage from '@/components/LayoutTabs/LayoutPage'
 import LabelLogin from '@components/LabelLogin/LabelLogin'
+import SvgIcon from '@/components/SvgIcon/SvgIcon'
 import LoginApi from '@/api/login'
 
 export default {
   name: 'demo',
-  components: { NavigationMenu, NavigationTodoList, NavigationPresses, LayoutPage, LabelLogin },
+  components: { NavigationMenu, NavigationTodoList, NavigationPresses, LayoutPage, LabelLogin, SvgIcon },
   data () {
     return {
-      boxShow: true,
-      boxShowMenu: false,
+      boxShowAside: true,
       boxShowTodoList: false,
       boxShowPresses: false,
       userAuth: {
         browseWeb: 0,
         browseApp: 0,
+
         systemAuth: 0,
         systemLog: 0,
+
         queryAuth: 0,
         queryPostChange: 0,
         queryOrgDelete: 0,
-        planCompute: 1,
+
         planParams: 1,
         planStatic: 1,
         planEstimate: 1,
         planActual: 1,
         planTree: 1,
-        apiHolder: 2
+
+        apiHolder: 1
       },
       userName: ''
     }
   },
   created () {
+    this.boxShowAside = this.$store.state.layoutDevice === 'browser'
+
+    const routes = this.$router.options.routes[2].children
+    routes.forEach(route => {
+      const path = route.path
+      if ('children' in route) {
+        const children = [...route.children]
+        children.forEach(route => {
+          route.path = path + '/' + route.path
+          this.$store.dispatch('addRoutedView', route)
+        })
+      } else {
+        this.$store.dispatch('addRoutedView', route)
+      }
+    })
+
     this.userName = this.global.userInfo != null ? this.global.userInfo.name : ''
     if (this.$store.state.accessToken != null) {
-      this.$store.commit('Login')
+      this.$store.dispatch('initializeLoginState')
 
       if (this.global.providerId != null && this.global.userId != null) {
         LoginApi.currentUserInfo(this.global.providerId, this.global.userId)
@@ -105,7 +135,7 @@ export default {
                     this.userAuth.queryAuth = res.data.data.authQueryAuth
                     this.userAuth.queryPostChange = res.data.data.authPostChange
                     this.userAuth.queryOrgDelete = res.data.data.authPostDelete
-                    this.$store.commit('updateUserAuth', this.userAuth)
+                    this.$store.dispatch('updateUserAuth', this.userAuth)
                   } else {
                     this.$message.error('您暂无系统权限')
                   }
@@ -143,7 +173,7 @@ export default {
       LoginApi.accessToken()
         .then(res => {
           if (res.data.code === 200 && this.$store.state.accessToken == null) {
-            this.$store.commit('updateAccessToken', res.data.data)
+            this.$store.dispatch('updateAccessToken', res.data.data)
           }
         })
         .catch(err => {
@@ -168,16 +198,32 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    clickBrowserApp () {
+      this.boxShowAside = false
+      this.$store.dispatch('updateLayoutDevice', 'mobile')
+      this.$store.dispatch('updateTabPaneName', 'BrowserApp')
+    },
+    clickQueryAuth () {
+      this.boxShowAside = false
+      this.$store.dispatch('updateLayoutDevice', 'browser')
+      this.$store.dispatch('updateTabPaneName', 'QueryAuth')
+    },
+    clickApiHolder () {
+      this.boxShowAside = false
+      this.$store.dispatch('updateLayoutDevice', 'browser')
+      this.$store.dispatch('updateTabPaneName', 'ApiHolder')
+    },
+    clickSystemAuth () {
+      this.boxShowAside = false
+      this.$store.dispatch('updateLayoutDevice', 'browser')
+      this.$store.dispatch('updateTabPaneName', 'SystemAuth')
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  body {
-    margin: 0;
-  }
-
   .draw-enter-active, .draw-leave-active {
     transition: all 0.8s cubic-bezier(1.0, 0.5, 0.8, 1.0) ease;
   }
@@ -189,7 +235,7 @@ export default {
   }
 
   .el-divider {
-    background-color: $white;
+    background-color: $yellow;
     height: 2px;
   }
 </style>

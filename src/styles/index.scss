@@ -1,10 +1,20 @@
-@import './variables.scss';
 @import './mixin.scss';
 
 body {
   width: 100%;
   height: 100%;
   margin: 0
+}
+
+/*-------------------------------------
+┆   icon style                        ┆
+└------------------------------------*/
+@each $size in $icon-size {
+  .icon-size-#{$size} {
+    margin: $size+px 0 $size+px 0;
+    font-size: $size+px;
+    font-weight: 400;
+  }
 }
 
 /*-------------------------------------
@@ -157,7 +167,6 @@ body {
   @include flex-display();
   @include flex-direction(column);
   @include flex-justify-content(space-between);
-  widht: 100%;
   height: 100vh;
   white-space: nowrap;
   overflow: hidden;
@@ -176,6 +185,14 @@ body {
       min-height: $headBarHeight;
       background-color: $dark-blue;
       color: $white;
+      i {
+        cursor: pointer
+      }
+      i:hover {
+        background: $black;
+        opacity: 1;
+        color: $light-blue;
+      }
     }
     .flex-title {
       @include flex-display();
@@ -233,7 +250,7 @@ body {
         @include flex-align-items(center);
         @include flex(1);
         background-color: $light-blue;
-        color: $white;
+        color: $yellow;
         min-height: $textFlexRowHeight;
       }
       .flex-menu {
@@ -263,7 +280,6 @@ body {
   @include flex-display();
   @include flex-justify-content(space-between);
   @include flex(1);
-  widht: 100%;
   height: 100vh;
   white-space: nowrap;
   overflow: hidden;
@@ -302,7 +318,7 @@ body {
       background-color: $white;
       color: $gray-black;
       .flex-title-left {
-      flex(0 0 $textFlexColWidth);
+        @include flex(0 0 $textFlexColWidth);
         background-color: $white;
         color: $gray-black;
       }
@@ -324,6 +340,10 @@ body {
     }
     .flex-table-content {
       @include flex(1);
+      // aside scroll
+      @include flex-calc-minus('--layout-width', 100vw, $sideBarWidth + 10px);
+      // header tabs title toolbar column scroll pagination
+      @include flex-calc-minus('--layout-height', 100vh, $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
       background-color: $white;
       color: $gray-black;
     }
@@ -340,7 +360,6 @@ body {
   @include flex-direction(column);
   @include flex-justify-content(space-between);
   @include flex(1);
-  widht: 100%;
   height: 100vh;
   white-space: nowrap;
   overflow: hidden;
@@ -375,6 +394,57 @@ body {
   }
   .flex-table-content {
     @include flex(1);
+    // aside scroll
+    @include flex-calc-minus('--layout-width', 100vw, $sideBarWidth + 10px);
+    // header tabs toolbar column scroll pagination
+    @include flex-calc-minus('--layout-height', 100vh, $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
+    background-color: $white;
+    color: $gray-black;
+  }
+}
+.flex-container-mobile {
+  @include flex-display();
+  @include flex-direction(column);
+  @include flex-justify-content(space-between);
+  @include flex(1);
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: $white;
+  color: $gray-black;
+  margin: 0 5px 0 5px;
+  .flex-table-title {
+    @include flex-display();
+    @include flex(0 0 $textFlexRowHeight);
+    background-color: $white;
+    color: $gray-black;
+    .flex-title-left {
+      @include flex(0 0 $textFlexColWidth);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-center {
+      @include flex-display();
+      @include flex-direction(column);
+      @include flex-justify-content(space-between);
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-right {
+      @include flex-display();
+      @include flex-justify-content(right);
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+  .flex-table-content {
+    @include flex(1);
+    // scroll
+    @include flex-calc-minus('--layout-width', 100vw, 10px);
+    // header tabs toolbar column scroll pagination
+    @include flex-calc-minus('--layout-height', 100vh, $headBarHeight + 30px + 50px + 10px + 40px);
     background-color: $white;
     color: $gray-black;
   }

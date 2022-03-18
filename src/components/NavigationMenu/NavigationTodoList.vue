@@ -50,7 +50,7 @@ export default {
       this.toPage(val)
     },
     toPage (val) {
-      this.$store.commit('updateTitle', val)
+      this.$store.dispatch('updateTabPaneTitle', val)
       switch (val) {
         case '网络计算参数':
           this.$router.replace('/demo/browser')

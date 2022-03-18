@@ -1,17 +1,16 @@
 <template>
-  <div class="flex-container-body">
-    <div class="flex-body-table">
-      <div class="flex-table-title">
-        <div class="flex-title-left">
-          <span class="text-title-20">动态计划树状结构</span>
-        </div>
-        <div class="flex-title-right">
-          <el-button @click="exportPlan" type="primary" plain>导出计划</el-button>
-          <el-button @click="expandPlan" type="primary" plain>全部展开</el-button>
-          <el-button @click="foldPlan" type="primary" plain>全部折叠</el-button>
-        </div>
+  <div class="flex-container-table">
+    <div class="flex-table-title">
+      <div class="flex-title-left">
+        <span class="text-title-20">动态计划树状结构</span>
       </div>
-      <div class="flex-table-content">
+      <div class="flex-title-right">
+        <el-button @click="exportPlan" type="primary" plain>导出计划</el-button>
+        <el-button @click="expandPlan" type="primary" plain>全部展开</el-button>
+        <el-button @click="foldPlan" type="primary" plain>全部折叠</el-button>
+      </div>
+    </div>
+    <div class="flex-table-content">
         <page-table
           ref="table"
           :checkbox="false"
@@ -21,7 +20,6 @@
           :folder="folder"
         />
       </div>
-    </div>
   </div>
 </template>
 
@@ -54,14 +52,16 @@ export default {
         prop: 'rootid',
         label: '工作父ID',
         sort: true,
-        width: 100
+        width: 80,
+        align: 'center'
       },
       {
         id: 3,
         prop: 'level',
         label: '工作层级',
         sort: true,
-        width: 100
+        width: 80,
+        align: 'center'
       },
       {
         id: 4,
@@ -74,28 +74,28 @@ export default {
         id: 5,
         prop: 'frontids',
         label: '紧前工作',
-        width: 100,
+        width: 80,
         align: 'center'
       },
       {
         id: 6,
         prop: 'backids',
         label: '紧后工作',
-        width: 100,
+        width: 80,
         align: 'center'
       },
       {
         id: 7,
         prop: '_DP',
         label: '工作工期',
-        width: 80,
+        width: 60,
         align: 'center'
       },
       {
         id: 8,
         prop: 'key',
         label: '关键工作',
-        width: 80,
+        width: 60,
         align: 'center'
       },
       {
@@ -116,7 +116,7 @@ export default {
         id: 11,
         prop: '_TL',
         label: '时间间隔',
-        width: 80,
+        width: 50,
         align: 'center'
       },
       {
@@ -137,7 +137,7 @@ export default {
         id: 14,
         prop: '_PG',
         label: '计划工期',
-        width: 80,
+        width: 60,
         align: 'center'
       },
       {
@@ -186,28 +186,28 @@ export default {
         id: 21,
         prop: 'sf',
         label: '完成状态',
-        width: 80,
+        width: 50,
         align: 'center'
       },
       {
         id: 22,
         prop: 'sk',
         label: '分级预警',
-        width: 80,
+        width: 50,
         align: 'center'
       },
       {
         id: 23,
         prop: 'sw',
         label: '进度预警',
-        width: 80,
+        width: 50,
         align: 'center'
       },
       {
         id: 24,
         prop: 'milepost',
         label: '里程碑',
-        width: 80,
+        width: 60,
         align: 'center'
       }
     ]
@@ -266,9 +266,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .el-table-column >>> .el-table {
-    td:not(.is-hidden):last-child {
-      right: -1px;
-    }
-  }
 </style>

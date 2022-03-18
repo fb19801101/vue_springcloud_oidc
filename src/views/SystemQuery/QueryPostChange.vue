@@ -63,6 +63,7 @@ export default {
       imgShow: true,
 
       tableData: [],
+      orgPath: '',
 
       lazyData: {
         refresh: 1,
@@ -152,7 +153,7 @@ export default {
       }
     ]
 
-    this.page = { show: true, total: 0, sizes: [20, 50, 100, 200], size: 20, cur: 1, layout: 'total, sizes, prev, pager, next, jumper'}
+    this.page = { show: true, total: 0, sizes: [20, 50, 100, 200], size: 20, cur: 1, layout: 'total, sizes, prev, pager, next, jumper' }
     this.filters = [{ prop: 'userName' }, { prop: 'postOld' }, { prop: 'postNew' }, { prop: 'nodePath' }, { prop: 'createTime' }]
 
     this.refreshTable(this.global.nodeProvider, this.global.nodeCode)
@@ -167,7 +168,8 @@ export default {
     // 触发事件
     handleEvent (event, node) {
       if (event === 'leftClick') {
-        this.imgShow = false;
+        this.imgShow = false
+        this.getOrgPath(node.data.provider, node.data.id, 1)
         this.refreshTable(node.data.provider, node.data.code)
       }
     },
@@ -209,6 +211,18 @@ export default {
         console.log(err)
       })
     },
+    // 获取指定节点的路径数组
+    getOrgPath (providerId, orgId, level) {
+      LoginApi.getOrganizationPath(providerId, orgId, level, false).then(res => {
+        if (res.data.code === 200) {
+          this.orgPath = (res.data.data)
+        } else {
+          this.orgPath.empty()
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     // 每页表单数量选择函数
     handleSize (val) {
       this.refresh = Date.now().toString(36)
@@ -226,9 +240,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .el-table-column >>> .el-table {
-    td:not(.is-hidden):last-child {
-      right: -1px;
-    }
-  }
 </style>

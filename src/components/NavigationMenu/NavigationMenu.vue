@@ -9,122 +9,26 @@
         :text-color="variables.menuText"
         :active-text-color="variables.menuActiveText"
         @open="handleOpen"
-        @select="handleSelect">
-        <el-submenu index="组织人员浏览" v-if="showBrowserPage">
+        @select="handleSelect"
+        v-for="(route, idx) in menuItems" :key="idx">
+        <el-menu-item :index="route.name" :route="route.path" v-if="route.children == null && route.auth">
+          <div class="box-center">
+            <i :class="route.icon + ' box-right'"></i>
+            <span class="box-left">{{route.title}}</span>
+          </div>
+        </el-menu-item>
+        <el-submenu :index="route.name" v-if="route.children != null && route.auth" >
           <template slot="title">
             <div class="box-center">
-              <i class="el-icon-user-solid box-right"></i>
-              <span class="box-left">组织人员浏览</span>
+              <i :class="route.icon + ' box-right'"></i>
+              <span class="box-left">{{route.title}}</span>
             </div>
           </template>
-          <el-menu-item index="网页端页面" v-if="showBrowserWeb">
+          <el-menu-item :index="item.name" :route="route.path"
+                        v-for="(item, idx) in route.children" :key="idx">
             <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">网页端页面</span>
-            </div>
-          </el-menu-item>
-          <el-menu-item index="移动端页面" v-if="showBrowserApp">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">移动端页面</span>
-            </div>
-          </el-menu-item>
-        </el-submenu>
-        <el-submenu index="系统管理" v-if="showSystemManage">
-          <template slot="title">
-            <div class="box-center">
-              <i class="el-icon-setting box-right"></i>
-              <span class="box-left">系统管理</span>
-            </div>
-          </template>
-          <el-menu-item index="授权管理" v-if="showSystemAuth">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">授权管理</span>
-            </div>
-          </el-menu-item>
-          <el-menu-item index="系统日志" v-if="showSystemLog">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">系统日志</span>
-            </div>
-          </el-menu-item>
-        </el-submenu>
-        <el-submenu index="统计报表" v-if="showSystemQuery">
-          <template slot="title">
-            <div class="box-center">
-              <i class="el-icon-menu box-right"></i>
-              <span class="box-left">统计报表</span>
-            </div>
-          </template>
-          <el-menu-item index="授权查询" v-if="showQueryAuth">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">授权查询</span>
-            </div>
-          </el-menu-item>
-          <el-menu-item index="岗位变化查询" v-if="showQueryPostChange">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">岗位变化查询</span>
-            </div>
-          </el-menu-item>
-          <el-menu-item index="组织删除查询" v-if="showQueryOrgDelete">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">组织删除查询</span>
-            </div>
-          </el-menu-item>
-        </el-submenu>
-        <el-submenu index="网络计算管理" v-if="showPlanCompute">
-          <template slot="title">
-            <div class="box-center">
-              <i class="el-icon-date box-right"></i>
-              <span class="box-left">网络计算管理</span>
-            </div>
-          </template>
-          <el-menu-item index="网络计算参数" v-if="showPlanParams">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">网络计算参数</span>
-            </div>
-          </el-menu-item>
-          <el-menu-item index="静态网络计算" v-if="showPlanStatic">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">静态网络计算</span>
-            </div>
-          </el-menu-item>
-          <el-menu-item index="动态网络计算" v-if="showPlanEstimate">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">动态网络计算</span>
-            </div>
-          </el-menu-item>
-          <el-menu-item index="实际网络计算" v-if="showPlanActual">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">实际网络计算</span>
-            </div>
-          </el-menu-item>
-          <el-menu-item index="树形网络计划" v-if="showPlanTree">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">树形网络计划</span>
-            </div>
-          </el-menu-item>
-      </el-submenu>
-        <el-submenu index="API注册管理" v-if="showApiHolder">
-          <template slot="title">
-            <div class="box-center">
-              <i class="el-icon-help box-right"></i>
-              <span class="box-left">API注册管理</span>
-            </div>
-          </template>
-          <el-menu-item index="API注册信息" v-if="showApiHolder">
-            <div class="box-center">
-              <i class="el-icon-document box-right"></i>
-              <span class="box-left">API注册信息</span>
+              <i :class="item.icon + ' box-right'"></i>
+              <span class="box-left">{{item.title}}</span>
             </div>
           </el-menu-item>
         </el-submenu>
@@ -141,10 +45,26 @@ export default {
   name: 'NavigationMenu',
   data () {
     return {
-      none: 0
+      none: 0,
+      menuItems: []
     }
   },
   created () {
+    const routes = this.$router.options.routes[2].children
+    routes.forEach(route => {
+      const path = '/demo/' + route.path
+      let items = []
+      if ('children' in route) {
+        const children = [...route.children]
+        children.forEach(route => {
+          items.push({ name: route.name, title: route.meta.title, auth: route.meta.auth, icon: route.meta.icon, path: path + '/' + route.path, children: null })
+        })
+      } else {
+        items = null
+      }
+
+      this.menuItems.push({ name: route.name, title: route.meta.title, auth: route.meta.auth, icon: route.meta.icon, path: path, children: items })
+    })
   },
   computed: {
     variables () {
@@ -157,59 +77,58 @@ export default {
       return this.showBrowserWeb || this.showBrowserApp
     },
     showBrowserWeb () {
-      return this.$store.state.browseWeb !== 0
+      return this.$store.state.userAuth.browseWeb !== 0
     },
     showBrowserApp () {
-      return this.$store.state.browseApp !== 0
+      return this.$store.state.userAuth.browseApp !== 0
     },
     showSystemManage () {
       return this.showSystemQuery || this.showSystemAuth || this.showSystemLog
     },
     showSystemAuth () {
-      return this.$store.state.systemAuth !== 0
+      return this.$store.state.userAuth.systemAuth !== 0
     },
     showSystemLog () {
-      return this.$store.state.systemLog !== 0
+      return this.$store.state.userAuth.systemLog !== 0
     },
     showSystemQuery () {
       return this.showQueryAuth || this.showQueryPostChange || this.showQueryOrgDelete
     },
     showQueryAuth () {
-      return this.$store.state.queryAuth !== 0
+      return this.$store.state.userAuth.queryAuth !== 0
     },
     showQueryPostChange () {
-      return this.$store.state.queryPostChange !== 0
+      return this.$store.state.userAuth.queryPostChange !== 0
     },
     showQueryOrgDelete () {
-      return this.$store.state.queryOrgDelete !== 0
+      return this.$store.state.userAuth.queryOrgDelete !== 0
     },
     showPlanCompute () {
-      return this.showPlanParams || this.showPlanStatic || this.showPlanEstimate ||
-        this.showPlanActual || this.showPlanTree
+      return this.showPlanParams || this.showPlanStatic || this.showPlanEstimate || this.showPlanActual || this.showPlanTree
     },
     showPlanParams () {
-      return this.$store.state.planParams !== 0
+      return this.$store.state.userAuth.planParams !== 0
     },
     showPlanStatic () {
-      return this.$store.state.planStatic !== 0
+      return this.$store.state.userAuth.planStatic !== 0
     },
     showPlanEstimate () {
-      return this.$store.state.planEstimate !== 0
+      return this.$store.state.userAuth.planEstimate !== 0
     },
     showPlanActual () {
-      return this.$store.state.planActual !== 0
+      return this.$store.state.userAuth.planActual !== 0
     },
     showPlanTree () {
-      return this.$store.state.planTree !== 0
+      return this.$store.state.userAuth.planTree !== 0
     },
     showApiHolder () {
-      return this.$store.state.apiHolder !== 0
+      return this.$store.state.userAuth.apiHolder !== 0
     }
   },
   watch: {},
   methods: {
-    handleSelect (title) {
-      this.$store.commit('updateTitle', title)
+    handleSelect (index) {
+      this.$store.dispatch('updateTabPaneName', index)
     },
     // 鉴权函数
     handleOpen (key, keyPath) {
@@ -221,11 +140,10 @@ export default {
 
 <style lang="stylus" scoped>
   .flex-menu-container >>> {
-    margin-left: 5px;
     flex-display();
     flex-direction(column);
     flex-justify-content(space-between);
-    height: calc(40vh);
+    height: 60vh;
     .flex-menu-scroll {
       flex(1);
       white-space: nowrap;

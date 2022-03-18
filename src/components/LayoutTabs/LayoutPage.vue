@@ -1,20 +1,48 @@
 <template>
-  <el-tabs v-model="tabPaneName" type="card" closable @tab-remove="removeTab" @tab-click="clickTab">
+  <el-tabs ref="tabs" v-model="tabPaneName" type="card" closable @tab-remove="removeTab" @tab-click="clickTab">
     <el-tab-pane
       v-for="(item, index) in tabPaneTags"
       :key="index"
       :label="item.title"
       :name="item.name">
-      <router-view name="TabPage"/>
+      <transition name="fade-transform" mode="out-in">
+        <keep-alive :include="cachedViews">
+          <router-view :key="key" name="TabPaneView" />
+        </keep-alive>
+      </transition>
     </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
+
 export default {
   name: 'LayoutPage',
+  props: {
+    showTabPaneLabel: {
+      type: Boolean,
+      default: true
+    }
+  },
   data () {
     return {
+    }
+  },
+  created () {
+    if (this.$store.state.routedViews.length === 0) {
+      const routes = this.$router.options.routes[2].children
+      routes.forEach(route => {
+        if ('children' in route) {
+          const path = route.path
+          const children = [...route.children]
+          children.forEach(route => {
+            route.path = path + '/' + route.path
+            this.$store.dispatch('addRoutedView', route)
+          })
+        } else {
+          this.$store.dispatch('addRoutedView', route)
+        }
+      })
     }
   },
   computed: {
@@ -26,111 +54,104 @@ export default {
         this.$store.state.tabPaneName = val
       }
     },
-    tabPaneTags () {
-      return this.$store.state.tabPaneTags
+    layoutDevice: {
+      get: function () {
+        return this.$store.state.layoutDevice
+      },
+      set: function (val) {
+        this.$store.state.layoutDevice = val
+      }
     },
-    activeTitle () {
-      return this.$store.state.tabPaneTitle
+    tabPaneTags: {
+      get: function () {
+        return this.$store.state.tabPaneTags
+      },
+      set: function (val) {
+        this.$store.state.tabPaneTags = val
+      }
+    },
+    routedViews: {
+      get: function () {
+        return this.$store.state.routedViews
+      },
+      set: function (val) {
+        this.$store.state.routedViews = val
+      }
+    },
+    cachedViews: {
+      get: function () {
+        return this.$store.state.cachedViews
+      },
+      set: function (val) {
+        this.$store.state.cachedViews = val
+      }
+    },
+    key: {
+      get: function () {
+        return this.$route.path
+      }
     }
   },
   watch: {
-    activeTitle: function () {
-      this.addTab(this.$store.state.tabPaneTitle)
-      this.toPage(this.$store.state.tabPaneTitle)
+    tabPaneName: function () {
+      this.addTab(this.$store.state.tabPaneName)
+      this.toPage(this.$store.state.tabPaneName)
+    },
+    layoutDevice: function () {
+      this.$nextTick(() => {
+        if (this.$store.state.layoutDevice === 'mobile') {
+          this.$refs.tabs.$el.firstChild.style.display = 'none'
+        } else {
+          this.$refs.tabs.$el.firstChild.style.display = 'inline'
+        }
+      })
     }
   },
   methods: {
-    addTab (title) {
-      let isUpdate = true
-      const tags = this.$store.state.tabPaneTags
-      for (let i = 0; i < tags.length; i++) {
-        if (tags[i].title === title) {
-          this.$store.commit('updateLabelTabName', tags[i].name)
-          isUpdate = false
-        }
-      }
-      if (isUpdate) {
-        const _index = this.$store.state.tabPaneIndex + 1
-        tags.push({
-          title: title,
-          name: _index + ''
-        })
-
-        this.$store.commit('updateLabelTabName', _index + '')
-        this.$store.commit('updateLabelTabsIndex', _index)
-        this.$store.commit('updateLabelTabs', tags)
+    addTab (name) {
+      const tags = this.tabPaneTags.filter(tag => tag.name === name)
+      const routes = this.routedViews.filter(route => route.name === name)
+      if (tags.length === 0 && routes.length > 0) {
+        const route = routes[0]
+        this.$store.dispatch('addTabPaneTag', { title: route.meta.title, name: name, index: 0 })
+        this.$store.dispatch('updateTabPaneTitle', route.meta.title)
+        this.$store.dispatch('updateTabPaneName', name)
+        this.$store.dispatch('updateTabPaneIndex', this.tabPaneTags.length)
+        this.$store.dispatch('addCachedView', route)
+      } else if (tags.length > 0) {
+        const tag = tags[0]
+        this.$store.dispatch('updateTabPaneTitle', tag.title)
+        this.$store.dispatch('updateTabPaneName', name)
+        this.$store.dispatch('updateTabPaneIndex', tag.index)
       }
     },
     removeTab (name) {
-      if (name !== 'home') {
-        let tags = this.$store.state.tabPaneTags
-        let _name = this.$store.state.tabPaneName
-        if (_name === name) {
-          let _tag = {}
-          tags.forEach((tag, index) => {
-            if (tag.name === name) {
-              _tag = tags[index + 1] || tags[index - 1]
-              if (_tag) {
-                _name = _tag.name
-              }
-            }
-          })
-          this.toPage(_tag.title)
-        }
+      const tags = this.tabPaneTags.filter(tag => tag.name === name)
+      if (tags.length > 0) {
+        const tag = tags[0]
+        this.$store.dispatch('delTabPaneTag', tag)
+        this.toPage(tag.name)
 
-        this.$store.commit('updateLabelTabName', _name)
-        tags = tags.filter(tag => tag.name !== name)
-        this.$store.commit('updateLabelTabs', tags)
+        this.$store.dispatch('updateTabPaneTitle', tag.title)
+        this.$store.dispatch('updateTabPaneName', tag.name)
+        this.$store.dispatch('updateTabPaneIndex', tag.index)
       }
     },
     clickTab (tag) {
-      this.$store.commit('updateTitle', tag.label)
+      this.$store.dispatch('updateTabPaneTitle', tag.name)
     },
-    toPage (title) {
-      this.$store.commit('updateTitle', title)
-      switch (title) {
-        case '首页':
-          this.$router.replace('/demo/home')
-          break
-        case '网页端页面':
-          this.$router.replace('/demo/browser/web')
-          break
-        case '移动端页面':
-          this.$router.replace('/demo/browser/app')
-          break
-        case '授权管理':
-          this.$router.replace('/demo/system/auth')
-          break
-        case '系统日志':
-          this.$router.replace('/demo/system/log')
-          break
-        case '授权查询':
-          this.$router.replace('/demo/query/auth')
-          break
-        case '岗位变化查询':
-          this.$router.replace('/demo/query/post/change')
-          break
-        case '组织删除查询':
-          this.$router.replace('/demo/query/org/delete')
-          break
-        case '网络计算参数':
-          this.$router.replace('/demo/plan/params')
-          break
-        case '静态网络计算':
-          this.$router.replace('/demo/plan/static')
-          break
-        case '动态网络计算':
-          this.$router.replace('/demo/plan/estimate')
-          break
-        case '实际网络计算':
-          this.$router.replace('/demo/plan/actual')
-          break
-        case '树形网络计划':
-          this.$router.replace('/demo/plan/tree')
-          break
-        case 'API注册信息':
-          this.$router.replace('/demo/api/holder')
-          break
+    toPage (name) {
+      const routes = this.routedViews.filter(route => route.name === name)
+      if (routes.length > 0) {
+        const route = routes[0]
+        if (this.$router.currentRoute.name !== route.name) {
+          this.$router.push(route).catch(err => {
+            console.log('输出错误', err)
+          })
+          // this.$router.replace('/demo/' + route.path).catch(err => {
+          //   console.log('输出错误', err)
+          // })
+        }
       }
     }
   }
@@ -138,4 +159,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  /*
+  .el-tabs >>> .el-tabs__header {
+    display: none
+  }
+  */
 </style>

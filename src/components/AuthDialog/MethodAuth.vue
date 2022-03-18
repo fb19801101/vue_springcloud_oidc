@@ -35,6 +35,7 @@ export default {
     authData: {
       type: Object,
       default: () => {
+        // eslint-disable-next-line no-undef
         return { title: '', objName: '', objProvider: '', objId: 0, tableData: [], dialogMethodVisible }
       }
     }
@@ -90,8 +91,11 @@ export default {
     },
     handleCheck (row) {
       if (!row._manage) {
+        // eslint-disable-next-line camelcase
         const row_op = this.authData.tableData[1]
+        // eslint-disable-next-line camelcase
         const row_log = this.authData.tableData[3]
+        // eslint-disable-next-line camelcase
         if (row_op != null && row_log != null) {
           if (row_op.manage) {
             row_op.scan = true
