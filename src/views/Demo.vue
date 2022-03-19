@@ -11,8 +11,8 @@
       <div class="flex-title">
         <span class="text-title-24"> DEMO 技术认证</span>
       </div>
-      <div class="flex-info" v-if="boxShowAside">
-        <el-select placeholder="请选择调转地址类型" size="mini" value="localhost">
+      <div class="flex-info">
+        <el-select placeholder="请选择调转地址类型" size="mini" value="localhost" v-if="boxShowAside">
           <el-option value="localhost" label="http://localhost/"></el-option>
           <el-option value="197" label="http://192.168.100.197/"></el-option>
           <el-option value="198" label="http://192.168.100.198/"></el-option>
@@ -38,8 +38,8 @@
           <span class="flex-title text-title-16" @click="boxShowPresses = !boxShowPresses, boxShowTodoList=false">消息聚合</span>
           <navigation-menu class="flex-menu"/>
           <el-divider v-if="boxShowTodoList || boxShowPresses"></el-divider>
-          <navigation-todo-list v-if="boxShowTodoList && !boxShowPresses"/>
-          <navigation-presses v-if="boxShowPresses && !boxShowTodoList"/>
+          <navigation-collapse :items='todoList' v-if="boxShowTodoList && !boxShowPresses"/>
+          <navigation-collapse :items='presses' v-if="boxShowPresses && !boxShowTodoList"/>
         </div>
       </transition>
       <div class="flex-body">
@@ -50,9 +50,8 @@
 </template>
 
 <script>
-import NavigationMenu from '@/components/NavigationMenu/NavigationMenu'
-import NavigationTodoList from '@/components/NavigationMenu/NavigationTodoList'
-import NavigationPresses from '@/components/NavigationMenu/NavigationPresses'
+import NavigationMenu from '@/components/Navigation/NavigationMenu'
+import NavigationCollapse from '@/components/Navigation/NavigationCollapse'
 import LayoutPage from '@/components/LayoutTabs/LayoutPage'
 import LabelLogin from '@components/LabelLogin/LabelLogin'
 import SvgIcon from '@/components/SvgIcon/SvgIcon'
@@ -60,7 +59,7 @@ import LoginApi from '@/api/login'
 
 export default {
   name: 'demo',
-  components: { NavigationMenu, NavigationTodoList, NavigationPresses, LayoutPage, LabelLogin, SvgIcon },
+  components: { NavigationMenu, NavigationCollapse, LayoutPage, LabelLogin, SvgIcon },
   data () {
     return {
       boxShowAside: true,
@@ -85,7 +84,17 @@ export default {
 
         apiHolder: 1
       },
-      userName: ''
+      userName: '',
+      todoList: [
+        { name: 'SystemAuth', title: '授权管理', icon: 'el-icon-setting', content: ['甘忠忠：股份公司/十二局集团', '请进行分级授权'], disabled: true },
+        { name: 'ApiHolder', title: 'API注册信息', icon: 'el-icon-setting', content: ['跳转所有应用注册信息页面'], disabled: false },
+        { name: 'BrowserWeb', title: '网页端页面', icon: 'el-icon-setting', content: ['跳转组织人员信息查询页面'], disabled: false }
+      ],
+      presses: [
+        { name: 'PlanParams', title: '网络计算参数', icon: 'el-icon-warning-outline', content: ['跳转至网络计划参数详情'], disabled: false },
+        { name: 'SystemLog', title: '系统日志', icon: 'el-icon-warning-outline', content: ['甘忠忠：十二局集团/部长/甘忠忠', '系统日志信息详情', '业务功能日志信息详情'], disabled: false },
+        { name: 'BrowserApp', title: '移动端页面', icon: 'el-icon-warning-outline', content: ['查看移动端页面'], disabled: false }
+      ]
     }
   },
   created () {
