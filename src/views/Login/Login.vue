@@ -41,82 +41,29 @@ export default {
       this.global.setUserAuth(userAuth)
       this.global.setUserType(userType)
 
+      this.$store.dispatch('initializeLoginState')
+      this.$store.dispatch('updateLayoutDevice', userType)
+
       this.$http.get(process.env.VUE_APP_REQUEST_URL + '/api/access_token')
         .then(res => {
           if (res.data.code === 200 && this.$store.state.accessToken == null) {
+            this.$store.dispatch('updateAccessToken', res.data.data)
             if (userAuth === 'has_auth') {
               this.$router.push('demo/home')
             } else if (userAuth === 'no_auth') {
               this.$router.push('re-login')
-            }
-
-            this.$store.dispatch('updateAccessToken', res.data.data)
-            if (userType === 'portal_app') {
-              this.$store.dispatch('updateLayoutDevice', 'mobile')
-            } else {
-              this.$store.dispatch('updateLayoutDevice', 'browser')
             }
           }
         }).catch(err => {
           console.log(err)
         })
     } else {
-      if (userType === 'portal_pc') {
-        this.loginPortalPcClick()
-      } else if (userType === 'portal_app') {
-        this.loginPortalAppClick()
-      } else if (userType === 'none') {
-        this.loginNoneClick()
-      } else {
-        this.loginSSOClick()
-      }
+      this.loginClick()
     }
   },
   methods: {
-    loginSSOClick () {
-      LoginApi.redirectLoginSSO()
-        .then(res => {
-          if (res.data.code === 200) {
-            // alert(res.data.data)
-            window.location = res.data.data
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-
-      // this.$router.replace('/demo/home')
-    },
-    loginPortalPcClick () {
-      LoginApi.redirectLoginPortalPc()
-        .then(res => {
-          if (res.data.code === 200) {
-            // alert(res.data.data)
-            window.location = res.data.data
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-
-      // this.$router.replace('/demo/home')
-    },
-    loginPortalAppClick () {
-      LoginApi.redirectLoginPortalApp()
-        .then(res => {
-          if (res.data.code === 200) {
-            // alert(res.data.data)
-            window.location = res.data.data
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-
-      // this.$router.replace('/demo/home')
-    },
-    loginNoneClick () {
-      LoginApi.redirectLoginNone()
+    loginClick () {
+      LoginApi.redirectLogin()
         .then(res => {
           if (res.data.code === 200) {
             // alert(res.data.data)
@@ -149,30 +96,6 @@ export default {
         }
       }
       return null
-    },
-    accessToken () {
-      this.$http.get(process.env.VUE_APP_REQUEST_URL + '/api/access_token')
-        .then(res => {
-          if (res.data.code === 200 && this.$store.state.accessToken == null) {
-            this.token = res.data.data
-            this.$store.dispatch('updateAccessToken', res.data.data)
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-    },
-    userInfo () {
-      this.$http.get(process.env.VUE_APP_REQUEST_URL + '/api/user_info')
-        .then(res => {
-          if (res.data.code === 200) {
-            this.global.setProviderId(res.data.data.providerId)
-            this.global.setUserId(res.data.data.userId)
-            this.global.setUserAuth(res.data.data.userAuth)
-            this.global.setUserType(res.data.data.userType)
-          }
-        }).catch(err => {
-          console.log(err)
-        })
     }
   }
 }

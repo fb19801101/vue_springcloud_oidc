@@ -8,17 +8,8 @@ export default {
   userInfo: function () {
     return axios.axiosGet('/api/user_info')
   },
-  redirectLoginSSO: function () {
-    return axios.axiosGet('/api/redirect_login_sso')
-  },
-  redirectLoginPortalPc: function () {
-    return axios.axiosGet('/api/redirect_login_portal_pc')
-  },
-  redirectLoginPortalApp: function () {
-    return axios.axiosGet('/api/redirect_login_portal_app')
-  },
-  redirectLoginNone: function () {
-    return axios.axiosGet('/api/redirect_login_none')
+  redirectLogin: function () {
+    return axios.axiosGet('/api/redirect_login')
   },
   redirectLogout: function () {
     return axios.axiosGet('/api/redirect_logout')
