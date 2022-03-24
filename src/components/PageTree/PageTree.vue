@@ -8,7 +8,7 @@
       highlight-current
       :node-key="nodeKey"
       :data="treeData"
-      :props="treeProps"
+      :props="propParams.treeProps"
       :show-checkbox="checkbox"
       :draggable="draggable"
       :default-expand-all="expandAll"
@@ -33,7 +33,7 @@
           v-if="rightClickNode && rightClickNode.id === node.id"
           v-show="rightMenuShow">
           <ul>
-            <li v-for="(item, index) in rightMenu.filter(item => item.show)"
+            <li v-for="(item, index) in propParams.rightMenu.filter(item => item.show)"
               :key="index"
               @click="handleRightEvent(item.type, data, node, item.vm, item.show)">
               <a>{{ item.name }}</a>
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'PageTree',
   props: {
@@ -242,59 +243,94 @@ export default {
       nodeInfoList: {}
     }
   },
+  computed: {
+    propParams () {
+      return Object.assign({
+        treeProps: Object.assign({
+          label: 'name', // 指定节点标签为节点对象的某个属性值 string, function(data, node)
+          children: 'children', // 指定子树为节点对象的某个属性值 string
+          disabled: 'disabled', // 指定节点选择框是否禁用为节点对象的某个属性值 boolean, function(data, node)
+          isLeaf: 'leaf' // 指定节点是否为叶子节点，仅在指定了 lazy 属性的情况下生效 boolean, function(data, node)
+        }, this.treeProps),
+        rightMenu: Object.assign(
+          [
+            {
+              show: false,
+              type: 'append',
+              name: '添加',
+              data: null,
+              node: null,
+              vm: null
+            },
+            {
+              show: false,
+              type: 'modify',
+              name: '编辑',
+              data: null,
+              node: null,
+              vm: null
+            },
+            {
+              show: false,
+              type: 'remove',
+              name: '删除',
+              data: null,
+              node: null,
+              vm: null
+            }
+          ],
+          this.rightMenu)
+      })
+    }
+  },
   watch: {
     defaultChecked (val) {
-      const _this = this
       // 将节点选中的状态初始化
-      _this.$refs.tree.setCheckedNodes([])
+      this.$refs.tree.setCheckedNodes([])
       // const result = [];
       for (let i = 0; i < val.length; i++) {
         // result.push(data.data[i].id);
         // 得到选中的节点,这个方法ojbk
-        _this.$refs.tree.setChecked(val[i], true)
+        this.$refs.tree.setChecked(val[i], true)
       }
     },
     rightMenuShow (val) {
-      const _this = this
       if (val) {
-        document.body.addEventListener('click', _this.handleCloseMenu)
+        document.body.addEventListener('click', this.handleCloseMenu)
       } else {
-        document.body.removeEventListener('click', _this.handleCloseMenu)
+        document.body.removeEventListener('click', this.handleCloseMenu)
       }
     },
     // eslint-disable-next-line no-unused-vars
     treeRefresh (val) {
-      const _this = this
-      if (_this.lazy) {
+      if (this.lazy) {
         const level =
-          'node' + (_this.refreshLevel - 1 >= 0 ? _this.refreshLevel - 1 : 0)
-        _this.nodeInfoList[level].node.childNodes = [] // 清空子节点, 保证数据不会重复渲染
-        _this.handleLoadNode(
-          _this.nodeInfoList[level].node,
-          _this.nodeInfoList[level].resolve
+          'node' + (this.refreshLevel - 1 >= 0 ? this.refreshLevel - 1 : 0)
+        this.nodeInfoList[level].node.childNodes = [] // 清空子节点, 保证数据不会重复渲染
+        this.handleLoadNode(
+          this.nodeInfoList[level].node,
+          this.nodeInfoList[level].resolve
         )
       } else {
-        _this.initData()
+        this.initData()
       }
       // 关闭菜单
-      _this.handleCloseMenu()
+      this.handleCloseMenu()
     },
     // 树组件默认高亮的节点
     defaultHighlightNode (val) {
-      const _this = this
-      _this.$nextTick(() => {
-        if (_this.$refs.tree != null) {
-          _this.$refs.tree.setCurrentKey(val)
+      this.$nextTick(() => {
+        if (this.$refs.tree != null) {
+          this.$refs.tree.setCurrentKey(val)
         }
       })
     },
     // 页面默认点击的节点
     defaultClickedNode (val) {
-      const _this = this
       if (!val.id) return
-      const data = _this.lazy ? _this.lazyInfo : _this.loadInfo
-      _this.$emit('handleEvent', 'leftClick', {
-        data: _this.getSelectData(data.key, _this.baseData, val.id)
+      const data = this.lazy ? this.lazyInfo : this.loadInfo
+      this.$emit('handleEvent', 'leftClick', {
+        data: this.getSelectData(data.key, this.baseData, val.id)
       })
     },
     // 过滤节点
@@ -333,11 +369,10 @@ export default {
     },
     // 节点左键点击
     handleClickLeft (data, node) {
-      const _this = this
       // 关闭菜单
-      _this.handleCloseMenu()
+      this.handleCloseMenu()
       const parent = node.parent.data.children || node.parent.data
-      _this.$emit('handleEvent', 'leftClick', { data, parent })
+      this.$emit('handleEvent', 'leftClick', { data, parent })
     },
     // 右键的点击事件 => 参数依次为 event, 数据， 节点， 节点组件本身
     handleClickRight (event, data, node) {
@@ -349,8 +384,6 @@ export default {
     },
     // 右键的事件触发, 派发到父组件处理 => 参数依次为 事件名称, 数据， 节点， 节点组件本身
     handleRightEvent (type, data, node, vm) {
-      const _this = this
-
       // var seen = [];
       // var replacer = function(key, value) {
       //   if (typeof value === "object" && value !== null) {
@@ -363,24 +396,22 @@ export default {
       // };
 
       const parent = node.parent.data.children || node.parent.data
-      _this.$emit('handleEvent', 'rightEvent', { type, data, parent, vm })
+      this.$emit('handleEvent', 'rightEvent', { type, data, parent, vm })
     },
     // 关闭右键菜单
     handleCloseMenu () {
-      const _this = this
-      _this.rightMenuShow = false
+      this.rightMenuShow = false
     },
     // 选择框的点击事件
     handleCheck () {
-      const _this = this
       // 获取半选中的节点和key
-      const half = _this.$refs.tree.getHalfCheckedNodes()
-      const halfKeys = _this.$refs.tree.getHalfCheckedKeys()
+      const half = this.$refs.tree.getHalfCheckedNodes()
+      const halfKeys = this.$refs.tree.getHalfCheckedKeys()
       // 得到全选中的节点和key
-      const checked = _this.$refs.tree.getCheckedNodes()
-      const checkedKeys = _this.$refs.tree.getCheckedKeys()
+      const checked = this.$refs.tree.getCheckedNodes()
+      const checkedKeys = this.$refs.tree.getCheckedKeys()
       // 将当前选择的数据派发到父级处理
-      _this.$emit('handleEvent', 'treeCheck', {
+      this.$emit('handleEvent', 'treeCheck', {
         // 半选中和全选中的节点
         keys: halfKeys.concat(checkedKeys),
         // 半选中和全选中的node

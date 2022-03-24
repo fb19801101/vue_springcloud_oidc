@@ -48,8 +48,8 @@ export default {
   },
   methods: {
     logout: function () {
-      const url = 'https://g1openid.crcc.cn/logout' // 要打开的网页地址
-      // const url = 'https://sso.crcc.cn/logout' // 要打开的网页地址
+      // const url = 'https://g1openid.crcc.cn/logout' // 要打开的网页地址
+      const url = 'https://sso.crcc.cn/logout' // 要打开的网页地址
       const features = 'height=500, width=800, top=100, left=100, toolbar=no, menubar=no,scrollbars=no,resizable=no, location=no, status=no' // 设置新窗口的特性
       // 动态生成一个超链接
       const me = window.open(url, 'newW', features) // 打开新窗口

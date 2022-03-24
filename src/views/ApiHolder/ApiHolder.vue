@@ -204,7 +204,7 @@ export default {
       // }
     ]
 
-    this.page = { show: true, total: 0, sizes: [10, 20, 30, 50], size: 30, cur: 1, layout: 'total, sizes, prev, pager, next, jumper' }
+    this.page = { show: 1, total: 0, sizes: [10, 20, 30, 50], size: 30, cur: 1, layout: 'total, sizes, prev, pager, next, jumper' }
     this.filters = [{ prop: 'level' }, { prop: 'work' }]
 
     this.getData()

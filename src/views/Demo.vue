@@ -2,17 +2,17 @@
   <div class="flex-container-admin">
     <div class="flex-header">
       <div class="flex-icon">
-        <svg-icon icon-class="crcc-white" class-name="icon-size-48" style="border: 1px solid #ffffff"></svg-icon>
+        <svg-icon icon-class="crcc-white" class-name="icon-size-48" style="border: 1px solid #ffffff" @svgEvent="svgEvent"></svg-icon>
       </div>
-      <div class="flex-icon">
+      <div class="flex-icon" v-if="layoutShowMobile">
         <i class="el-icon-s-fold icon-size-32" @click="boxShowAside = !boxShowAside" v-if="boxShowAside"/>
         <i class="el-icon-s-unfold icon-size-32" @click="boxShowAside = !boxShowAside" v-if="!boxShowAside"/>
       </div>
       <div class="flex-title">
         <span class="text-title-24"> DEMO 技术认证</span>
       </div>
-      <div class="flex-info">
-        <el-select placeholder="请选择调转地址类型" size="mini" value="localhost" v-if="boxShowAside">
+      <div class="flex-info" v-if="layoutShowMobile">
+        <el-select placeholder="请选择调转地址类型" size="mini" value="localhost">
           <el-option value="localhost" label="http://localhost/"></el-option>
           <el-option value="197" label="http://192.168.100.197/"></el-option>
           <el-option value="198" label="http://192.168.100.198/"></el-option>
@@ -21,18 +21,18 @@
           <el-option value="ames" label="http://ames.cr121.com/"></el-option>
         </el-select>
       </div>
-      <div class="flex-menu">
+      <div class="flex-menu" v-if="layoutShowMobile">
           <el-button type="success" class="text-title-16" plain size="mini" @click="clickBrowserApp">组织人员浏览</el-button>
-          <el-button type="info" class="text-title-16" plain size="mini" @click="clickQueryAuth" v-if="boxShowAside">分级授权查询</el-button>
-          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickApiHolder" v-if="boxShowAside"> API注册信息</el-button>
-          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickSystemAuth" v-if="boxShowAside">系统管理</el-button>
+          <el-button type="info" class="text-title-16" plain size="mini" @click="clickQueryAuth">分级授权查询</el-button>
+          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickApiHolder"> API注册信息</el-button>
+          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickSystemAuth">系统管理</el-button>
       </div>
       <div class="flex-login">
         <label-login :userName="userName"/>
       </div>
     </div>
     <div class="flex-admin">
-      <transition name="draw">
+      <transition name="draw" v-if="layoutShowMobile">
         <div class="flex-aside" v-if="boxShowAside">
           <span class="flex-title text-title-16" @click="boxShowTodoList = !boxShowTodoList, boxShowPresses=false">代办聚合</span>
           <span class="flex-title text-title-16" @click="boxShowPresses = !boxShowPresses, boxShowTodoList=false">消息聚合</span>
@@ -62,6 +62,7 @@ export default {
   components: { NavigationMenu, NavigationCollapse, LayoutPage, LabelLogin, SvgIcon },
   data () {
     return {
+      layoutShowMobile: this.$store.state.layoutDevice !== 'mobile',
       boxShowAside: true,
       boxShowTodoList: false,
       boxShowPresses: false,
@@ -209,24 +210,25 @@ export default {
         })
     },
     clickBrowserApp () {
-      this.boxShowAside = false
       this.$store.dispatch('updateLayoutDevice', 'mobile')
       this.$store.dispatch('updateTabPaneName', 'BrowserApp')
     },
     clickQueryAuth () {
-      this.boxShowAside = false
       this.$store.dispatch('updateLayoutDevice', 'browser')
       this.$store.dispatch('updateTabPaneName', 'QueryAuth')
     },
     clickApiHolder () {
-      this.boxShowAside = false
       this.$store.dispatch('updateLayoutDevice', 'browser')
       this.$store.dispatch('updateTabPaneName', 'ApiHolder')
     },
     clickSystemAuth () {
-      this.boxShowAside = false
       this.$store.dispatch('updateLayoutDevice', 'browser')
       this.$store.dispatch('updateTabPaneName', 'SystemAuth')
+    },
+    svgEvent () {
+      this.$store.dispatch('updateLayoutDevice', this.layoutShowMobile ? 'mobile' : 'browse')
+      this.$store.dispatch('updateTabPaneName', this.layoutShowMobile ? 'BrowserApp' : 'BrowserWeb')
+      this.layoutShowMobile = !this.layoutShowMobile
     }
   }
 }

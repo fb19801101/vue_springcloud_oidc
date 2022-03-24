@@ -159,7 +159,7 @@ module.exports = {
     loaderOptions: {
       css: {},
       stylus: {
-        import: '~@/styles/index.styl',
+        import: '~@/styles/index.styl'
       },
       scss: {
         prependData: '@import "~@/styles/index.scss"'

@@ -152,7 +152,7 @@ export default {
       }
     ]
 
-    this.page = { show: true, total: 0, sizes: [50, 100, 200, 500, 1000, 2000], size: 50, cur: 1, layout: 'total, sizes, prev, pager, next, jumper', slot: '【已加载 1 页 1000 条, 点击下一页显示更多】' }
+    this.page = { show: 1, total: 0, sizes: [50, 100, 200, 500, 1000, 2000], size: 50, cur: 1, layout: 'total, sizes, prev, pager, next, jumper', slot: '【已加载 1 页 1000 条, 点击下一页显示更多】' }
 
     this.filters = [{ prop: 'id' }, { prop: 'name' }, { prop: 'gender' }, { prop: 'company' }, { prop: 'department' }, { prop: 'position' }]
 

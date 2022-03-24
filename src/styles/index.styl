@@ -96,7 +96,7 @@ for $size in $box-size {
     color: $gray-black;
     .flex-col-left {
       flex-display();
-      flex-justify-content(right);
+      flex-justify-content(flex-end);
       flex(1);
       margin-left: $textFlexRowWidth;
       background-color: $white;
@@ -111,7 +111,7 @@ for $size in $box-size {
     }
     .flex-col-right {
       flex-display();
-      flex-justify-content(left);
+      flex-justify-content(flex-start);
       flex(1);
       background-color: $white;
       color: $gray-black;
@@ -195,7 +195,7 @@ for $size in $box-size {
     }
     .flex-title {
       flex-display();
-      flex-justify-content(left);
+      flex-justify-content(flex-start);
       flex-align-items(center);
       flex(0 0 $headBarTitleWidth);
       min-height: $headBarHeight;
@@ -204,16 +204,16 @@ for $size in $box-size {
     }
     .flex-info {
       flex-display();
-      flex-justify-content(left);
+      flex-justify-content(flex-start);
       flex-align-items(center);
-      flex(0 0 $headBarInfoWidth);
+      flex(1);
       min-height: $headBarHeight;
       background-color: $dark-blue;
       color: $white;
     }
     .flex-menu {
       flex-display();
-      flex-justify-content(right);
+      flex-justify-content(flex-end);
       flex-align-items(center);
       flex(1);
       min-height: $headBarHeight;
@@ -331,7 +331,7 @@ for $size in $box-size {
       }
       .flex-title-right {
         flex-display();
-        flex-justify-content(right);
+        flex-justify-content(flex-end);
         flex(1);
         background-color: $white;
         color: $gray-black;
@@ -385,7 +385,7 @@ for $size in $box-size {
     }
     .flex-title-right {
       flex-display();
-      flex-justify-content(right);
+      flex-justify-content(flex-end);
       flex(1);
       background-color: $white;
       color: $gray-black;
@@ -432,7 +432,7 @@ for $size in $box-size {
     }
     .flex-title-right {
       flex-display();
-      flex-justify-content(right);
+      flex-justify-content(flex-end);
       flex(1);
       background-color: $white;
       color: $gray-black;

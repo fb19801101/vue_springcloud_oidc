@@ -45,7 +45,6 @@ export default {
         id: 1,
         prop: 'index',
         label: '序号',
-        width: 80,
         align: 'center'
       },
       {
@@ -55,32 +54,29 @@ export default {
           type: 'image',
           name: require('@assets/user.png')
         }],
-        width: 80,
         align: 'center'
       },
       {
         id: 3,
         prop: 'name',
         label: '姓名',
-        width: 150,
         align: 'center'
       },
       {
         id: 4,
         prop: 'genderName',
         label: '性别',
-        width: 80,
         align: 'center'
       },
       {
         id: 5,
-        prop: 'info',
-        label: '岗位',
+        prop: 'departmentName',
+        label: '部门',
         align: 'left'
       }
     ]
 
-    this.page = { show: true, total: 0, size: 200, cur: 1, layout: 'total, prev, pager, next' }
+    this.page = { show: 2, total: 0, size: 200, cur: 1, layout: 'total, prev, pager, next' }
 
     this.filters = [{ prop: 'id' }, { prop: 'name' }, { prop: 'gender' }, { prop: 'company' }, { prop: 'department' }, { prop: 'position' }]
 
@@ -149,10 +145,6 @@ export default {
           LoginApi.getUsersWithOffsetAndLimit((this.page.cur - 1) * this.page.size, this.page.size).then(res => {
             if (res.data.code === 200) {
               this.rows = res.data.data
-              this.rows.forEach((item) => {
-                item.info = item.companyName + '/' + item.departmentName + '/' + item.positionName
-              })
-
               this.refresh = Date.now().toString(36)
             }
           }).catch(err => {

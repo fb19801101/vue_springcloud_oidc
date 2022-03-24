@@ -1,6 +1,6 @@
 
 <template>
-  <svg :class="svgClass" aria-hidden="true">
+  <svg :class="svgClass" aria-hidden="true" @click="svgEvent">
     <use :xlink:href="iconName"/>
   </svg>
 </template>
@@ -29,16 +29,29 @@ export default {
         return 'svg-icon'
       }
     }
+  },
+  methods: {
+    svgEvent () {
+      this.$emit('svgEvent')
+    }
   }
 }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   .svg-icon {
     width: 1em;
     height: 1em;
     vertical-align: -0.15em;
     fill: currentColor;
     overflow: hidden;
+  }
+  svg {
+    cursor: pointer
+  }
+  svg:hover {
+    background: $black;
+    opacity: 1;
+    color: $light-blue;
   }
 </style>

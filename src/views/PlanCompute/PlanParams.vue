@@ -99,7 +99,7 @@ export default {
       }
     ]
 
-    this.page = { show: true, total: 0, sizes: [50, 100, 200, 500], size: 50, cur: 1, layout: 'total, sizes, prev, pager, next, jumper' }
+    this.page = { show: 1, total: 0, sizes: [50, 100, 200, 500], size: 50, cur: 1, layout: 'total, sizes, prev, pager, next, jumper' }
     this.filters = [{ prop: 'level' }, { prop: 'work' }]
 
     const earliestStart = { value: 44389.0, date: '2021-07-12 00:00:00', format: 'yyyy-MM-dd HH:mm:ss', year: 2021, month: 7, day: 12, hour: 0, minute: 0, second: 0 }

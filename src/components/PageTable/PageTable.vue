@@ -1,16 +1,31 @@
 <template>
   <div ref="page" class="flex-page-table-container">
+    <div class="flex-page-table-pagination" v-if="propParams.page.show === 2">
+      <el-pagination class="el-pagination-left el-pagination-right"
+                     @size-change="handleSize"
+                     @current-change="handlePage"
+                     :current-page.sync="propParams.page.cur"
+                     :page-sizes="propParams.page.sizes"
+                     :page-size="propParams.page.size"
+                     :layout="propParams.page.layout"
+                     :total="propParams.page.total"
+                     :pager-count="propParams.page.pagers"
+                     :hide-on-single-page="propParams.page.single"
+                     popper-class='sizes-options'>
+        <span class="el-pagination__slot">{{ propParams.page.slot }}</span>
+      </el-pagination>
+    </div>
     <div class="flex-page-table-toolbar">
-      <div class="flex-page-table-toolbar-left" v-if="toolbar.show.left">
+      <div class="flex-page-table-toolbar-left" v-if="propParams.toolbar.show.left">
         <el-button-group>
           <el-tooltip
-            v-for="(btn, idx) in buttons.left"
+            v-for="(btn, idx) in propParams.buttons.left"
             :key="idx"
             effect="dark"
             :content="btn.tip"
             placement="bottom">
             <el-button
-              v-if="toolbar.label.left.indexOf(btn.label) !== -1"
+              v-if="propParams.toolbar.label.left.indexOf(btn.label) !== -1"
               :size="btn.size"
               :icon="btn.icon"
               @click="handleRow(btn.param, btn.event)">
@@ -18,7 +33,7 @@
           </el-tooltip>
         </el-button-group>
       </div>
-      <div class="flex-page-table-toolbar-search" v-if="toolbar.show.search">
+      <div class="flex-page-table-toolbar-search" v-if="propParams.toolbar.show.search">
         <el-tooltip effect="dark" :content="placeholder" placement="bottom">
           <el-input
             v-model="input"
@@ -30,17 +45,17 @@
           </el-input>
         </el-tooltip>
       </div>
-      <div class="flex-page-table-toolbar-caption" v-if="toolbar.show.caption">
+      <div class="flex-page-table-toolbar-caption" v-if="propParams.toolbar.show.caption">
         <span>{{ caption }}</span>
       </div>
-      <div class="flex-page-table-toolbar-right" v-if="toolbar.show.right">
+      <div class="flex-page-table-toolbar-right" v-if="propParams.toolbar.show.right">
         <el-button-group>
-          <el-tooltip v-for="(btn, idx) in buttons.right"
+          <el-tooltip v-for="(btn, idx) in propParams.buttons.right"
             :key="idx"
             effect="dark"
             :content="btn.tip"
             placement="bottom">
-            <el-button v-if="toolbar.label.right.indexOf(btn.label) !== -1"
+            <el-button v-if="propParams.toolbar.label.right.indexOf(btn.label) !== -1"
               :size="btn.size"
               :icon="btn.icon"
               @click="handleRow(btn.param, btn.event)">
@@ -53,7 +68,7 @@
       <el-table class="flex-page-table-body"
         ref="table"
         header-row-class-name="el-header"
-        :data="tableData"
+        :data="rowData"
         :key="refresh"
         border
         stripe
@@ -66,8 +81,8 @@
         @selection-change="handleSelectionChange"
         :row-style="rowStyle"
         :header-row-style="headerStyle"
-        :show-header="fragment.showHeader"
-        :max-height="fragment.showHeight ? fragment.maxHeight : -1">
+        :show-header="propParams.fragment.showHeader"
+        :max-height="propParams.fragment.showHeight ? propParams.fragment.maxHeight : -1">
         <el-table-column v-if="checkbox" type="selection" width="55"></el-table-column>
         <el-table-column v-if="btree" :prop="colTree.prop" :label="colTree.label" :width="colTree.width">
           <template slot-scope="scope">
@@ -143,25 +158,27 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="flex-page-table-feedback" v-show="feedback">
-        <i v-show="feedback === 'loading'" class="load-icon-item el-icon-loading"></i>
-        <span v-if="feedback === 'error' || feedback === 'empty'">
+    </div>
+    <div class="flex-page-table-feedback" v-if="feedback">
+      <i v-show="feedback === 'loading'" class="load-icon-item el-icon-loading"></i>
+      <span v-if="feedback === 'error' || feedback === 'empty'">
           {{feedback === "error" ? "获取数据失败" : feedback === "empty" ? "暂无数据" : ""}}
         </span>
-      </div>
-      <div class="flex-page-table-pagination" v-if="page.show">
-        <el-pagination class="el-pagination-left el-pagination-right"
-          @size-change="handleSize"
-          @current-change="handlePage"
-          :current-page.sync="page.cur"
-          :page-sizes="page.sizes"
-          :page-size="page.size"
-          :layout="page.layout"
-          :total="page.total"
-           popper-class='sizes-options'>
-          <span class="el-pagination__slot">{{ page.slot }}</span>
-        </el-pagination>
-      </div>
+    </div>
+    <div class="flex-page-table-pagination" v-if="propParams.page.show === 1">
+      <el-pagination class="el-pagination-left el-pagination-right"
+                     @size-change="handleSize"
+                     @current-change="handlePage"
+                     :current-page.sync="propParams.page.cur"
+                     :page-sizes="propParams.page.sizes"
+                     :page-size="propParams.page.size"
+                     :layout="propParams.page.layout"
+                     :total="propParams.page.total"
+                     :pager-count="propParams.page.pagers"
+                     :hide-on-single-page="propParams.page.single"
+                     popper-class='sizes-options'>
+        <span class="el-pagination__slot">{{ propParams.page.slot }}</span>
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -226,11 +243,13 @@ export default {
       type: Object,
       default: () => {
         return {
-          show: false, // 显示
+          show: 0, // 显示 0 不显示 1 下方 2上方
           total: 0, // 数据量
           sizes: [10, 20, 50, 100], // 每页数据量数组
           size: 20, // 每页数据量
-          cur: 1 // 当前页
+          pagers: 5, // 页码列表 5-21默认7
+          cur: 1, // 当前页
+          single: false // 单页时是否隐藏
         }
       }
     },
@@ -425,7 +444,7 @@ export default {
     }
   },
   computed: {
-    tableData: {
+    rowData: {
       get () {
         const _this = this
         if (_this.btree && !_this.filtered) {
@@ -453,9 +472,8 @@ export default {
       }
     },
     colTree () {
-      const _this = this
-      if (_this.btree) {
-        return _this.cols[0]
+      if (this.btree) {
+        return this.cols[0]
       }
       return {}
     },
@@ -491,6 +509,126 @@ export default {
       //   (_this.expands && _this.expands.button ? _this.expands.width : 0)
 
       return tmp
+    },
+    propParams () {
+      return Object.assign({
+        page: Object.assign(
+          {
+            show: 0, // 显示 0 不显示 1 下方 2上方
+            total: 0, // 数据量
+            sizes: [10, 20, 50, 100], // 每页数据量数组
+            size: 20, // 每页数据量
+            pagers: 5, // 页码列表 5-21默认7
+            cur: 1, // 当前页
+            single: false // 单页时是否隐藏
+          }, this.page),
+        toolbar: Object.assign(
+          {
+            show: {
+              left: false,
+              search: false,
+              caption: false,
+              right: false
+            },
+            label: {
+              left: ['set', 'search', 'refresh', 'upload', 'download'],
+              right: ['edit', 'delete', 'share', 'printer', 'lock']
+            }
+          }, this.toolbar),
+        buttons: Object.assign({
+          left: [
+            {
+              label: 'set',
+              size: 'mini',
+              icon: 'el-icon-setting',
+              event: 'btn-set',
+              param: null,
+              tip: '设置'
+            },
+            {
+              label: 'search',
+              size: 'mini',
+              icon: 'el-icon-search',
+              event: 'btn-search',
+              param: null,
+              tip: '搜索'
+            },
+            {
+              label: 'refresh',
+              size: 'mini',
+              icon: 'el-icon-refresh',
+              event: 'btn-refresh',
+              param: null,
+              tip: '刷新'
+            },
+            {
+              label: 'upload',
+              size: 'mini',
+              icon: 'el-icon-upload2',
+              event: 'btn-upload',
+              param: null,
+              tip: '上传'
+            },
+            {
+              label: 'download',
+              size: 'mini',
+              icon: 'el-icon-download',
+              event: 'btn-download',
+              param: null,
+              tip: '下载'
+            }
+          ],
+          right: [
+            {
+              label: 'edit',
+              size: 'mini',
+              icon: 'el-icon-edit',
+              event: 'btn-edit',
+              param: null,
+              tip: '编辑'
+            },
+            {
+              label: 'delete',
+              size: 'mini',
+              icon: 'el-icon-delete',
+              event: 'btn-delete',
+              param: null,
+              tip: '删除'
+            },
+            {
+              label: 'share',
+              size: 'mini',
+              icon: 'el-icon-share',
+              event: 'btn-share',
+              param: null,
+              tip: '分享'
+            },
+            {
+              label: 'printer',
+              size: 'mini',
+              icon: 'el-icon-printer',
+              event: 'btn-printer',
+              param: null,
+              tip: '打印'
+            },
+            {
+              label: 'lock',
+              size: 'mini',
+              icon: 'el-icon-lock',
+              event: 'btn-lock',
+              param: null,
+              tip: '锁定'
+            }
+          ]
+        }, this.buttons),
+        fragment: Object.assign(
+          {
+            showHeader: true, // 是否显示表头
+            showFooter: false, // 是否显示表尾
+            showHeight: false, // 是否设置表格高度
+            maxHeight: 500 // 表格最大高度
+          }, this.fragment)
+      })
     }
   },
   methods: {
@@ -924,71 +1062,71 @@ export default {
          }
        }
      }
-     .flex-page-table-feedback {
-       flex(0 0 40px);
-       background-color: $white;
-       color: $gray-black;
-       min-height: 60px;
-       margin-top: 10px;
-       .feedback {
-         height: 60px;
-         line-height: 60px;
-         /*position: absolute;*/
-          top: 40px;
-          width: 100%;
-          text-align: center;
-        }
-        .feedback i {
-          font-size: 20px;
-        }
-        .feedback span {
-          font-size: 14px;
-          color: #909399;
-        }
+    }
+    .flex-page-table-feedback {
+      flex(0 0 40px);
+      background-color: $white;
+      color: $gray-black;
+      min-height: 60px;
+      margin-top: 10px;
+      .feedback {
+        height: 60px;
+        line-height: 60px;
+        /*position: absolute;*/
+        top: 40px;
+        width: 100%;
+        text-align: center;
       }
-      .flex-page-table-pagination {
+      .feedback i {
+        font-size: 20px;
+      }
+      .feedback span {
+        font-size: 14px;
+        color: #909399;
+      }
+    }
+    .flex-page-table-pagination {
+      flex-display();
+      flex-align-items(center);
+      flex(0 0 40px);
+      background-color: $white;
+      color: $gray-black;
+      .el-pagination {
         flex-display();
-        flex-align-items(center);
-        flex(0 0 40px);
-        background-color: $white;
-        color: $gray-black;
-        .el-pagination {
-          flex-display();
-          flex-justify-content(space-between);
+        flex-justify-content(space-between);
+        flex(1);
+        .el-pagination__total {
           flex(1);
-          .el-pagination__total {
-            flex(1);
-            background-color: $white;
-            color: $gray-black;
-          }
-          .el-pagination__slot {
-            flex(1);
-            background-color: $white;
-            color: $gray-black;
-          }
-          .el-pagination__sizes {
-            flex-display();
-            flex-justify-content(flex-end);
-            flex(1);
-            background-color: $white;
-            color: $gray-black;
-          }
-          .btn-prev {
-            background-color: $white;
-            color: $gray-black;
-          }
-          .el-pager {
-            background-color: $white;
-            color: $gray-black;
-          }
-          .btn-next {
-            background-color: $white;
-            color: $gray-black;
-          }
-          .el-pagination__jump {
-            background-color: $white;
-            color: $gray-black;
-          }
+          background-color: $white;
+          color: $gray-black;
+        }
+        .el-pagination__slot {
+          flex(1);
+          background-color: $white;
+          color: $gray-black;
+        }
+        .el-pagination__sizes {
+          flex-display();
+          flex-justify-content(flex-end);
+          flex(1);
+          background-color: $white;
+          color: $gray-black;
+        }
+        .btn-prev {
+          background-color: $white;
+          color: $gray-black;
+        }
+        .el-pager {
+          background-color: $white;
+          color: $gray-black;
+        }
+        .btn-next {
+          background-color: $white;
+          color: $gray-black;
+        }
+        .el-pagination__jump {
+          background-color: $white;
+          color: $gray-black;
         }
       }
     }
