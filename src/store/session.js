@@ -5,52 +5,52 @@ Vue.use(Vuex)
 
 const state = {
   // AccessToken
-  accessToken: null,
+  accessToken: JSON.parse(sessionStorage.getItem('AccessToken')),
 
   // LayoutDevice
-  layoutDevice: '',
+  layoutDevice: sessionStorage.getItem('LayoutDevice'),
 
   // 标签页标题
-  tabPaneTitle: '',
+  tabPaneTitle: sessionStorage.getItem('TabPaneTitle'),
   // 标签页名称
-  tabPaneName: '',
+  tabPaneName: sessionStorage.getItem('TabPaneName'),
   // 标签页索引
-  tabPaneIndex: 0,
+  tabPaneIndex: parseInt(sessionStorage.getItem('TabPaneIndex')),
   // 标签页列表
-  tabPaneTags: [],
+  tabPaneTags: JSON.parse(sessionStorage.getItem('TabPaneTags')),
 
   // 用户权限
   userAuth: {
     // 组织人员浏览权限，0无，1浏览，2管理
-    browseWeb: 0,
+    browseWeb: parseInt(sessionStorage.getItem('BrowseWeb')),
     // 组织人员浏览权限，0无，1浏览，2管理
-    browseApp: 0,
+    browseApp: parseInt(sessionStorage.getItem('BrowseApp')),
 
     // 授权管理权限，0无，1浏览，2管理
-    systemAuth: 0,
+    systemAuth: parseInt(sessionStorage.getItem('SystemAuth')),
     // 系统日志权限，0无，1浏览，2管理
-    systemLog: 0,
+    systemLog: parseInt(sessionStorage.getItem('SystemLog')),
 
     // 授权查询权限，0无，1浏览，2管理
-    queryAuth: 0,
+    queryAuth: parseInt(sessionStorage.getItem('QueryAuth')),
     // 岗位变化查询，0无，1浏览，2管理
-    queryPostChange: 0,
+    queryPostChange: parseInt(sessionStorage.getItem('QueryPostChange')),
     // 删除岗位查询，0无，1浏览，2管理
-    queryOrgDelete: 0,
+    queryOrgDelete: parseInt(sessionStorage.getItem('QueryOrgDelete')),
 
     // 网络计算参数权限，0无，1浏览，2管理
-    planParams: 0,
+    planParams: parseInt(sessionStorage.getItem('PlanParams')),
     // 静态网路计算权限，0无，1浏览，2管理
-    planStatic: 0,
+    planStatic: parseInt(sessionStorage.getItem('PlanStatic')),
     // 动态网络计算权限，0无，1浏览，2管理
-    planEstimate: 0,
+    planEstimate: parseInt(sessionStorage.getItem('PlanEstimate')),
     // 实际网络计算权限，0无，1浏览，2管理
-    planActual: 0,
+    planActual: parseInt(sessionStorage.getItem('PlanActual')),
     // 树形网络计划权限，0无，1浏览，2管理
-    planTree: 0,
+    planTree: parseInt(sessionStorage.getItem('PlanTree')),
 
     // API注册信息权限，0无，1浏览，2管理
-    apiHolder: 0
+    apiHolder: parseInt(sessionStorage.getItem('ApiHolder'))
   },
 
   // API注册名称
@@ -75,6 +75,13 @@ const mutations = {
     state.tabPaneName = 'HomePage'
     state.tabPaneIndex = 1
     state.tabPaneTags = [{ title: '首页', name: 'HomePage', index: 1 }]
+
+    sessionStorage.setItem('LayoutDevice', 'browse')
+
+    sessionStorage.setItem('TabPaneTitle', '首页')
+    sessionStorage.setItem('TabPaneName', 'HomePage')
+    sessionStorage.setItem('TabPaneIndex', '1')
+    sessionStorage.setItem('TabPaneTags', JSON.stringify([{ title: '首页', name: 'HomePage', index: 1 }]))
   },
   INITIALIZE_SESSION_STORAGE: state => {
     state.accessToken = null
@@ -108,6 +115,34 @@ const mutations = {
 
     state.apiName = ''
     state.apiInfo = {}
+
+    sessionStorage.setItem('AccessToken', null)
+
+    sessionStorage.setItem('LayoutDevice', 'browse')
+
+    sessionStorage.setItem('TabPaneTitle', '首页')
+    sessionStorage.setItem('TabPaneName', 'HomePage')
+    sessionStorage.setItem('TabPaneIndex', '1')
+    sessionStorage.setItem('TabPaneTags', JSON.stringify([{ title: '首页', name: 'HomePage', index: 1 }]))
+
+    sessionStorage.setItem('BrowseWeb', '0')
+    sessionStorage.setItem('BrowseApp', '0')
+
+    sessionStorage.setItem('SystemAuth', '0')
+    sessionStorage.setItem('SystemLog', '0')
+
+    sessionStorage.setItem('QueryAuth', '0')
+    sessionStorage.setItem('QueryPostChange', '0')
+    sessionStorage.setItem('QueryOrgDelete', '0')
+
+    sessionStorage.setItem('PlanCompute', '2')
+    sessionStorage.setItem('PlanParams', '0')
+    sessionStorage.setItem('PlanStatic', '0')
+    sessionStorage.setItem('PlanEstimate', '0')
+    sessionStorage.setItem('PlanActual', '0')
+    sessionStorage.setItem('PlanTree', '0')
+
+    sessionStorage.setItem('ApiHolder', '2')
   },
 
   ADD_TAB_PANE_TAG: (state, tag) => {
@@ -115,6 +150,7 @@ const mutations = {
     if (tag.name != null && tag.name !== 'HomePage') {
       tag.index = state.tabPaneTags.length + 1
       state.tabPaneTags.push(tag)
+      sessionStorage.setItem('TabPaneTags', JSON.stringify(state.tabPaneTags))
     }
   },
   DEL_TAB_PANE_TAG: (state, tag) => {
@@ -128,34 +164,60 @@ const mutations = {
     state.tabPaneTags.forEach((i, index) => {
       i.index = index + 1
     })
+    sessionStorage.setItem('TabPaneTags', JSON.stringify(state.tabPaneTags))
   },
   DEL_ALL_PANE_TAGS: state => {
     state.tabPaneTags = [{ title: '首页', name: 'HomePage', index: 1 }]
+    sessionStorage.setItem('TabPaneTags', JSON.stringify(state.tabPaneTags))
   },
 
   UPDATE_ACCESS_TOKEN: (state, token) => {
     state.accessToken = token
+    sessionStorage.setItem('AccessToken', JSON.stringify(token))
   },
 
   UPDATE_LAYOUT_DEVICE: (state, device) => {
     state.layoutDevice = device
+    sessionStorage.setItem('LayoutDevice', device)
   },
 
   UPDATE_TAB_PANE_TITLE: (state, title) => {
     state.tabPaneTitle = title
+    sessionStorage.setItem('TabPaneTitle', title)
   },
   UPDATE_TAB_PANE_NAME: (state, name) => {
     state.tabPaneName = name
+    sessionStorage.setItem('TabPaneName', name)
   },
   UPDATE_TAB_PANE_INDEX: (state, index) => {
     state.tabPaneIndex = index
+    sessionStorage.setItem('TabPaneIndex', index + '')
   },
   UPDATE_TAB_PANE_TAGS: (state, tags) => {
     state.tabPaneTags = tags
+    sessionStorage.setItem('TabPaneTags', JSON.stringify(tags))
   },
 
   UPDATE_USER_AUTH: (state, auth) => {
     state.userAuth = auth
+
+    sessionStorage.setItem('BrowseWeb', auth.browseWeb + '')
+    sessionStorage.setItem('BrowseApp', auth.browseApp + '')
+
+    sessionStorage.setItem('SystemAuth', auth.systemAuth + '')
+    sessionStorage.setItem('SystemLog', auth.systemLog + '')
+
+    sessionStorage.setItem('QueryAuth', auth.queryAuth + '')
+    sessionStorage.setItem('QueryPostChange', auth.queryPostChange + '')
+    sessionStorage.setItem('QueryOrgDelete', auth.queryOrgDelete + '')
+
+    sessionStorage.setItem('PlanParams', auth.planParams + '')
+    sessionStorage.setItem('PlanStatic', auth.planStatic + '')
+    sessionStorage.setItem('PlanEstimate', auth.planEstimate + '')
+    sessionStorage.setItem('PlanActual', auth.planActual + '')
+    sessionStorage.setItem('PlanTree', auth.planTree + '')
+
+    sessionStorage.setItem('ApiHolder', auth.apiHolder + '')
   },
   UPDATE_API_INFO: (state, apiInfo) => {
     state.apiInfo = apiInfo
