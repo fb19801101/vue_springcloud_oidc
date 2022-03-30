@@ -9,7 +9,8 @@
           :disabled="item.disabled">
           <template slot="title">
             <span class="box-margin-left-10">{{item.title}}</span>
-            <i :class="item.icon + ' box-margin-left-10'"></i>
+            <i :class="item.icon + ' box-margin-left-10'" v-if="item.icon !== undefined"></i>
+            <svg-icon :icon-class="item.svg" class-name="box-margin-left-10" v-if="item.svg !== undefined"></svg-icon>
           </template>
           <div v-for="(text, key) in item.content" :key="key">{{text}}</div>
         </el-collapse-item>
@@ -20,23 +21,29 @@
 
 <script>
 
+import SvgIcon from '@/components/SvgIcon/SvgIcon'
+
 export default {
   name: 'NavigationCollapse',
+  components: { SvgIcon },
   props: {
     // [
     //   { name: 'PlanParams',
     //     title: '网络计算参数',
-    //     icon: 'el-icon-info',
+    //     icon: 'el-icon-info', // element icon
+    //     svg: '', // svg icon
     //     content: ['甘忠忠：股份公司/十二局集团', '薛朝阳：股份公司/十一局集团'],
     //     disabled: false },
     //   { name: 'ApiHolder',
     //     title: 'API注册信息',
-    //     icon: 'el-icon-info',
+    //     icon: 'el-icon-info', // element icon
+    //     svg: '', // svg icon
     //     content: ['甘忠忠：股份公司/十二局集团/部长/甘忠忠', '原岗位：股份公司/十二局集团/部员/甘忠忠'],
     //     disabled: false },
     //   { name: 'BrowserWeb',
     //     title: '网页端页面',
-    //     icon: 'el-icon-info',
+    //     icon: 'el-icon-info', // element icon
+    //     svg: '', // svg icon
     //     content: ['十二局一公司：股份公司/十二局集团/十二局集团一公司'],
     //     disabled: false }
     // ]
@@ -92,13 +99,22 @@ export default {
                 border-bottom: transparent !important;
               }
               .el-collapse-item__wrap {
-                background-color: $white !important;
+                background-color: $grey-white !important;
                 border-bottom: 1px solid $gray-white !important;
               }
               .el-collapse-item__content {
                 color: $grey !important;
                 text-align: left !important;
                 margin: 0 5px 0 5px !important;
+              }
+              i, svg {
+                cursor: pointer
+                color: $black
+              }
+              i:hover, svg:hover {
+                background: $white;
+                opacity: 1;
+                color: $light-blue
               }
             }
           }

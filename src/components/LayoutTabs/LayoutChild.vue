@@ -31,9 +31,6 @@ export default {
           this.$router.push(route).catch(err => {
             console.log('输出错误', err)
           })
-          // this.$router.replace('/demo/' + route.path).catch(err => {
-          //   console.log('输出错误', err)
-          // })
         }
       }
     }

@@ -130,6 +130,7 @@ module.exports = {
       .set('@components', resolve('src/components'))
       .set('@icons', resolve('src/icons'))
       .set('@views', resolve('src/views'))
+      .set('@router', resolve('src/router'))
       .set('@store', resolve('src/store'))
 
     // 已有配置排除掉svg

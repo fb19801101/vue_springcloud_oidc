@@ -967,7 +967,7 @@ export default {
            transition: background 0.4s;
          }
          .el-table__body-wrapper::-webkit-scrollbar-thumb:hover {
-           background: $grey;
+           background: $gray;
          }
          //定义滚动条轨道 内阴影+圆角,包裹中间条的地方
          .el-table__body-wrapper::-webkit-scrollbar-track {

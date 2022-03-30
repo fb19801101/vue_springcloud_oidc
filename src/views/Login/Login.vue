@@ -29,6 +29,8 @@ export default {
     var userId = this.getQueryVariable('userId')
     var userAuth = this.getQueryVariable('userAuth')
     var userType = this.getQueryVariable('userType')
+    var pressesRouteName = this.getQueryVariable('pressesRouteName')
+    var todoRouteName = this.getQueryVariable('todoRouteName')
 
     // 获取RedirectAttributes  addFlashAttribute参数 sessioon
     // console.log(sessionStorage)
@@ -43,6 +45,8 @@ export default {
 
       this.$store.dispatch('initializeLoginState')
       this.$store.dispatch('updateLayoutDevice', userType)
+      this.$store.dispatch('updateTabPaneTodoName', todoRouteName)
+      this.$store.dispatch('updateTabPanePressesName', pressesRouteName)
 
       this.$http.get(process.env.VUE_APP_REQUEST_URL + '/api/access_token')
         .then(res => {
@@ -62,8 +66,8 @@ export default {
     }
   },
   methods: {
-    loginClick () {
-      LoginApi.redirectLogin()
+    async loginClick () {
+      await LoginApi.redirectLogin()
         .then(res => {
           if (res.data.code === 200) {
             // alert(res.data.data)

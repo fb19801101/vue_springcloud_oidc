@@ -14,6 +14,38 @@ export default {
   redirectLogout: function () {
     return axios.axiosGet('/api/redirect_logout')
   },
+  // 获取聚合信息
+  todoAddData: function (routeName, todoNumber) {
+    return axios.axiosGet('/dev-api/todo_add_data', {
+      routeName: routeName,
+      todoNumber: todoNumber
+    })
+  },
+  todoSetNumber: function (todoNumber) {
+    return axios.axiosGet('/dev-api/todo_set_Number', {
+      todoNumber: todoNumber
+    })
+  },
+  pressesAddData: function (code, headline, routeName) {
+    return axios.axiosGet('/dev-api/presses_add_data', {
+      code: code,
+      headline: headline,
+      routeName: routeName
+    })
+  },
+  pressesAddItem: function (code, headline, routeName) {
+    return axios.axiosGet('/dev-api/presses_add_item', {
+      code: code,
+      headline: headline,
+      routeName: routeName
+    })
+  },
+  pressesSetUnread: function (code, unread) {
+    return axios.axiosGet('/dev-api/presses_set_unread', {
+      code: code,
+      unread: unread
+    })
+  },
   // 获取登录用户
   currentUserInfo: function (providerId, userId) {
     return axios.axiosGet('/dev-api/current_user_info', {

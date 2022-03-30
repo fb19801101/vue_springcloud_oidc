@@ -1,8 +1,8 @@
 // SessionStorage Login Info Init
 
 export default {
-  providerId: '',
-  userId: 0,
+  providerId: null,
+  userId: null,
   userAuth: '',
   userType: '',
   userInfo: {},

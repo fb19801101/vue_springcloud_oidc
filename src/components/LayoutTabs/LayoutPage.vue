@@ -5,6 +5,10 @@
       :key="index"
       :label="item.title"
       :name="item.name">
+      <span slot="label">
+        <i :class="item.icon" v-if="item.icon !== undefined"></i>
+        <svg-icon :icon-class="item.svg" v-if="item.svg !== undefined"></svg-icon>
+        {{item.title}}</span>
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="cachedViews">
           <router-view :key="key" name="TabPaneView" />
@@ -16,8 +20,14 @@
 
 <script>
 
+import NavRouter from '@router/modules/nav'
+import PressesRouter from '@router/modules/presses'
+import TodoRouter from '@router/modules/todo'
+import SvgIcon from '@/components/SvgIcon/SvgIcon'
+
 export default {
   name: 'LayoutPage',
+  components: { SvgIcon },
   props: {
     showTabPaneLabel: {
       type: Boolean,
@@ -30,8 +40,8 @@ export default {
   },
   created () {
     if (this.$store.state.routedViews.length === 0) {
-      const routes = this.$router.options.routes[2].children
-      routes.forEach(route => {
+      const routers = [...NavRouter, ...PressesRouter, ...TodoRouter]
+      routers.forEach(route => {
         if ('children' in route) {
           const path = route.path
           const children = [...route.children]
@@ -113,7 +123,13 @@ export default {
       const routes = this.routedViews.filter(route => route.name === name)
       if (tags.length === 0 && routes.length > 0) {
         const route = routes[0]
-        this.$store.dispatch('addTabPaneTag', { title: route.meta.title, name: name, index: 0 })
+        const tag = { title: route.meta.title, name: name, index: 0 }
+        if (route.meta.icon !== undefined) {
+          tag.icon = route.meta.icon
+        } else if (route.meta.svg !== undefined) {
+          tag.svg = route.meta.svg
+        }
+        this.$store.dispatch('addTabPaneTag', tag)
         this.$store.dispatch('updateTabPaneTitle', route.meta.title)
         this.$store.dispatch('updateTabPaneName', name)
         this.$store.dispatch('updateTabPaneIndex', this.tabPaneTags.length)
@@ -159,9 +175,16 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  /*
   .el-tabs >>> .el-tabs__header {
-    display: none
+    /*display: none*/
+    i, svg {
+      cursor: pointer
+      color: $black
+    }
+    i:hover, svg:hover {
+      background: $white;
+      opacity: 1;
+      color: $light-red
+    }
   }
-  */
 </style>

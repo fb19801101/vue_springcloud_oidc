@@ -40,6 +40,12 @@ body {
   }
 }
 
+@each $key,$value in $font-color {
+  .text-color-#{$key} {
+    color: $value
+  }
+}
+
 /*-------------------------------------
 ┆   box layout border|margin          ┆
 └------------------------------------*/
@@ -94,28 +100,24 @@ body {
     @include flex-justify-content(space-between);
     @include flex(0 0 $textFlexColHeight);
     background-color: $white;
-    color: $gray-black;
     .flex-col-left {
       @include flex-display();
       @include flex-justify-content(flex-end);
       @include flex(1);
       margin-left: $textFlexRowWidth;
       background-color: $white;
-      color: $gray-black;
     }
     .flex-col-center {
       @include flex-display();
       @include flex-justify-content(center);
       @include flex(1);
       background-color: $white;
-      color: $gray-black;
     }
     .flex-col-right {
       @include flex-display();
       @include flex-justify-content(flex-start);
       @include flex(1);
       background-color: $white;
-      color: $gray-black;
     }
   }
 }
@@ -251,7 +253,7 @@ body {
         @include flex-align-items(center);
         @include flex(1);
         background-color: $light-blue;
-        color: $yellow;
+        color: $grey-gold;
         min-height: $textFlexRowHeight;
       }
       .flex-menu {

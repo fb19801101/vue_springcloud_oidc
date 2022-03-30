@@ -13,21 +13,23 @@
         v-for="(route, idx) in menuItems" :key="idx">
         <el-menu-item :index="route.name" :route="route.path" v-if="route.children == null && route.auth">
           <div class="box-center">
-            <i :class="route.icon + ' box-right'"></i>
+            <i :class="route.icon + ' box-right'" v-if="route.icon !== undefined"></i>
+            <svg-icon :icon-class="route.svg" class-name="box-right" v-if="route.svg !== undefined"></svg-icon>
             <span class="box-left">{{route.title}}</span>
           </div>
         </el-menu-item>
         <el-submenu :index="route.name" v-if="route.children != null && route.auth" >
           <template slot="title">
             <div class="box-center">
-              <i :class="route.icon + ' box-right'"></i>
+              <i :class="route.icon + ' box-right'" v-if="route.icon !== undefined"></i>
+              <svg-icon :icon-class="route.svg" class-name="box-right" v-if="route.svg !== undefined"></svg-icon>
               <span class="box-left">{{route.title}}</span>
             </div>
           </template>
-          <el-menu-item :index="item.name" :route="route.path"
-                        v-for="(item, idx) in route.children" :key="idx">
+          <el-menu-item :index="item.name" :route="route.path" v-for="(item, idx) in route.children" :key="idx">
             <div class="box-center">
-              <i :class="item.icon + ' box-right'"></i>
+              <i :class="item.icon + ' box-right'" v-if="item.icon !== undefined"></i>
+              <svg-icon :icon-class="item.svg" class-name="box-right" v-if="item.svg !== undefined"></svg-icon>
               <span class="box-left">{{item.title}}</span>
             </div>
           </el-menu-item>
@@ -39,10 +41,13 @@
 
 <script>
 
+import NavRouter from '@router/modules/nav'
 import Variables from '@/styles/variables.scss'
+import SvgIcon from '@/components/SvgIcon/SvgIcon'
 
 export default {
   name: 'NavigationMenu',
+  components: { SvgIcon },
   data () {
     return {
       none: 0,
@@ -50,20 +55,35 @@ export default {
     }
   },
   created () {
-    const routes = this.$router.options.routes[2].children
-    routes.forEach(route => {
+    NavRouter.forEach(route => {
       const path = '/demo/' + route.path
       let items = []
       if ('children' in route) {
         const children = [...route.children]
         children.forEach(route => {
-          items.push({ name: route.name, title: route.meta.title, auth: route.meta.auth, icon: route.meta.icon, path: path + '/' + route.path, children: null })
+          items.push({
+            name: route.name,
+            title: route.meta.title,
+            auth: route.meta.auth,
+            icon: route.meta.icon !== undefined ? route.meta.icon : undefined,
+            svg: route.meta.svg !== undefined ? route.meta.svg : undefined,
+            path: path + '/' + route.path,
+            children: null
+          })
         })
       } else {
         items = null
       }
 
-      this.menuItems.push({ name: route.name, title: route.meta.title, auth: route.meta.auth, icon: route.meta.icon, path: path, children: items })
+      this.menuItems.push({
+        name: route.name,
+        title: route.meta.title,
+        auth: route.meta.auth,
+        icon: route.meta.icon !== undefined ? route.meta.icon : undefined,
+        svg: route.meta.svg !== undefined ? route.meta.svg : undefined,
+        path: path,
+        children: items
+      })
     })
   },
   computed: {

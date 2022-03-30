@@ -64,7 +64,12 @@ const state = {
   cachedViews: [],
 
   // 路由列表
-  routedViews: []
+  routedViews: [],
+
+  // 代办聚合
+  tabPaneTodoName: '',
+  // 消息聚合
+  tabPanePressesName: ''
 }
 
 const mutations = {
@@ -74,7 +79,7 @@ const mutations = {
     state.tabPaneTitle = '首页'
     state.tabPaneName = 'HomePage'
     state.tabPaneIndex = 1
-    state.tabPaneTags = [{ title: '首页', name: 'HomePage', index: 1 }]
+    state.tabPaneTags = [{ title: '首页', icon: 'el-icon-discount', name: 'HomePage', index: 1 }]
   },
   INITIALIZE_SESSION_STORAGE: state => {
     state.accessToken = null
@@ -84,7 +89,7 @@ const mutations = {
     state.tabPaneTitle = '首页'
     state.tabPaneName = 'HomePage'
     state.tabPaneIndex = 1
-    state.tabPaneTags = [{ title: '首页', name: 'HomePage', index: 1 }]
+    state.tabPaneTags = [{ title: '首页', icon: 'el-icon-discount', name: 'HomePage', index: 1 }]
 
     state.userAuth = {
       browseWeb: 0,
@@ -108,6 +113,9 @@ const mutations = {
 
     state.apiName = ''
     state.apiInfo = {}
+
+    tabPaneTodoName = ''
+    tabPanePressesName = ''
   },
 
   ADD_TAB_PANE_TAG: (state, tag) => {
@@ -130,7 +138,7 @@ const mutations = {
     })
   },
   DEL_ALL_PANE_TAGS: state => {
-    state.tabPaneTags = [{ title: '首页', name: 'HomePage', index: 1 }]
+    state.tabPaneTags = [{ title: '首页', icon: 'el-icon-discount', name: 'HomePage', index: 1 }]
   },
 
   UPDATE_ACCESS_TOKEN: (state, token) => {
@@ -152,6 +160,12 @@ const mutations = {
   },
   UPDATE_TAB_PANE_TAGS: (state, tags) => {
     state.tabPaneTags = tags
+  },
+  UPDATE_TAB_PANE_TODO_NAME: (state, name) => {
+    state.tabPaneTodoName = name
+  },
+  UPDATE_TAB_PANE_PRESSES_NAME: (state, name) => {
+    state.tabPanePressesName = name
   },
 
   UPDATE_USER_AUTH: (state, auth) => {
@@ -333,6 +347,18 @@ const actions = {
     return new Promise(resolve => {
       commit('UPDATE_TAB_PANE_TAGS', tags)
       resolve([...state.tabPaneTags])
+    })
+  },
+  updateTabPaneTodoName ({ commit, state }, name) {
+    return new Promise(resolve => {
+      commit('UPDATE_TAB_PANE_TODO_NAME', name)
+      resolve(state.tabPaneTodoName)
+    })
+  },
+  updateTabPanePressesName ({ commit, state }, name) {
+    return new Promise(resolve => {
+      commit('UPDATE_TAB_PANE_PRESSES_NAME', name)
+      resolve(state.tabPanePressesName)
     })
   },
 
@@ -534,7 +560,12 @@ const getters = {
   cachedViews: state => state.cachedViews,
 
   // 路由列表
-  routedViews: state => state.routedViews
+  routedViews: state => state.routedViews,
+
+  // 代办聚合
+  tabPaneTodoName: state => state.tabPaneTodoName,
+  // 消息聚合
+  tabPanePressesName: state => state.tabPanePressesName
 }
 
 export default new Vuex.Store({

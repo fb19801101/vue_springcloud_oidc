@@ -22,10 +22,11 @@
         </el-select>
       </div>
       <div class="flex-menu" v-if="layoutShowBrowser">
-          <el-button type="success" class="text-title-16" plain size="mini" @click="clickBrowserApp">组织人员浏览</el-button>
-          <el-button type="info" class="text-title-16" plain size="mini" @click="clickQueryAuth">分级授权查询</el-button>
-          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickApiHolder"> API注册信息</el-button>
-          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickSystemAuth">系统管理</el-button>
+          <el-button type="info" class="text-title-16" plain size="mini" @click="clickTodo">代办聚合</el-button>
+          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickNumber">处理代办</el-button>
+          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickPresses"> 消息聚合</el-button>
+          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickAddItem">添加数据</el-button>
+          <el-button type="success" class="text-title-16" plain size="mini" @click="clickUnread">消息已读</el-button>
       </div>
       <div class="flex-login">
         <label-login :userName="userName"/>
@@ -55,6 +56,9 @@ import NavigationCollapse from '@/components/Navigation/NavigationCollapse'
 import LayoutPage from '@/components/LayoutTabs/LayoutPage'
 import LabelLogin from '@components/LabelLogin/LabelLogin'
 import SvgIcon from '@/components/SvgIcon/SvgIcon'
+import NavRouter from '@router/modules/nav'
+import PressesRouter from '@router/modules/presses'
+import TodoRouter from '@router/modules/todo'
 import LoginApi from '@/api/login'
 
 export default {
@@ -86,16 +90,8 @@ export default {
         apiHolder: 1
       },
       userName: '',
-      todoList: [
-        { name: 'SystemAuth', title: '授权管理', icon: 'el-icon-setting', content: ['甘忠忠：股份公司/十二局集团', '请进行分级授权'], disabled: true },
-        { name: 'ApiHolder', title: 'API注册信息', icon: 'el-icon-setting', content: ['跳转所有应用注册信息页面'], disabled: false },
-        { name: 'BrowserWeb', title: '网页端页面', icon: 'el-icon-setting', content: ['跳转组织人员信息查询页面'], disabled: false }
-      ],
-      presses: [
-        { name: 'PlanParams', title: '网络计算参数', icon: 'el-icon-warning-outline', content: ['跳转至网络计划参数详情'], disabled: false },
-        { name: 'SystemLog', title: '系统日志', icon: 'el-icon-warning-outline', content: ['甘忠忠：十二局集团/部长/甘忠忠', '系统日志信息详情', '业务功能日志信息详情'], disabled: false },
-        { name: 'BrowserApp', title: '移动端页面', icon: 'el-icon-warning-outline', content: ['查看移动端页面'], disabled: false }
-      ]
+      todoList: [],
+      presses: []
     }
   },
   watch: {
@@ -105,46 +101,28 @@ export default {
     }
   },
   beforeCreate () {
-    this.userName = this.global.userInfo != null ? this.global.userInfo.name : ''
+    if (this.$store.state.routedViews.length === 0) {
+      const routers = [...NavRouter, ...PressesRouter, ...TodoRouter]
+      routers.forEach(route => {
+        if ('children' in route) {
+          const path = route.path
+          const children = [...route.children]
+          children.forEach(route => {
+            route.path = path + '/' + route.path
+            this.$store.dispatch('addRoutedView', route)
+          })
+        } else {
+          this.$store.dispatch('addRoutedView', route)
+        }
+      })
+    }
+  },
+  created () {
     if (this.$store.state.accessToken != null) {
       if (this.global.providerId != null && this.global.userId != null) {
-        LoginApi.currentUserInfo(this.global.providerId, this.global.userId)
-          .then(res => {
-            if (res.data.code === 200) {
-              this.global.setUserInfo(res.data.data)
-              this.userName = res.data.data.name
-              LoginApi.currentUserAuth(this.global.providerId, this.global.userId)
-                .then(res => {
-                  if (res.data.code === 200) {
-                    this.global.setObjProvider(res.data.data.objProvider)
-                    this.global.setObjId(res.data.data.objId)
-                    this.global.setObjType(res.data.data.objType)
-                    this.global.setObjPostId(res.data.data.objPostId)
-
-                    this.global.setNodeProvider(res.data.data.nodeProvider)
-                    this.global.setNodeId(res.data.data.nodeId)
-                    this.global.setNodeCode(res.data.data.nodeCode)
-                    this.global.setNodeType(res.data.data.nodeType)
-
-                    this.userAuth.browseWeb = res.data.data.authOrg
-                    this.userAuth.browseApp = res.data.data.authOrg
-                    this.userAuth.systemAuth = res.data.data.authOpAuth
-                    this.userAuth.systemLog = res.data.data.authLog
-                    this.userAuth.queryAuth = res.data.data.authQueryAuth
-                    this.userAuth.queryPostChange = res.data.data.authPostChange
-                    this.userAuth.queryOrgDelete = res.data.data.authPostDelete
-                    this.$store.dispatch('updateUserAuth', this.userAuth)
-                  } else {
-                    this.$message.error('您暂无系统权限')
-                  }
-                }).catch(err => {
-                  console.log(err)
-                })
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
+        this.currentUserInfo()
+        this.currentUserAuth()
+        this.currentUserAdmin()
       } else {
         this.userInfo()
       }
@@ -152,38 +130,20 @@ export default {
       this.accessToken()
     }
   },
-  created () {
-    const routes = this.$router.options.routes[2].children
-    routes.forEach(route => {
-      const path = route.path
-      if ('children' in route) {
-        const children = [...route.children]
-        children.forEach(route => {
-          route.path = path + '/' + route.path
-          this.$store.dispatch('addRoutedView', route)
-        })
-      } else {
-        this.$store.dispatch('addRoutedView', route)
-      }
-    })
-  },
   mounted () {
-    LoginApi.currentCRCCNodeAndAdmin().then((res) => {
-      this.global.setCrccAdminProvider(res.data.data.crccAdminProvider)
-      this.global.setCrccAdminId(res.data.data.crccAdminId)
-      this.global.setCrccAdminName(res.data.data.crccAdminName)
-      this.global.setCrccNodeProvider(res.data.data.crccNodeProvider)
-      this.global.setCrccNodeId(res.data.data.crccNodeId)
-      this.global.setCrccNodeName(res.data.data.crccNodeName)
-      this.global.setCrccNodeCode(res.data.data.crccNodeCode)
-      this.global.setCrccNodeType(res.data.data.crccNodeType)
-    }).catch(err => {
-      console.log(err)
-    })
+    this.$store.dispatch('initializeLoginState')
+    if (this.$store.state.tabPaneTodoName != null) {
+      this.boxShowAside = false
+      this.$store.dispatch('updateTabPaneName', this.$store.state.tabPaneTodoName)
+    }
+    if (this.$store.state.tabPanePressesName != null) {
+      this.boxShowAside = false
+      this.$store.dispatch('updateTabPaneName', this.$store.state.tabPanePressesName)
+    }
   },
   methods: {
-    accessToken () {
-      LoginApi.accessToken()
+    async accessToken () {
+      await LoginApi.accessToken()
         .then(res => {
           if (res.data.code === 200 && this.$store.state.accessToken == null) {
             this.$store.dispatch('updateAccessToken', res.data.data)
@@ -192,41 +152,185 @@ export default {
         .catch(err => {
           console.log(err)
         })
+
+      if (this.global.providerId != null && this.global.userId != null) {
+        await this.currentUserInfo()
+        await this.currentUserAuth()
+        await this.currentUserAdmin()
+      } else {
+        await this.userInfo()
+      }
     },
-    userInfo () {
-      LoginApi.userInfo()
+    async userInfo () {
+      await LoginApi.userInfo()
         .then(res => {
           if (res.data.code === 200) {
-            const providerId = res.data.data.providerId
-            const userId = res.data.data.userId
-            const userAuth = res.data.data.userAuth
-            const userType = res.data.data.userType
+            this.global.setProviderId(res.data.data.providerId)
+            this.global.setUserId(res.data.data.userId)
+            this.global.setUserAuth(res.data.data.userAuth)
+            this.global.setUserType(res.data.data.userType)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
 
-            this.global.setProviderId(providerId)
-            this.global.setUserId(userId)
-            this.global.setUserAuth(userAuth)
-            this.global.setUserType(userType)
+      if (this.global.providerId != null && this.global.userId != null) {
+        await this.currentUserInfo()
+        await this.currentUserAuth()
+        await this.currentUserAdmin()
+      }
+    },
+    currentUserInfo () {
+      LoginApi.currentUserInfo(this.global.providerId, this.global.userId)
+        .then(res => {
+          if (res.data.code === 200) {
+            this.global.setUserInfo(res.data.data)
+            this.userName = res.data.data.name
           }
         })
         .catch(err => {
           console.log(err)
         })
     },
-    clickBrowserApp () {
-      this.$store.dispatch('updateLayoutDevice', 'mobile')
-      this.$store.dispatch('updateTabPaneName', 'BrowserApp')
+    currentUserAuth () {
+      LoginApi.currentUserAuth(this.global.providerId, this.global.userId)
+        .then(res => {
+          if (res.data.code === 200) {
+            this.global.setObjProvider(res.data.data.objProvider)
+            this.global.setObjId(res.data.data.objId)
+            this.global.setObjType(res.data.data.objType)
+            this.global.setObjPostId(res.data.data.objPostId)
+
+            this.global.setNodeProvider(res.data.data.nodeProvider)
+            this.global.setNodeId(res.data.data.nodeId)
+            this.global.setNodeCode(res.data.data.nodeCode)
+            this.global.setNodeType(res.data.data.nodeType)
+
+            this.userAuth.browseWeb = res.data.data.authOrg
+            this.userAuth.browseApp = res.data.data.authOrg
+            this.userAuth.systemAuth = res.data.data.authOpAuth
+            this.userAuth.systemLog = res.data.data.authLog
+            this.userAuth.queryAuth = res.data.data.authQueryAuth
+            this.userAuth.queryPostChange = res.data.data.authPostChange
+            this.userAuth.queryOrgDelete = res.data.data.authPostDelete
+            this.$store.dispatch('updateUserAuth', this.userAuth)
+          } else {
+            this.$message.error('您暂无系统权限')
+          }
+        }).catch(err => {
+          console.log(err)
+        })
     },
-    clickQueryAuth () {
-      this.$store.dispatch('updateLayoutDevice', 'browser')
-      this.$store.dispatch('updateTabPaneName', 'QueryAuth')
+    currentUserAdmin () {
+      LoginApi.currentCRCCNodeAndAdmin().then((res) => {
+        this.global.setCrccAdminProvider(res.data.data.crccAdminProvider)
+        this.global.setCrccAdminId(res.data.data.crccAdminId)
+        this.global.setCrccAdminName(res.data.data.crccAdminName)
+        this.global.setCrccNodeProvider(res.data.data.crccNodeProvider)
+        this.global.setCrccNodeId(res.data.data.crccNodeId)
+        this.global.setCrccNodeName(res.data.data.crccNodeName)
+        this.global.setCrccNodeCode(res.data.data.crccNodeCode)
+        this.global.setCrccNodeType(res.data.data.crccNodeType)
+      }).catch(err => {
+        console.log(err)
+      })
     },
-    clickApiHolder () {
-      this.$store.dispatch('updateLayoutDevice', 'browser')
-      this.$store.dispatch('updateTabPaneName', 'ApiHolder')
+    clickTodo () {
+      this.todoList = [
+        { name: 'ApiHolder', title: 'API注册信息', svg: 'todo-info', content: ['跳转所有应用注册信息页面'], disabled: false }
+      ]
+      LoginApi.todoAddData('ApiHolder', 1)
+        .then(res => {
+          if (res.data.code === 200) {
+            console.log(res.data.data)
+
+            this.$message({
+              type: 'success',
+              message: '代办聚合门户集成成功!',
+              duration: 1000
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    clickSystemAuth () {
-      this.$store.dispatch('updateLayoutDevice', 'browser')
-      this.$store.dispatch('updateTabPaneName', 'SystemAuth')
+    clickNumber () {
+      this.todoList = null
+      LoginApi.todoSetNumber(0)
+        .then(res => {
+          if (res.data.code === 200) {
+            console.log(res.data.data)
+
+            this.$message({
+              type: 'success',
+              message: '代办聚合处理代办成功!',
+              duration: 1000
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    clickPresses () {
+      this.presses = [
+        { name: 'RedFile', title: '红头文件', svg: 'presses-info', content: ['甘忠忠：十二局集团/部长/甘忠忠', '系统日志信息详情', '业务功能日志信息详情'], disabled: false }
+      ]
+      LoginApi.pressesAddData('FILE-RED', '关于中铁十二局集团数字土木研究院成立的通知', 'RedFile')
+        .then(res => {
+          if (res.data.code === 200) {
+            console.log(res.data.data)
+
+            this.$message({
+              type: 'success',
+              message: '消息聚合门户集成成功!',
+              duration: 1000
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    clickAddItem () {
+      this.presses.push({ name: 'RegGuide', title: '注册指南', svg: 'todo-info', content: ['跳转至网络计划参数详情'], disabled: false })
+      LoginApi.pressesAddItem('GUIDE-REG', '关于中国铁建一体化技术平台聚合对接的通报', 'RegGuide')
+        .then(res => {
+          if (res.data.code === 200) {
+            console.log(res.data.data)
+
+            this.$message({
+              type: 'success',
+              message: '消息聚合数据添加成功!',
+              duration: 1000
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    clickUnread () {
+      this.presses = [
+        { name: 'RedFile', title: '红头文件', svg: 'presses-info', content: ['甘忠忠：十二局集团/部长/甘忠忠', '系统日志信息详情', '业务功能日志信息详情'], disabled: false }
+      ]
+      LoginApi.pressesSetUnread('GUIDE-REG', true)
+        .then(res => {
+          if (res.data.code === 200) {
+            console.log(res.data.data)
+
+            this.$message({
+              type: 'success',
+              message: '消息聚合详情已读成功!',
+              duration: 1000
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
@@ -244,7 +348,7 @@ export default {
   }
 
   .el-divider {
-    background-color: $yellow;
+    background-color: $grey-gold;
     height: 2px;
   }
 </style>

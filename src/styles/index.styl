@@ -39,6 +39,12 @@ for $align in $prop-align {
   }
 }
 
+for $key,$value in $font-color {
+  .text-color-{$key} {
+    color: $value
+  }
+}
+
 /*-------------------------------------
 ┆   box layout border|margin          ┆
 └------------------------------------*/
@@ -93,28 +99,24 @@ for $size in $box-size {
     flex-justify-content(space-between);
     flex(0 0 $textFlexColHeight);
     background-color: $white;
-    color: $gray-black;
     .flex-col-left {
       flex-display();
       flex-justify-content(flex-end);
       flex(1);
       margin-left: $textFlexRowWidth;
       background-color: $white;
-      color: $gray-black;
     }
     .flex-col-center {
       flex-display();
       flex-justify-content(center);
       flex(1);
       background-color: $white;
-      color: $gray-black;
     }
     .flex-col-right {
       flex-display();
       flex-justify-content(flex-start);
       flex(1);
       background-color: $white;
-      color: $gray-black;
     }
   }
 }
@@ -250,7 +252,7 @@ for $size in $box-size {
         flex-align-items(center);
         flex(1);
         background-color: $light-blue;
-        color: $yellow;
+        color: $grey-gold;
         min-height: $textFlexRowHeight;
       }
       .flex-menu {
@@ -445,6 +447,53 @@ for $size in $box-size {
     flex-calc-minus('--layout-width', 100vw, 10px);
     // header toolbar column scroll pagination
     flex-calc-minus('--layout-height', 100vh, $headBarHeight + 30px + 50px + 10px + 40px);
+    background-color: $white;
+    color: $gray-black;
+  }
+}
+.flex-container-makerdown {
+  flex-display();
+  flex-direction(column);
+  flex-justify-content(space-between);
+  flex(1);
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: $white;
+  color: $gray-black;
+  margin: 0 5px 0 5px;
+  .flex-makerdown-title {
+    flex-display();
+    flex(0 0 $textFlexRowHeight);
+    background-color: $white;
+    color: $gray-black;
+    .flex-title-left {
+      flex(0 0 $textFlexColWidth);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-center {
+      flex-display();
+      flex-direction(column);
+      flex-justify-content(space-between);
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-right {
+      flex-display();
+      flex-justify-content(flex-end);
+      flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+  .flex-makerdown-content {
+    flex(1);
+    // aside scroll
+    flex-calc-minus('width', 100vw, $sideBarWidth + 10px);
+    // header tabs toolbar column scroll pagination
+    flex-calc-minus('height', 100vh, $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
     background-color: $white;
     color: $gray-black;
   }

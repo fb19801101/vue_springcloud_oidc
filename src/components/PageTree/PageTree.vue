@@ -816,7 +816,7 @@ export default {
       transition: background 0.4s;
     }
     .el-scrollbar__thumb:hover {
-      background: $grey;
+      background: $gray;
     }
   }
 }

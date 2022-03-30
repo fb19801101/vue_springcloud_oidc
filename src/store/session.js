@@ -64,7 +64,12 @@ const state = {
   cachedViews: [],
 
   // 路由列表
-  routedViews: []
+  routedViews: [],
+
+  // 代办聚合
+  tabPaneTodoName: sessionStorage.getItem('TabPaneTodoName'),
+  // 消息聚合
+  tabPanePressesName: sessionStorage.getItem('TabPanePressesName')
 }
 
 const mutations = {
@@ -74,14 +79,14 @@ const mutations = {
     state.tabPaneTitle = '首页'
     state.tabPaneName = 'HomePage'
     state.tabPaneIndex = 1
-    state.tabPaneTags = [{ title: '首页', name: 'HomePage', index: 1 }]
+    state.tabPaneTags = [{ title: '首页', icon: 'el-icon-discount', name: 'HomePage', index: 1 }]
 
-    sessionStorage.setItem('LayoutDevice', 'browse')
+    sessionStorage.setItem('LayoutDevice', state.layoutDevice)
 
-    sessionStorage.setItem('TabPaneTitle', '首页')
-    sessionStorage.setItem('TabPaneName', 'HomePage')
-    sessionStorage.setItem('TabPaneIndex', '1')
-    sessionStorage.setItem('TabPaneTags', JSON.stringify([{ title: '首页', name: 'HomePage', index: 1 }]))
+    sessionStorage.setItem('TabPaneTitle', state.tabPaneTitle)
+    sessionStorage.setItem('TabPaneName', state.tabPaneName)
+    sessionStorage.setItem('TabPaneIndex', state.tabPaneIndex + '')
+    sessionStorage.setItem('TabPaneTags', JSON.stringify([{ title: '首页', icon: 'el-icon-discount', name: 'HomePage', index: 1 }]))
   },
   INITIALIZE_SESSION_STORAGE: state => {
     state.accessToken = null
@@ -91,7 +96,7 @@ const mutations = {
     state.tabPaneTitle = '首页'
     state.tabPaneName = 'HomePage'
     state.tabPaneIndex = 1
-    state.tabPaneTags = [{ title: '首页', name: 'HomePage', index: 1 }]
+    state.tabPaneTags = [{ title: '首页', icon: 'el-icon-discount', name: 'HomePage', index: 1 }]
 
     state.userAuth = {
       browseWeb: 0,
@@ -116,33 +121,39 @@ const mutations = {
     state.apiName = ''
     state.apiInfo = {}
 
-    sessionStorage.setItem('AccessToken', null)
+    state.tabPaneTodoName = ''
+    state.tabPanePressesName = ''
 
-    sessionStorage.setItem('LayoutDevice', 'browse')
+    sessionStorage.setItem('AccessToken', state.accessToken)
 
-    sessionStorage.setItem('TabPaneTitle', '首页')
-    sessionStorage.setItem('TabPaneName', 'HomePage')
-    sessionStorage.setItem('TabPaneIndex', '1')
-    sessionStorage.setItem('TabPaneTags', JSON.stringify([{ title: '首页', name: 'HomePage', index: 1 }]))
+    sessionStorage.setItem('LayoutDevice', state.layoutDevice)
 
-    sessionStorage.setItem('BrowseWeb', '0')
-    sessionStorage.setItem('BrowseApp', '0')
+    sessionStorage.setItem('TabPaneTitle', state.tabPaneTitle)
+    sessionStorage.setItem('TabPaneName', state.tabPaneName)
+    sessionStorage.setItem('TabPaneIndex', state.tabPaneIndex + '')
+    sessionStorage.setItem('TabPaneTags', JSON.stringify([{ title: '首页', icon: 'el-icon-discount', name: 'HomePage', index: 1 }]))
 
-    sessionStorage.setItem('SystemAuth', '0')
-    sessionStorage.setItem('SystemLog', '0')
+    sessionStorage.setItem('BrowseWeb', state.userAuth.browseWeb + '')
+    sessionStorage.setItem('BrowseApp', state.userAuth.browseApp + '')
 
-    sessionStorage.setItem('QueryAuth', '0')
-    sessionStorage.setItem('QueryPostChange', '0')
-    sessionStorage.setItem('QueryOrgDelete', '0')
+    sessionStorage.setItem('SystemAuth', state.userAuth.systemAuth + '')
+    sessionStorage.setItem('SystemLog', state.userAuth.systemLog + '')
 
-    sessionStorage.setItem('PlanCompute', '2')
-    sessionStorage.setItem('PlanParams', '0')
-    sessionStorage.setItem('PlanStatic', '0')
-    sessionStorage.setItem('PlanEstimate', '0')
-    sessionStorage.setItem('PlanActual', '0')
-    sessionStorage.setItem('PlanTree', '0')
+    sessionStorage.setItem('QueryAuth', state.userAuth.queryAuth + '')
+    sessionStorage.setItem('QueryPostChange', state.userAuth.queryPostChange + '')
+    sessionStorage.setItem('QueryOrgDelete', state.userAuth.queryOrgDelete + '')
 
-    sessionStorage.setItem('ApiHolder', '2')
+    sessionStorage.setItem('PlanCompute', state.userAuth.planCompute + '')
+    sessionStorage.setItem('PlanParams', state.userAuth.planParams + '')
+    sessionStorage.setItem('PlanStatic', state.userAuth.planStatic + '')
+    sessionStorage.setItem('PlanEstimate', state.userAuth.planEstimate + '')
+    sessionStorage.setItem('PlanActual', state.userAuth.planActual + '')
+    sessionStorage.setItem('PlanTree', state.userAuth.planTree + '')
+
+    sessionStorage.setItem('ApiHolder', state.userAuth.apiHolder + '')
+
+    sessionStorage.setItem('TabPaneTodoName', state.tabPaneTodoName)
+    sessionStorage.setItem('TabPanePressesName', state.tabPanePressesName)
   },
 
   ADD_TAB_PANE_TAG: (state, tag) => {
@@ -167,7 +178,7 @@ const mutations = {
     sessionStorage.setItem('TabPaneTags', JSON.stringify(state.tabPaneTags))
   },
   DEL_ALL_PANE_TAGS: state => {
-    state.tabPaneTags = [{ title: '首页', name: 'HomePage', index: 1 }]
+    state.tabPaneTags = [{ title: '首页', icon: 'el-icon-discount', name: 'HomePage', index: 1 }]
     sessionStorage.setItem('TabPaneTags', JSON.stringify(state.tabPaneTags))
   },
 
@@ -196,6 +207,14 @@ const mutations = {
   UPDATE_TAB_PANE_TAGS: (state, tags) => {
     state.tabPaneTags = tags
     sessionStorage.setItem('TabPaneTags', JSON.stringify(tags))
+  },
+  UPDATE_TAB_PANE_TODO_NAME: (state, name) => {
+    state.tabPaneTodoName = name
+    sessionStorage.setItem('TabPaneTodoName', name)
+  },
+  UPDATE_TAB_PANE_PRESSES_NAME: (state, name) => {
+    state.tabPanePressesName = name
+    sessionStorage.setItem('TabPanePressesName', name)
   },
 
   UPDATE_USER_AUTH: (state, auth) => {
@@ -397,6 +416,18 @@ const actions = {
       resolve([...state.tabPaneTags])
     })
   },
+  updateTabPaneTodoName ({ commit, state }, name) {
+    return new Promise(resolve => {
+      commit('UPDATE_TAB_PANE_TODO_NAME', name)
+      resolve(state.tabPaneTodoName)
+    })
+  },
+  updateTabPanePressesName ({ commit, state }, name) {
+    return new Promise(resolve => {
+      commit('UPDATE_TAB_PANE_PRESSES_NAME', name)
+      resolve(state.tabPanePressesName)
+    })
+  },
 
   updateUserAuth ({ commit, state }, auth) {
     return new Promise(resolve => {
@@ -596,7 +627,12 @@ const getters = {
   cachedViews: state => state.cachedViews,
 
   // 路由列表
-  routedViews: state => state.routedViews
+  routedViews: state => state.routedViews,
+
+  // 代办聚合
+  tabPaneTodoName: state => state.tabPaneTodoName,
+  // 消息聚合
+  tabPanePressesName: state => state.tabPanePressesName
 }
 
 export default new Vuex.Store({

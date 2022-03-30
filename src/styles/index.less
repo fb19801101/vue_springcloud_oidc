@@ -38,6 +38,11 @@ each(@box-align {
     text-align: @value;
   }
 })
+each(@font-color {
+  .text-color-{@key} {
+    color: @value
+  }
+})
 
 /*-------------------------------------
 ┆   box layout border|margin          ┆
@@ -93,28 +98,24 @@ each(@box-size {
     flex-justify-content(space-between);
     flex(0 0 @textFlexColHeight);
     background-color: @white;
-    color: @gray-black;
     .flex-col-left {
       flex-display();
       flex-justify-content(flex-end);
       flex(1);
       margin-left: @textFlexRowWidth;
       background-color: @white;
-      color: @gray-black;
     }
     .flex-col-center {
       flex-display();
       flex-justify-content(center);
       flex(1);
       background-color: @white;
-      color: @gray-black;
     }
     .flex-col-right {
       flex-display();
       flex-justify-content(flex-start);
       flex(1);
       background-color: @white;
-      color: @gray-black;
     }
   }
 }
@@ -250,7 +251,7 @@ each(@box-size {
         flex-align-items(center);
         flex(1);
         background-color: @light-blue;
-        color: @yellow;
+        color: @grey-gold;
         min-height: @textFlexRowHeight;
       }
       .flex-menu {
