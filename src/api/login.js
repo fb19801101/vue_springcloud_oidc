@@ -26,6 +26,15 @@ export default {
       todoNumber: todoNumber
     })
   },
+  todoGetData: function () {
+    return axios.axiosGet('/dev-api/todo_get_data')
+  },
+  todoGetNumber: function () {
+    return axios.axiosGet('/dev-api/todo_get_Number')
+  },
+  todoClear: function () {
+    return axios.axiosGet('/dev-api/todo_clear')
+  },
   pressesAddData: function (code, headline, routeName) {
     return axios.axiosGet('/dev-api/presses_add_data', {
       code: code,
@@ -45,6 +54,22 @@ export default {
       code: code,
       unread: unread
     })
+  },
+  pressesGetData: function () {
+    return axios.axiosGet('/dev-api/presses_get_data')
+  },
+  pressesGetCodeItem: function (code, unread) {
+    return axios.axiosGet('/dev-api/presses_get_code_item', {
+      code: code
+    })
+  },
+  pressesGetUnreadItems: function (unread) {
+    return axios.axiosGet('/dev-api/presses_get_unread_items', {
+      unread: unread
+    })
+  },
+  pressesClear: function () {
+    return axios.axiosGet('/dev-api/presses_clear')
   },
   // 获取登录用户
   currentUserInfo: function (providerId, userId) {

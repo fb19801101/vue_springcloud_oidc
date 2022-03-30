@@ -22,11 +22,24 @@
         </el-select>
       </div>
       <div class="flex-menu" v-if="layoutShowBrowser">
-          <el-button type="info" class="text-title-16" plain size="mini" @click="clickTodo">代办聚合</el-button>
-          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickNumber">处理代办</el-button>
-          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickPresses"> 消息聚合</el-button>
-          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickAddItem">添加数据</el-button>
-          <el-button type="success" class="text-title-16" plain size="mini" @click="clickUnread">消息已读</el-button>
+          <el-button type="warning" class="text-title-16" plain size="mini" @click="clickTodo">
+            <svg-icon icon-class="todo" class-name="icon-size-16"></svg-icon>代办聚合
+          </el-button>
+          <el-button type="primary" class="text-title-16" plain size="mini" :disabled="!todoApiHolder" @click="clickNumber">
+            <svg-icon icon-class="todo-info" class-name="icon-size-16"></svg-icon>处理
+          </el-button>
+          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickPresses">
+            <svg-icon icon-class="presses" class-name="icon-size-16"></svg-icon>消息聚合
+          </el-button>
+          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickAddItem">
+            <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>添加
+          </el-button>
+          <el-button type="success" class="text-title-16" plain size="mini" :disabled="!pressesRedFile" @click="clickUnreadRedFile">
+            <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>读1
+          </el-button>
+          <el-button type="success" class="text-title-16" plain size="mini" :disabled="!pressesRegGuide" @click="clickUnreadRegGuide">
+            <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>读2
+          </el-button>
       </div>
       <div class="flex-login">
         <label-login :userName="userName"/>
@@ -91,7 +104,11 @@ export default {
       },
       userName: '',
       todoList: [],
-      presses: []
+      presses: [],
+      todoNumber: 2,
+      todoApiHolder: false,
+      pressesRedFile: false,
+      pressesRegGuide: false
     }
   },
   watch: {
@@ -240,11 +257,10 @@ export default {
       this.todoList = [
         { name: 'ApiHolder', title: 'API注册信息', svg: 'todo-info', content: ['跳转所有应用注册信息页面'], disabled: false }
       ]
-      LoginApi.todoAddData('ApiHolder', 1)
+      this.todoApiHolder = true
+      LoginApi.todoAddData('ApiHolder', this.todoNumber)
         .then(res => {
           if (res.data.code === 200) {
-            console.log(res.data.data)
-
             this.$message({
               type: 'success',
               message: '代办聚合门户集成成功!',
@@ -257,15 +273,17 @@ export default {
         })
     },
     clickNumber () {
-      this.todoList = null
-      LoginApi.todoSetNumber(0)
+      this.todoNumber = this.todoNumber - 1
+      if (this.todoNumber === 0) {
+        this.todoList = null
+        this.todoApiHolder = false
+      }
+      LoginApi.todoSetNumber(this.todoNumber)
         .then(res => {
           if (res.data.code === 200) {
-            console.log(res.data.data)
-
             this.$message({
               type: 'success',
-              message: '代办聚合处理代办成功!',
+              message: '代办聚合处理第 ' + this.todoNumber + ' 个代办成功!',
               duration: 1000
             })
           }
@@ -278,11 +296,10 @@ export default {
       this.presses = [
         { name: 'RedFile', title: '红头文件', svg: 'presses-info', content: ['甘忠忠：十二局集团/部长/甘忠忠', '系统日志信息详情', '业务功能日志信息详情'], disabled: false }
       ]
+      this.pressesRedFile = true
       LoginApi.pressesAddData('FILE-RED', '关于中铁十二局集团数字土木研究院成立的通知', 'RedFile')
         .then(res => {
           if (res.data.code === 200) {
-            console.log(res.data.data)
-
             this.$message({
               type: 'success',
               message: '消息聚合门户集成成功!',
@@ -296,14 +313,13 @@ export default {
     },
     clickAddItem () {
       this.presses.push({ name: 'RegGuide', title: '注册指南', svg: 'todo-info', content: ['跳转至网络计划参数详情'], disabled: false })
+      this.pressesRegGuide = true
       LoginApi.pressesAddItem('GUIDE-REG', '关于中国铁建一体化技术平台聚合对接的通报', 'RegGuide')
         .then(res => {
           if (res.data.code === 200) {
-            console.log(res.data.data)
-
             this.$message({
               type: 'success',
-              message: '消息聚合数据添加成功!',
+              message: '消息聚合 GUIDE-REG 数据添加成功!',
               duration: 1000
             })
           }
@@ -312,18 +328,36 @@ export default {
           console.log(err)
         })
     },
-    clickUnread () {
+    clickUnreadRedFile () {
+      this.presses = [
+        { name: 'RegGuide', title: '注册指南', svg: 'todo-info', content: ['跳转至网络计划参数详情'], disabled: false }
+      ]
+      this.pressesRedFile = false
+      LoginApi.pressesSetUnread('FILE-RED', true)
+        .then(res => {
+          if (res.data.code === 200) {
+            this.$message({
+              type: 'success',
+              message: '消息聚合 FILE-RED 详情已读成功!',
+              duration: 1000
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    clickUnreadRegGuide () {
       this.presses = [
         { name: 'RedFile', title: '红头文件', svg: 'presses-info', content: ['甘忠忠：十二局集团/部长/甘忠忠', '系统日志信息详情', '业务功能日志信息详情'], disabled: false }
       ]
+      this.pressesRegGuide = false
       LoginApi.pressesSetUnread('GUIDE-REG', true)
         .then(res => {
           if (res.data.code === 200) {
-            console.log(res.data.data)
-
             this.$message({
               type: 'success',
-              message: '消息聚合详情已读成功!',
+              message: '消息聚合 GUIDE-REG 详情已读成功!',
               duration: 1000
             })
           }
@@ -350,5 +384,16 @@ export default {
   .el-divider {
     background-color: $grey-gold;
     height: 2px;
+  }
+
+  .flex-menu {
+    svg {
+      cursor: pointer
+    }
+    svg:hover {
+      background: transparent;
+      opacity: 1;
+      color: $black;
+    }
   }
 </style>
