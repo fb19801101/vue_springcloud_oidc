@@ -15,61 +15,71 @@ export default {
     return axios.axiosGet('/api/redirect_logout')
   },
   // 获取聚合信息
-  todoAddData: function (routeName, todoNumber) {
-    return axios.axiosGet('/dev-api/todo_add_data', {
+  addTodo: function (routeName, todoNumber) {
+    return axios.axiosGet('/dev-api/add_todo', {
       routeName: routeName,
       todoNumber: todoNumber
     })
   },
-  todoSetNumber: function (todoNumber) {
-    return axios.axiosGet('/dev-api/todo_set_Number', {
+  setTodoNumber: function (todoNumber) {
+    return axios.axiosGet('/dev-api/set_todo_number', {
       todoNumber: todoNumber
     })
   },
-  todoGetData: function () {
-    return axios.axiosGet('/dev-api/todo_get_data')
+  getTodo: function () {
+    return axios.axiosGet('/dev-api/get_todo')
   },
-  todoGetNumber: function () {
-    return axios.axiosGet('/dev-api/todo_get_Number')
+  getTodoNumber: function () {
+    return axios.axiosGet('/dev-api/get_todo_number')
   },
-  todoClear: function () {
-    return axios.axiosGet('/dev-api/todo_clear')
+  clearTodo: function () {
+    return axios.axiosGet('/dev-api/clear_todo')
   },
-  pressesAddData: function (code, headline, routeName) {
-    return axios.axiosGet('/dev-api/presses_add_data', {
+  addPresses: function (code, headline, routeName) {
+    return axios.axiosGet('/dev-api/add_presses', {
       code: code,
       headline: headline,
       routeName: routeName
     })
   },
-  pressesAddItem: function (code, headline, routeName) {
-    return axios.axiosGet('/dev-api/presses_add_item', {
+  addPressesItem: function (code, headline, routeName) {
+    return axios.axiosGet('/dev-api/add_presses_item', {
       code: code,
       headline: headline,
       routeName: routeName
     })
   },
-  pressesSetUnread: function (code, unread) {
-    return axios.axiosGet('/dev-api/presses_set_unread', {
+  setPressesItemUnread: function (code, unread) {
+    return axios.axiosGet('/dev-api/set_presses_item_unread', {
       code: code,
       unread: unread
     })
   },
-  pressesGetData: function () {
-    return axios.axiosGet('/dev-api/presses_get_data')
+  getPresses: function () {
+    return axios.axiosGet('/dev-api/get_presses')
   },
-  pressesGetCodeItem: function (code, unread) {
-    return axios.axiosGet('/dev-api/presses_get_code_item', {
+  getPressesItem: function (code) {
+    return axios.axiosGet('/dev-api/get_presses_item', {
       code: code
     })
   },
-  pressesGetUnreadItems: function (unread) {
-    return axios.axiosGet('/dev-api/presses_get_unread_items', {
+  getPressesItems: function (unread) {
+    return axios.axiosGet('/dev-api/get_presses_items', {
       unread: unread
     })
   },
-  pressesClear: function () {
-    return axios.axiosGet('/dev-api/presses_clear')
+  delPressesItem: function (code) {
+    return axios.axiosGet('/dev-api/del_presses_item', {
+      code: code
+    })
+  },
+  delPressesItems: function (unread) {
+    return axios.axiosGet('/dev-api/del_presses_items', {
+      unread: unread
+    })
+  },
+  clearPresses: function () {
+    return axios.axiosGet('/dev-api/clear_presses')
   },
   // 获取登录用户
   currentUserInfo: function (providerId, userId) {

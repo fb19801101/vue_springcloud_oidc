@@ -253,12 +253,18 @@ export default {
         console.log(err)
       })
     },
+    getTodoNumber () {
+
+    },
+    setPressesItemUnread () {
+
+    },
     clickTodo () {
       this.todoList = [
         { name: 'ApiHolder', title: 'API注册信息', svg: 'todo-info', content: ['跳转所有应用注册信息页面'], disabled: false }
       ]
       this.todoApiHolder = true
-      LoginApi.todoAddData('ApiHolder', this.todoNumber)
+      LoginApi.addTodo('ApiHolder', this.todoNumber)
         .then(res => {
           if (res.data.code === 200) {
             this.$message({
@@ -278,7 +284,7 @@ export default {
         this.todoList = null
         this.todoApiHolder = false
       }
-      LoginApi.todoSetNumber(this.todoNumber)
+      LoginApi.setTodoNumber(this.todoNumber)
         .then(res => {
           if (res.data.code === 200) {
             this.$message({
@@ -297,7 +303,7 @@ export default {
         { name: 'RedFile', title: '红头文件', svg: 'presses-info', content: ['甘忠忠：十二局集团/部长/甘忠忠', '系统日志信息详情', '业务功能日志信息详情'], disabled: false }
       ]
       this.pressesRedFile = true
-      LoginApi.pressesAddData('FILE-RED', '关于中铁十二局集团数字土木研究院成立的通知', 'RedFile')
+      LoginApi.addPresses('FILE-RED', '关于中铁十二局集团数字土木研究院成立的通知', 'RedFile')
         .then(res => {
           if (res.data.code === 200) {
             this.$message({
@@ -314,7 +320,7 @@ export default {
     clickAddItem () {
       this.presses.push({ name: 'RegGuide', title: '注册指南', svg: 'todo-info', content: ['跳转至网络计划参数详情'], disabled: false })
       this.pressesRegGuide = true
-      LoginApi.pressesAddItem('GUIDE-REG', '关于中国铁建一体化技术平台聚合对接的通报', 'RegGuide')
+      LoginApi.addPressesItem('GUIDE-REG', '关于中国铁建一体化技术平台聚合对接的通报', 'RegGuide')
         .then(res => {
           if (res.data.code === 200) {
             this.$message({
@@ -329,11 +335,13 @@ export default {
         })
     },
     clickUnreadRedFile () {
-      this.presses = [
-        { name: 'RegGuide', title: '注册指南', svg: 'todo-info', content: ['跳转至网络计划参数详情'], disabled: false }
-      ]
+      this.presses.map(item => {
+        if (item.name === 'RedFile') {
+          item.disabled = this.pressesRedFile
+        }
+      })
       this.pressesRedFile = false
-      LoginApi.pressesSetUnread('FILE-RED', true)
+      LoginApi.setPressesItemUnread('FILE-RED', true)
         .then(res => {
           if (res.data.code === 200) {
             this.$message({
@@ -348,11 +356,13 @@ export default {
         })
     },
     clickUnreadRegGuide () {
-      this.presses = [
-        { name: 'RedFile', title: '红头文件', svg: 'presses-info', content: ['甘忠忠：十二局集团/部长/甘忠忠', '系统日志信息详情', '业务功能日志信息详情'], disabled: false }
-      ]
+      this.presses.map(item => {
+        if (item.name === 'RegGuide') {
+          item.disabled = this.pressesRegGuide
+        }
+      })
       this.pressesRegGuide = false
-      LoginApi.pressesSetUnread('GUIDE-REG', true)
+      LoginApi.setPressesItemUnread('GUIDE-REG', true)
         .then(res => {
           if (res.data.code === 200) {
             this.$message({
