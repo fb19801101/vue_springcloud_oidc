@@ -68,6 +68,11 @@ export default {
       unread: unread
     })
   },
+  getPressesItemUnread: function (code) {
+    return axios.axiosGet('/dev-api/get_presses_item_unread', {
+      code: code
+    })
+  },
   delPressesItem: function (code) {
     return axios.axiosGet('/dev-api/del_presses_item', {
       code: code

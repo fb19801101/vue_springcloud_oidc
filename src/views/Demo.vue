@@ -48,12 +48,12 @@
     <div class="flex-admin">
       <transition name="draw" v-if="layoutShowBrowser">
         <div class="flex-aside" v-if="boxShowAside">
-          <span class="flex-title text-title-16" @click="boxShowTodoList = !boxShowTodoList, boxShowPresses=false">代办聚合</span>
-          <span class="flex-title text-title-16" @click="boxShowPresses = !boxShowPresses, boxShowTodoList=false">消息聚合</span>
+          <span class="flex-title text-title-16" @click="boxShowTodo = !boxShowTodo, boxShowPresses=false">代办聚合</span>
+          <span class="flex-title text-title-16" @click="boxShowPresses = !boxShowPresses, boxShowTodo=false">消息聚合</span>
           <navigation-menu class="flex-menu"/>
-          <el-divider v-if="boxShowTodoList || boxShowPresses"></el-divider>
-          <navigation-collapse :items='todoList' v-if="boxShowTodoList && !boxShowPresses"/>
-          <navigation-collapse :items='presses' v-if="boxShowPresses && !boxShowTodoList"/>
+          <el-divider v-if="boxShowTodo || boxShowPresses"></el-divider>
+          <navigation-collapse :items='todo' v-if="boxShowTodo && !boxShowPresses"/>
+          <navigation-collapse :items='presses' v-if="boxShowPresses && !boxShowTodo"/>
         </div>
       </transition>
       <div class="flex-body">
@@ -81,7 +81,7 @@ export default {
     return {
       layoutShowBrowser: true,
       boxShowAside: true,
-      boxShowTodoList: false,
+      boxShowTodo: false,
       boxShowPresses: false,
       userAuth: {
         browseWeb: 0,
@@ -103,7 +103,7 @@ export default {
         apiHolder: 1
       },
       userName: '',
-      todoList: [],
+      todo: [],
       presses: [],
       todoNumber: 2,
       todoApiHolder: false,
@@ -140,6 +140,9 @@ export default {
         this.currentUserInfo()
         this.currentUserAuth()
         this.currentUserAdmin()
+        this.disabledTodo()
+        this.disabledPresses('FILE-RED')
+        this.disabledPresses('GUIDE-REG')
       } else {
         this.userInfo()
       }
@@ -174,6 +177,9 @@ export default {
         await this.currentUserInfo()
         await this.currentUserAuth()
         await this.currentUserAdmin()
+        await this.disabledTodo()
+        await this.disabledPresses('FILE-RED')
+        await this.disabledPresses('GUIDE-REG')
       } else {
         await this.userInfo()
       }
@@ -196,6 +202,9 @@ export default {
         await this.currentUserInfo()
         await this.currentUserAuth()
         await this.currentUserAdmin()
+        await this.disabledTodo()
+        await this.disabledPresses('FILE-RED')
+        await this.disabledPresses('GUIDE-REG')
       }
     },
     currentUserInfo () {
@@ -253,14 +262,46 @@ export default {
         console.log(err)
       })
     },
-    getTodoNumber () {
-
+    disabledTodo () {
+      LoginApi.getTodoNumber()
+        .then(res => {
+          if (res.data.code === 200 && res.data.data != null) {
+            this.todoApiHolder = res.data.data > 0
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    setPressesItemUnread () {
-
+    disabledPresses (code) {
+      LoginApi.getPressesItemUnread(code)
+        .then(res => {
+          if (res.data.code === 200 && res.data.data != null) {
+            if (code === 'FILE-RED') {
+              this.pressesRedFile = !res.data.data
+            }
+            if (code === 'GUIDE-REG') {
+              this.pressesRegGuide = !res.data.data
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    delPressesItem (code) {
+      LoginApi.delPressesItem(code)
+        .then(res => {
+          if (res.data.code === 200) {
+            console.log(code + ': ' + res.data.data)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     clickTodo () {
-      this.todoList = [
+      this.todo = [
         { name: 'ApiHolder', title: 'API注册信息', svg: 'todo-info', content: ['跳转所有应用注册信息页面'], disabled: false }
       ]
       this.todoApiHolder = true
@@ -280,13 +321,15 @@ export default {
     },
     clickNumber () {
       this.todoNumber = this.todoNumber - 1
-      if (this.todoNumber === 0) {
-        this.todoList = null
-        this.todoApiHolder = false
-      }
+      this.todo.map(item => {
+        if (item.todoNumber === 0) {
+          item.disabled = this.todoApiHolder
+        }
+      })
       LoginApi.setTodoNumber(this.todoNumber)
         .then(res => {
           if (res.data.code === 200) {
+            this.disabledTodo()
             this.$message({
               type: 'success',
               message: '代办聚合处理第 ' + this.todoNumber + ' 个代办成功!',
@@ -340,10 +383,12 @@ export default {
           item.disabled = this.pressesRedFile
         }
       })
-      this.pressesRedFile = false
       LoginApi.setPressesItemUnread('FILE-RED', true)
         .then(res => {
           if (res.data.code === 200) {
+            this.disabledPresses('FILE-RED')
+            this.delPressesItem('FILE-RED')
+
             this.$message({
               type: 'success',
               message: '消息聚合 FILE-RED 详情已读成功!',
@@ -361,10 +406,12 @@ export default {
           item.disabled = this.pressesRegGuide
         }
       })
-      this.pressesRegGuide = false
       LoginApi.setPressesItemUnread('GUIDE-REG', true)
         .then(res => {
           if (res.data.code === 200) {
+            this.disabledPresses('GUIDE-REG')
+            this.delPressesItem('GUIDE-REG')
+
             this.$message({
               type: 'success',
               message: '消息聚合 GUIDE-REG 详情已读成功!',

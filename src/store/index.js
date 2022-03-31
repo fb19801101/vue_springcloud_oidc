@@ -114,8 +114,8 @@ const mutations = {
     state.apiName = ''
     state.apiInfo = {}
 
-    tabPaneTodoName = ''
-    tabPanePressesName = ''
+    state.tabPaneTodoName = ''
+    state.tabPanePressesName = ''
   },
 
   ADD_TAB_PANE_TAG: (state, tag) => {
