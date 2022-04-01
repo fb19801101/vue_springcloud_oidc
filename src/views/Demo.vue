@@ -111,7 +111,7 @@ export default {
       userName: '',
       todo: [],
       presses: [],
-      todoNumber: 2,
+      todoNumber: 0,
       todoApiHolder: false,
       pressesRedFile: false,
       pressesRegGuide: false
@@ -311,6 +311,7 @@ export default {
         { name: 'ApiHolder', title: 'API注册信息', svg: 'todo-info', content: ['跳转所有应用注册信息页面'], disabled: false }
       ]
       this.todoApiHolder = true
+      this.todoNumber = 2
       LoginApi.addTodo('ApiHolder', this.todoNumber)
         .then(res => {
           if (res.data.code === 200) {
@@ -328,9 +329,7 @@ export default {
     clickSetNumber () {
       this.todoNumber = this.todoNumber - 1
       this.todo.map(item => {
-        if (item.todoNumber === 0) {
-          item.disabled = this.todoApiHolder
-        }
+        item.disabled = !this.todoNumber > 0
       })
       LoginApi.setTodoNumber(this.todoNumber)
         .then(res => {
