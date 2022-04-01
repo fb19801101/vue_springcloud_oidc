@@ -22,14 +22,17 @@
         </el-select>
       </div>
       <div class="flex-menu" v-if="layoutShowBrowser">
-          <el-button type="warning" class="text-title-16" plain size="mini" @click="clickTodo">
-            <svg-icon icon-class="todo" class-name="icon-size-16"></svg-icon>代办聚合
+          <el-button type="warning" class="text-title-16" plain size="mini" @click="clickInitTodo">
+            <svg-icon icon-class="todo" class-name="icon-size-16"></svg-icon>代办
           </el-button>
-          <el-button type="primary" class="text-title-16" plain size="mini" :disabled="!todoApiHolder" @click="clickNumber">
+          <el-button type="success" class="text-title-16" plain size="mini" :disabled="!todoApiHolder" @click="clickSetNumber">
             <svg-icon icon-class="todo-info" class-name="icon-size-16"></svg-icon>处理
           </el-button>
-          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickPresses">
-            <svg-icon icon-class="presses" class-name="icon-size-16"></svg-icon>消息聚合
+          <el-button type="warning" class="text-title-16" plain size="mini" @click="clickClearTodo">
+            <svg-icon icon-class="todo-info" class-name="icon-size-16"></svg-icon>清空
+          </el-button>
+          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickInitPresses">
+            <svg-icon icon-class="presses" class-name="icon-size-16"></svg-icon>消息
           </el-button>
           <el-button type="primary" class="text-title-16" plain size="mini" @click="clickAddItem">
             <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>添加
@@ -39,6 +42,9 @@
           </el-button>
           <el-button type="success" class="text-title-16" plain size="mini" :disabled="!pressesRegGuide" @click="clickUnreadRegGuide">
             <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>读2
+          </el-button>
+          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickClearPresses">
+            <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>清空
           </el-button>
       </div>
       <div class="flex-login">
@@ -300,7 +306,7 @@ export default {
           console.log(err)
         })
     },
-    clickTodo () {
+    clickInitTodo () {
       this.todo = [
         { name: 'ApiHolder', title: 'API注册信息', svg: 'todo-info', content: ['跳转所有应用注册信息页面'], disabled: false }
       ]
@@ -310,7 +316,7 @@ export default {
           if (res.data.code === 200) {
             this.$message({
               type: 'success',
-              message: '代办聚合门户集成成功!',
+              message: '代办聚合门户集成数据成功!',
               duration: 1000
             })
           }
@@ -319,7 +325,7 @@ export default {
           console.log(err)
         })
     },
-    clickNumber () {
+    clickSetNumber () {
       this.todoNumber = this.todoNumber - 1
       this.todo.map(item => {
         if (item.todoNumber === 0) {
@@ -341,7 +347,24 @@ export default {
           console.log(err)
         })
     },
-    clickPresses () {
+    clickClearTodo () {
+      this.todo = []
+      this.todoApiHolder = false
+      LoginApi.clearTodo()
+        .then(res => {
+          if (res.data.code === 200) {
+            this.$message({
+              type: 'success',
+              message: '代办聚合门户清空数据成功!',
+              duration: 1000
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    clickInitPresses () {
       this.presses = [
         { name: 'RedFile', title: '红头文件', svg: 'presses-info', content: ['甘忠忠：十二局集团/部长/甘忠忠', '系统日志信息详情', '业务功能日志信息详情'], disabled: false }
       ]
@@ -351,7 +374,7 @@ export default {
           if (res.data.code === 200) {
             this.$message({
               type: 'success',
-              message: '消息聚合门户集成成功!',
+              message: '消息聚合门户集成数据成功!',
               duration: 1000
             })
           }
@@ -368,7 +391,7 @@ export default {
           if (res.data.code === 200) {
             this.$message({
               type: 'success',
-              message: '消息聚合 GUIDE-REG 数据添加成功!',
+              message: '消息聚合门户添加 GUIDE-REG 数据成功!',
               duration: 1000
             })
           }
@@ -391,7 +414,7 @@ export default {
 
             this.$message({
               type: 'success',
-              message: '消息聚合 FILE-RED 详情已读成功!',
+              message: '消息聚合门户已读 FILE-RED 详情成功!',
               duration: 1000
             })
           }
@@ -414,7 +437,25 @@ export default {
 
             this.$message({
               type: 'success',
-              message: '消息聚合 GUIDE-REG 详情已读成功!',
+              message: '消息聚合门户已读 GUIDE-REG 详情成功!',
+              duration: 1000
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    clickClearPresses () {
+      this.presses = []
+      this.pressesRedFile = false
+      this.pressesRegGuide = false
+      LoginApi.clearPresses()
+        .then(res => {
+          if (res.data.code === 200) {
+            this.$message({
+              type: 'success',
+              message: '消息聚合门户清空数据成功!',
               duration: 1000
             })
           }
