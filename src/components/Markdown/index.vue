@@ -1,15 +1,15 @@
 <template>
-  <div class="flex-markdown-container">
-    <div class="flex-markdown-body" :id="id" />
+  <div class="flex-toast-container">
+    <div class="flex-toast-body" :id="id" />
   </div>
 </template>
 
 <script>
 // deps for editor
-import "tui-editor/dist/tui-editor.css"; // editor's ui
-import "tui-editor/dist/tui-editor-contents.css"; // editor's content
-import "codemirror/lib/codemirror.css"; // codemirror
-import "highlight.js/styles/github.css"; // code block highlight
+import 'tui-editor/dist/tui-editor.css' // editor's ui
+import 'tui-editor/dist/tui-editor-contents.css' // editor's content
+import 'codemirror/lib/codemirror.css' // codemirror
+import 'highlight.js/styles/github.css' // code block highlight
 
 import Editor from 'tui-editor'
 import Opts from './opts'
@@ -24,19 +24,19 @@ export default {
     id: {
       type: String,
       required: false,
-      default() {
+      default () {
         return 'markdown-editor-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
       }
     },
     options: {
       type: Object,
-      default() {
+      default () {
         return Opts
       }
     },
     mode: {
       type: String,
-      default: 'markdown' //markdown, wysiwyg
+      default: 'markdown' // markdown, wysiwyg
     },
     height: {
       type: String,
@@ -49,13 +49,13 @@ export default {
       default: 'zh_CN'
     }
   },
-  data() {
+  data () {
     return {
       editor: null
     }
   },
   computed: {
-    editorOptions() {
+    editorOptions () {
       const options = Object.assign({}, Opts, this.options)
       options.initialEditType = this.mode
       options.height = this.height
@@ -64,30 +64,30 @@ export default {
     }
   },
   watch: {
-    value(newValue, preValue) {
+    value (newValue, preValue) {
       if (newValue !== preValue && newValue !== this.editor.getValue()) {
         this.editor.setValue(newValue)
       }
     },
-    language(val) {
+    language (val) {
       this.destroyEditor()
       this.initEditor()
     },
-    height(newValue) {
+    height (newValue) {
       this.editor.height(newValue)
     },
-    mode(newValue) {
+    mode (newValue) {
       this.editor.changeMode(newValue)
     }
   },
-  mounted() {
+  mounted () {
     this.initEditor()
   },
-  destroyed() {
+  destroyed () {
     this.destroyEditor()
   },
   methods: {
-    initEditor() {
+    initEditor () {
       this.editor = new Editor({
         el: document.getElementById(this.id),
         ...this.editorOptions
@@ -99,21 +99,21 @@ export default {
         this.$emit('input', this.editor.getValue())
       })
     },
-    destroyEditor() {
+    destroyEditor () {
       if (!this.editor) return
       this.editor.off('change')
       this.editor.remove()
     },
-    setValue(value) {
+    setValue (value) {
       this.editor.setValue(value)
     },
-    getValue() {
+    getValue () {
       return this.editor.getValue()
     },
-    setHtml(value) {
+    setHtml (value) {
       this.editor.setHtml(value)
     },
-    getHtml() {
+    getHtml () {
       return this.editor.getHtml()
     }
   }
@@ -121,12 +121,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .flex-markdown-container >>> {
+  .flex-toast-container >>> {
     margin-left: 5px;
     background-color: $white;
     color: $gray-black;
     height: calc(100vh - 125px);
-    .flex-markdown-body {
+    .flex-toast-body {
       .CodeMirror {
         width: 25%
       }

@@ -450,3 +450,50 @@ each(@box-size {
     color: @gray-black;
   }
 }
+.flex-container-toast {
+  flex-display();
+  flex-direction(column);
+  flex-justify-content(space-between);
+  flex(1);
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: @white;
+  color: @gray-black;
+  margin: 0 5px 0 5px;
+  .flex-toast-title {
+    flex-display();
+    flex(0 0 @textFlexRowHeight);
+    background-color: @white;
+    color: @gray-black;
+    .flex-title-left {
+      flex(0 0 @textFlexColWidth);
+      background-color: @white;
+      color: @gray-black;
+    }
+    .flex-title-center {
+      flex-display();
+      flex-direction(column);
+      flex-justify-content(space-between);
+      flex(1);
+      background-color: @white;
+      color: @gray-black;
+    }
+    .flex-title-right {
+      flex-display();
+      flex-justify-content(flex-end);
+      flex(1);
+      background-color: @white;
+      color: @gray-black;
+    }
+  }
+  .flex-toast-content {
+    flex(1);
+    // aside scroll
+    flex-calc-minus('width', 100vw, @sideBarWidth + 10px);
+    // header tabs toolbar column scroll pagination
+    flex-calc-minus('height', 100vh, @headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
+    background-color: @white;
+    color: @gray-black;
+  }
+}

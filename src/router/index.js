@@ -4,6 +4,7 @@ import Login from '@/views/Login/Login'
 import ReLogin from '@/views/Login/ReLogin'
 import NavRouter from './modules/nav'
 import PressesRouter from './modules/presses'
+import ToastRouter from './modules/toast'
 import TodoRouter from './modules/todo'
 
 Vue.use(VueRouter)
@@ -32,12 +33,13 @@ const routes = [
       title: '主页',
       cache: false,
       affix: false,
-      auth: true,
+      auth: true
     },
     children: [
       ...NavRouter,
       ...PressesRouter,
-      ...TodoRouter
+      ...TodoRouter,
+      ...ToastRouter
     ]
   }
   // {

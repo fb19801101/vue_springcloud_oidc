@@ -22,30 +22,69 @@
         </el-select>
       </div>
       <div class="flex-menu" v-if="layoutShowBrowser">
-          <el-button type="warning" class="text-title-16" plain size="mini" @click="clickInitTodo">
-            <svg-icon icon-class="todo" class-name="icon-size-16"></svg-icon>代办
+        <el-button type="success" class="text-title-16" plain size="mini" @click="clickToastUiEditor">
+          <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon> TuiEditor
+        </el-button>
+        <el-button type="success" class="text-title-16" plain size="mini" @click="clickToastUiGrid">
+          <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon> TuiGrid
+        </el-button>
+        <el-button type="success" class="text-title-16" plain size="mini" @click="clickToastUiChart">
+          <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon> TuiChart
+        </el-button>
+        <el-dropdown class="box-margin-left-10">
+          <el-button type="success" class="text-title-16" plain size="mini">
+            <svg-icon icon-class="todo" class-name="icon-size-16"></svg-icon> 代办聚合
           </el-button>
-          <el-button type="success" class="text-title-16" plain size="mini" :disabled="!todoApiHolder" @click="clickSetNumber">
-            <svg-icon icon-class="todo-info" class-name="icon-size-16"></svg-icon>处理
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item class="box-margin-top-10">
+              <el-button type="danger" class="text-title-16" plain size="mini" @click="clickInitTodo">
+                <svg-icon icon-class="todo-info" class-name="icon-size-16"></svg-icon>代办聚合
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item class="box-margin-top-10">
+              <el-button type="success" class="text-title-16" plain size="mini" :disabled="!todoApiHolder" @click="clickSetTodoNumber">
+                <svg-icon icon-class="todo-info" class-name="icon-size-16"></svg-icon>处理代办
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item class="box-margin-top-10 box-margin-bottom-10">
+              <el-button type="danger" class="text-title-16" plain size="mini" @click="clickClearTodo">
+                <svg-icon icon-class="todo-info" class-name="icon-size-16"></svg-icon>清空代办
+              </el-button>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown class="box-margin-left-10">
+          <el-button type="success" class="text-title-16" plain size="mini">
+            <svg-icon icon-class="presses" class-name="icon-size-16"></svg-icon> 消息聚合
           </el-button>
-          <el-button type="warning" class="text-title-16" plain size="mini" @click="clickClearTodo">
-            <svg-icon icon-class="todo-info" class-name="icon-size-16"></svg-icon>清空
-          </el-button>
-          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickInitPresses">
-            <svg-icon icon-class="presses" class-name="icon-size-16"></svg-icon>消息
-          </el-button>
-          <el-button type="primary" class="text-title-16" plain size="mini" @click="clickAddItem">
-            <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>添加
-          </el-button>
-          <el-button type="success" class="text-title-16" plain size="mini" :disabled="!pressesRedFile" @click="clickUnreadRedFile">
-            <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>读1
-          </el-button>
-          <el-button type="success" class="text-title-16" plain size="mini" :disabled="!pressesRegGuide" @click="clickUnreadRegGuide">
-            <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>读2
-          </el-button>
-          <el-button type="danger" class="text-title-16" plain size="mini" @click="clickClearPresses">
-            <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>清空
-          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item class="box-margin-top-10">
+              <el-button type="danger" class="text-title-16" plain size="mini" @click="clickInitPresses">
+                <svg-icon icon-class="presses" class-name="icon-size-16"></svg-icon>消息聚合
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item class="box-margin-top-10">
+              <el-button type="primary" class="text-title-16" plain size="mini" @click="clickAddPressesItem">
+                <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>添加消息
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item class="box-margin-top-10">
+              <el-button type="success" class="text-title-16" plain size="mini" :disabled="!pressesRedFile" @click="clickUnreadRedFile">
+                <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>已读红头
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item class="box-margin-top-10">
+              <el-button type="success" class="text-title-16" plain size="mini" :disabled="!pressesRegGuide" @click="clickUnreadRegGuide">
+                <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>已读注册
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item class="box-margin-top-10 box-margin-bottom-10">
+              <el-button type="danger" class="text-title-16" plain size="mini" @click="clickClearPresses">
+                <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>清空消息
+              </el-button>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
       <div class="flex-login">
         <label-login :userName="userName"/>
@@ -78,6 +117,7 @@ import SvgIcon from '@/components/SvgIcon/SvgIcon'
 import NavRouter from '@router/modules/nav'
 import PressesRouter from '@router/modules/presses'
 import TodoRouter from '@router/modules/todo'
+import ToastRouter from '@router/modules/toast'
 import LoginApi from '@/api/login'
 
 export default {
@@ -125,7 +165,7 @@ export default {
   },
   beforeCreate () {
     if (this.$store.state.routedViews.length === 0) {
-      const routers = [...NavRouter, ...PressesRouter, ...TodoRouter]
+      const routers = [...NavRouter, ...PressesRouter, ...TodoRouter, ...ToastRouter]
       routers.forEach(route => {
         if ('children' in route) {
           const path = route.path
@@ -326,7 +366,7 @@ export default {
           console.log(err)
         })
     },
-    clickSetNumber () {
+    clickSetTodoNumber () {
       this.todoNumber = this.todoNumber - 1
       this.todo.map(item => {
         item.disabled = !this.todoNumber > 0
@@ -382,7 +422,7 @@ export default {
           console.log(err)
         })
     },
-    clickAddItem () {
+    clickAddPressesItem () {
       this.presses.push({ name: 'RegGuide', title: '注册指南', svg: 'todo-info', content: ['跳转至网络计划参数详情'], disabled: false })
       this.pressesRegGuide = true
       LoginApi.addPressesItem('GUIDE-REG', '关于中国铁建一体化技术平台聚合对接的通报', 'RegGuide')
@@ -462,6 +502,15 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    clickToastUiEditor () {
+      this.$store.dispatch('updateTabPaneName', 'TuiEditor')
+    },
+    clickToastUiGrid () {
+      this.$store.dispatch('updateTabPaneName', 'TuiGrid')
+    },
+    clickToastUiChart () {
+      this.$store.dispatch('updateTabPaneName', 'TuiChart')
     }
   }
 }

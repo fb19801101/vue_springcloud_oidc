@@ -23,6 +23,7 @@
 import NavRouter from '@router/modules/nav'
 import PressesRouter from '@router/modules/presses'
 import TodoRouter from '@router/modules/todo'
+import ToastRouter from '@router/modules/toast'
 import SvgIcon from '@/components/SvgIcon/SvgIcon'
 
 export default {
@@ -40,7 +41,7 @@ export default {
   },
   created () {
     if (this.$store.state.routedViews.length === 0) {
-      const routers = [...NavRouter, ...PressesRouter, ...TodoRouter]
+      const routers = [...NavRouter, ...PressesRouter, ...TodoRouter, ...ToastRouter]
       routers.forEach(route => {
         if ('children' in route) {
           const path = route.path

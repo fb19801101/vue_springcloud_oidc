@@ -95,7 +95,7 @@ module.exports = {
   lintOnSave: !IS_PROD,
 
   // 是否使用包含运行时编译器的 Vue 构建版本
-  runtimeCompiler: false,
+  runtimeCompiler: true,
 
   // Babel 显式转译列表
   transpileDependencies: [],

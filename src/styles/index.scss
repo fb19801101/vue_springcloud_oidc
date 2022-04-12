@@ -452,3 +452,50 @@ body {
     color: $gray-black;
   }
 }
+.flex-container-toast {
+  @include flex-display();
+  @include flex-direction(column);
+  @include flex-justify-content(space-between);
+  @include flex(1);
+  height: 100vh;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: $white;
+  color: $gray-black;
+  margin: 0 5px 0 5px;
+  .flex-toast-title {
+    @include flex-display();
+    @include flex(0 0 $textFlexRowHeight);
+    background-color: $white;
+    color: $gray-black;
+    .flex-title-left {
+      @include flex(0 0 $textFlexColWidth);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-center {
+      @include flex-display();
+      @include flex-direction(column);
+      @include flex-justify-content(space-between);
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+    .flex-title-right {
+      @include flex-display();
+      @include flex-justify-content(flex-end);
+      @include flex(1);
+      background-color: $white;
+      color: $gray-black;
+    }
+  }
+  .flex-toast-content {
+    @include flex(1);
+    // aside scroll
+    @include flex-calc-minus('width', 100vw, $sideBarWidth + 10px);
+    // header tabs toolbar column scroll pagination
+    @include flex-calc-minus('height', 100vh, $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
+    background-color: $white;
+    color: $gray-black;
+  }
+}
