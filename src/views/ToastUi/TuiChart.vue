@@ -10,7 +10,7 @@
       </area-chart>
       <button @click="showSeriesDataLabel">show label</button>
       <button @click="hideSeriesDataLabel">hide label</button>
-      <heat-map-chart :data="heatmapProps.data" :options="heatmapProps.options"></heat-map-chart>
+      <heat-map-chart :data="heatMapProps.data" :options="heatMapProps.options"></heat-map-chart>
     </div>
   </div>
 </template>
@@ -72,7 +72,7 @@ export default {
           }
         }
       },
-      heatmapProps: {
+      heatMapProps: {
         options: {
           chart: {
             height: 500,
@@ -126,7 +126,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  @import 'https://uicdn.toast.com/tui-grid/latest/tui-grid.css'
   .flex-toast-container >>> {
     margin-left: 5px;
     background-color: $white;

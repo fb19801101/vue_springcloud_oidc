@@ -1,17 +1,19 @@
 <template>
-  <div>
-      <span class="text-content-24">|</span>
-      <span class="text-content-18 box-margin-left-8">{{userName}}</span>
-      <i class="el-icon-refresh icon-size-24 box-margin-left-8" @click="refreshOrganization"/>
-      <i class="el-icon-switch-button icon-size-24 box-margin-left-6" @click="loginOut"/>
+  <div class="flex-label-login">
+    <svg-icon icon-class="line" class-name="icon-size-32"></svg-icon>
+    <span class="text-content-18">{{userName}}</span>
+    <i class="el-icon-refresh icon-size-24 box-margin-left-8" @click="refreshOrganization"/>
+    <i class="el-icon-switch-button icon-size-24 box-margin-left-6" @click="loginOut"/>
   </div>
 </template>
 
 <script>
 import LoginApi from '@/api/login'
+import SvgIcon from '@/components/SvgIcon/SvgIcon'
 
 export default {
   name: 'LabelLogin',
+  components: { SvgIcon },
   props: {
     userName: String
   },
@@ -104,12 +106,29 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  i {
-     cursor: pointer
-   }
-  i:hover {
-    background: $black
-    opacity: 1;
-    color $light-blue
+  .flex-label-login {
+    flex-display();
+    flex-justify-content(center);
+    flex-align-items(center);
+    flex(0 0 $headBarLoginWidth);
+    min-height: $headBarHeight;
+    background-color: $dark-blue;
+    color: $white;
+    i {
+      cursor: pointer
+    }
+    i:hover {
+      background: $black
+      opacity: 1;
+      color $light-blue
+    }
+    svg {
+      cursor: default
+    }
+    svg:hover {
+      background: transparent;
+      opacity: 1;
+      color: $white;
+    }
   }
 </style>
