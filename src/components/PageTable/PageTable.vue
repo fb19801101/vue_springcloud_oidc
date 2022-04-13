@@ -1,20 +1,19 @@
 <template>
   <div ref="page" class="flex-page-table-container">
-    <div class="flex-page-table-pagination" v-if="propParams.page.show === 2">
-      <el-pagination class="el-pagination-left el-pagination-right"
-                     @size-change="handleSize"
-                     @current-change="handlePage"
-                     :current-page.sync="propParams.page.cur"
-                     :page-sizes="propParams.page.sizes"
-                     :page-size="propParams.page.size"
-                     :layout="propParams.page.layout"
-                     :total="propParams.page.total"
-                     :pager-count="propParams.page.pagers"
-                     :hide-on-single-page="propParams.page.single"
-                     popper-class='sizes-options'>
+    <el-pagination class="flex-page-table-pagination"
+                   v-if="propParams.page.show === 2"
+                   @size-change="handleSize"
+                   @current-change="handlePage"
+                   :current-page.sync="propParams.page.cur"
+                   :page-sizes="propParams.page.sizes"
+                   :page-size="propParams.page.size"
+                   :layout="propParams.page.layout"
+                   :total="propParams.page.total"
+                   :pager-count="propParams.page.pagers"
+                   :hide-on-single-page="propParams.page.single"
+                   popper-class='sizes-options'>
         <span class="el-pagination__slot">{{ propParams.page.slot }}</span>
       </el-pagination>
-    </div>
     <div class="flex-page-table-toolbar">
       <div class="flex-page-table-toolbar-left" v-if="propParams.toolbar.show.left">
         <el-button-group>
@@ -64,8 +63,7 @@
         </el-button-group>
       </div>
     </div>
-    <div class="flex-page-table-content">
-      <el-table class="flex-page-table-body"
+    <el-table class="flex-page-table-content"
         ref="table"
         header-row-class-name="el-header"
         :data="rowData"
@@ -158,28 +156,26 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
     <div class="flex-page-table-feedback" v-if="feedback">
       <i v-show="feedback === 'loading'" class="load-icon-item el-icon-loading"></i>
       <span v-if="feedback === 'error' || feedback === 'empty'">
           {{feedback === "error" ? "获取数据失败" : feedback === "empty" ? "暂无数据" : ""}}
         </span>
     </div>
-    <div class="flex-page-table-pagination" v-if="propParams.page.show === 1">
-      <el-pagination class="el-pagination-left el-pagination-right"
-                     @size-change="handleSize"
-                     @current-change="handlePage"
-                     :current-page.sync="propParams.page.cur"
-                     :page-sizes="propParams.page.sizes"
-                     :page-size="propParams.page.size"
-                     :layout="propParams.page.layout"
-                     :total="propParams.page.total"
-                     :pager-count="propParams.page.pagers"
-                     :hide-on-single-page="propParams.page.single"
-                     popper-class='sizes-options'>
+    <el-pagination class="flex-page-table-pagination"
+                   v-if="propParams.page.show === 1"
+                   @size-change="handleSize"
+                   @current-change="handlePage"
+                   :current-page.sync="propParams.page.cur"
+                   :page-sizes="propParams.page.sizes"
+                   :page-size="propParams.page.size"
+                   :layout="propParams.page.layout"
+                   :total="propParams.page.total"
+                   :pager-count="propParams.page.pagers"
+                   :hide-on-single-page="propParams.page.single"
+                   popper-class='sizes-options'>
         <span class="el-pagination__slot">{{ propParams.page.slot }}</span>
       </el-pagination>
-    </div>
   </div>
 </template>
 
@@ -844,9 +840,7 @@ export default {
   .flex-page-table-container >>> {
     flex-display();
     flex-direction(column);
-    flex-justify-content(space-between);
-    max-width: calc(100% - 5px);
-    max-height: 100vh;
+    flex-justify-content(flex-start);
     white-space: nowrap;
     overflow: hidden;
     .flex-page-table-toolbar {
@@ -884,13 +878,9 @@ export default {
       }
     }
     .flex-page-table-content {
-      flex-display();
-      flex-direction(column);
-      flex-justify-content(space-between);
+      flex(1);
       background-color: $white;
       color: $gray-black;
-      .flex-page-table-body {
-        flex(1);
         &.el-table {
           z-index: 2000;
           //表格边框颜色,右边框要比左边框宽，下边框要比上边框高
@@ -945,123 +935,118 @@ export default {
           }
           //表头滚动条
           .el-table__header-wrapper {
-            max-width: var(--layout-width);
+            width: var(--layout-width);
             overflow-x: hide;
           }
           //表格滚动条
           .el-table__body-wrapper {
-            max-height: var(--layout-height);
-            overflow-y: auto;
-            max-width: var(--layout-width);
-           overflow-x: auto;
-         }
-         //定义滚动条宽高
-         .el-table__body-wrapper::-webkit-scrollbar {
-           width: 8px;
-           height: 8px;
-         }
-         //定义滚动条里面的中间条颜色
-         .el-table__body-wrapper::-webkit-scrollbar-thumb {
-           background-color: $gray-white;
-           border-radius: 4px;
-           transition: background 0.4s;
-         }
-         .el-table__body-wrapper::-webkit-scrollbar-thumb:hover {
-           background: $gray;
-         }
-         //定义滚动条轨道 内阴影+圆角,包裹中间条的地方
-         .el-table__body-wrapper::-webkit-scrollbar-track {
-           width: 8px;
-           height: 8px;
-           background-color: transparent;
-         }
-         //表格排序图标位置
-         .caret-wrapper {
-           height: 19px;
-         }
-         .sort-caret.ascending {
-           top: -3px;
-         }
-         .sort-caret.descending {
-           bottom: 0;
-         }
-         .el-button--text {
-           font-size: 12px;
-           color: #60c0bd;
-         }
-         .el-button--primary, .el-button--primary.is-round {
-           padding: 1;
-           margin-left: 1px
-         }
-         //表格展开样式
-         .el-table-expand {
-           font-size: 0;
-           margin-left: 200px;
-
-           label {
-             width: 200px;
-             color: #1e9fff !important;
-           }
-
-           .el-form-item {
-             span {
-               width: 200px;
-               text-align: left;
-               display: inline-block;
-             }
-
-             .el-button {
-               width: 60px
-             }
-           }
-         }
-         .el-table__expand-icon {
-           border: 1px solid #e7e7e7;
-           padding: 1px;
-         }
-         .el-table__expand-icon--expanded {
-           -webkit-transform: rotate(0deg);
-           transform: rotate(0deg);
-         }
-         //表格树形图标样式
-         .el-table-tree-icon {
-           cursor: pointer;
-           color: #2196f3;
-         }
-         @keyframes el-table-tree-show {
-           from {
-             opacity: 0;
-           }
-           to {
-             opacity: 1;
-           }
-         }
-         @-webkit-keyframes el-table-tree-show {
-           from {
-             opacity: 0;
-           }
-           to {
-             opacity: 1;
-           }
-         }
-         .el-icon-plus:before {
-           //content: "\e6d9" !important; // el-icon-plus
-           //content: "\e791" !important; // el-icon-caret-right
-           //content: "\e6dc" !important; //el-icon-d-arrow-right
-           content: "\e6e0" !important; // el-icon-arrow-right
-           border: 1px solid #ccc;
-           padding: 2px;
-         }
-         .el-icon-minus:before {
-           //content: "\e6d8" !important; // el-icon-minus
-           //content: "\e790" !important; // el-icon-caret-bottom
-           //content: "\e6dd" !important; //el-icon-d-arrow-left
-           content: "\e6df" !important; // el-icon-arrow-down
-           border: 1px solid #ccc;
-           padding: 2px;
-         }
+            overflow: scroll;
+            width: var(--layout-width);
+            height: var(--layout-height);
+          }
+          //定义滚动条宽高
+          .el-table__body-wrapper::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+          }
+          //定义滚动条里面的中间条颜色
+          .el-table__body-wrapper::-webkit-scrollbar-thumb {
+            background-color: $gray-white;
+            border-radius: 4px;
+            transition: background 0.4s;
+          }
+          .el-table__body-wrapper::-webkit-scrollbar-thumb:hover {
+            background: $gray;
+          }
+          //定义滚动条轨道 内阴影+圆角,包裹中间条的地方
+          .el-table__body-wrapper::-webkit-scrollbar-track {
+            width: 8px;
+            height: 8px;
+            background-color: transparent;
+          }
+          //表格排序图标位置
+          .caret-wrapper {
+            height: 19px;
+          }
+          .sort-caret.ascending {
+            top: -3px;
+          }
+          .sort-caret.descending {
+            bottom: 0;
+          }
+          .el-button--text {
+            font-size: 12px;
+            color: #60c0bd;
+          }
+          .el-button--primary, .el-button--primary.is-round {
+            padding: 1;
+            margin-left: 1px
+          }
+          //表格展开样式
+          .el-table-expand {
+            font-size: 0;
+            margin-left: 200px;
+            label {
+              width: 200px;
+              color: #1e9fff !important;
+            }
+            .el-form-item {
+              span {
+                width: 200px;
+                text-align: left;
+                display: inline-block;
+              }
+              .el-button {
+                width: 60px
+              }
+            }
+          }
+          .el-table__expand-icon {
+            border: 1px solid #e7e7e7;
+            padding: 1px;
+          }
+          .el-table__expand-icon--expanded {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+          }
+          //表格树形图标样式
+          .el-table-tree-icon {
+            cursor: pointer;
+            color: #2196f3;
+          }
+          @keyframes el-table-tree-show {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
+          }
+          @-webkit-keyframes el-table-tree-show {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
+          }
+          .el-icon-plus:before {
+            //content: "\e6d9" !important; // el-icon-plus
+            //content: "\e791" !important; // el-icon-caret-right
+            //content: "\e6dc" !important; //el-icon-d-arrow-right
+            content: "\e6e0" !important; // el-icon-arrow-right
+            border: 1px solid #ccc;
+            padding: 2px;
+          }
+          .el-icon-minus:before {
+            //content: "\e6d8" !important; // el-icon-minus
+            //content: "\e790" !important; // el-icon-caret-bottom
+            //content: "\e6dd" !important; //el-icon-d-arrow-left
+            content: "\e6df" !important; // el-icon-arrow-down
+            border: 1px solid #ccc;
+            padding: 2px;
+          }
        }
-     }
     }
     .flex-page-table-feedback {
       flex(0 0 40px);
@@ -1091,43 +1076,38 @@ export default {
       flex(0 0 40px);
       background-color: $white;
       color: $gray-black;
-      .el-pagination {
-        flex-display();
-        flex-justify-content(space-between);
+      .el-pagination__total {
         flex(1);
-        .el-pagination__total {
-          flex(1);
-          background-color: $white;
-          color: $gray-black;
-        }
-        .el-pagination__slot {
-          flex(1);
-          background-color: $white;
-          color: $gray-black;
-        }
-        .el-pagination__sizes {
-          flex-display();
-          flex-justify-content(flex-end);
-          flex(1);
-          background-color: $white;
-          color: $gray-black;
-        }
-        .btn-prev {
-          background-color: $white;
-          color: $gray-black;
-        }
-        .el-pager {
-          background-color: $white;
-          color: $gray-black;
-        }
-        .btn-next {
-          background-color: $white;
-          color: $gray-black;
-        }
-        .el-pagination__jump {
-          background-color: $white;
-          color: $gray-black;
-        }
+        background-color: $white;
+        color: $gray-black;
+      }
+      .el-pagination__slot {
+        flex(1);
+        background-color: $white;
+        color: $gray-black;
+      }
+      .el-pagination__sizes {
+        flex-display();
+        flex-justify-content(flex-end);
+        flex(1);
+        background-color: $white;
+        color: $gray-black;
+      }
+      .btn-prev {
+        background-color: $white;
+        color: $gray-black;
+      }
+      .el-pager {
+        background-color: $white;
+        color: $gray-black;
+      }
+      .btn-next {
+        background-color: $white;
+        color: $gray-black;
+      }
+      .el-pagination__jump {
+        background-color: $white;
+        color: $gray-black;
       }
     }
   }

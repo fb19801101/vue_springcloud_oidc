@@ -1,9 +1,7 @@
 <template>
-  <div class="flex-toast-container">
-    <h1>🍞 🔡 TOAST UI Grid</h1>
+  <div class="flex-container-toast">
     <el-scrollbar class="flex-toast-scroll">
       <toast-ui-grid
-        class="flex-toast-body"
         :data="grid.data"
         :columns="grid.columns"
         :options="grid.options"
@@ -324,48 +322,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .flex-toast-container >>> {
-    margin-left: 5px;
-    flex-display();
-    flex-direction(column);
-    flex-justify-content(space-between);
-    background-color: $white;
-    color: $gray-black;
-    height: calc(100vh - 120px);
-    .flex-toast-scroll {
-      flex(1);
-      white-space: nowrap;
-      overflow: hidden;
-      .el-scrollbar__wrap {
-        overflow: scroll;
-        height: calc(100% + 17px);
-        .el-scrollbar__view {
-          background-color: $white;
-          color: $gray-black;
-          .flex-toast-body {
-          }
-        }
-      }
-      //定义滚动条宽高
-      > .el-scrollbar__bar {
-        z-index: 9999;
-        &.is-horizontal {
-        }
-        &.is-vertical {
-          height: 100%;
-          width: 10px;
-          background-color: transparent;
-        }
-      }
-      //定义滚动条里面的中间条颜色
-      .el-scrollbar__thumb {
-        background-color: $gray-white;
-        border-radius: 5px;
-        transition: background 0.4s;
-      }
-      .el-scrollbar__thumb:hover {
-        background: $gray;
-      }
-    }
-  }
 </style>

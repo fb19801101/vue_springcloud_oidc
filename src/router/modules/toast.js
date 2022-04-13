@@ -2,6 +2,7 @@
 
 const LayoutChild = () => import('@/components/LayoutTabs/LayoutChild')
 const TuiEditor = () => import('@views/ToastUi/TuiEditor')
+const TuiViewer = () => import('@views/ToastUi/TuiViewer')
 const TuiGrid = () => import('@views/ToastUi/TuiGrid')
 const TuiChart = () => import('@views/ToastUi/TuiChart')
 
@@ -15,7 +16,7 @@ const toastRouter = [
       cache: false,
       affix: false,
       auth: true,
-      svg: 'presses'
+      svg: 'sub-group'
     },
     children: [
       {
@@ -23,11 +24,23 @@ const toastRouter = [
         name: 'TuiEditor',
         components: { TabPaneChild: TuiEditor },
         meta: {
-          title: '富文本',
+          title: '富文本E',
           cache: false,
           affix: false,
           auth: true,
-          svg: 'presses-info'
+          svg: 'sub-unit'
+        }
+      },
+      {
+        path: 'viewer',
+        name: 'TuiViewer',
+        components: { TabPaneChild: TuiViewer },
+        meta: {
+          title: '富文本V',
+          cache: false,
+          affix: false,
+          auth: true,
+          svg: 'sub-unit'
         }
       },
       {
@@ -39,7 +52,7 @@ const toastRouter = [
           cache: false,
           affix: false,
           auth: true,
-          svg: 'presses-info'
+          svg: 'sub-unit'
         }
       },
       {
@@ -51,7 +64,7 @@ const toastRouter = [
           cache: false,
           affix: false,
           auth: true,
-          svg: 'presses-info'
+          svg: 'sub-unit'
         }
       }
     ]

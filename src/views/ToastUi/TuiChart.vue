@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-toast-container">
-    <div id="chart" class="flex-toast-body">
+  <div class="flex-container-toast">
+    <el-scrollbar class="flex-toast-scroll">
       <area-chart
         ref="chartRef"
         :data="areaProps.data"
@@ -11,7 +11,15 @@
       <button @click="showSeriesDataLabel">show label</button>
       <button @click="hideSeriesDataLabel">hide label</button>
       <heat-map-chart :data="heatMapProps.data" :options="heatMapProps.options"></heat-map-chart>
-    </div>
+      <area-chart :data="areaProps.data" :options="areaProps.options"></area-chart>
+      <heat-map-chart :data="heatMapProps.data" :options="heatMapProps.options"></heat-map-chart>
+      <area-chart :data="areaProps.data" :options="areaProps.options"></area-chart>
+      <heat-map-chart :data="heatMapProps.data" :options="heatMapProps.options"></heat-map-chart>
+      <area-chart :data="areaProps.data" :options="areaProps.options"></area-chart>
+      <heat-map-chart :data="heatMapProps.data" :options="heatMapProps.options"></heat-map-chart>
+      <area-chart :data="areaProps.data" :options="areaProps.options"></area-chart>
+      <heat-map-chart :data="heatMapProps.data" :options="heatMapProps.options"></heat-map-chart>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -126,12 +134,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .flex-toast-container >>> {
-    margin-left: 5px;
-    background-color: $white;
-    color: $gray-black;
-    height: calc(100vh - 125px);
-    .flex-toast-body {
-    }
-  }
 </style>

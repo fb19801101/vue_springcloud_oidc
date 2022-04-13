@@ -1,9 +1,9 @@
 <template>
   <div class="flex-page-tree-container">
     <el-scrollbar class="flex-page-tree-scroll"
-                  :native = "false"
-                  v-loading="treeLoading"
-                  @contextmenu.prevent="handleTreeClick">
+      :native = "false"
+      v-loading="treeLoading"
+      @contextmenu.prevent="handleTreeClick">
       <el-tree ref="tree" class="flex-page-tree-body"
       highlight-current
       :node-key="nodeKey"
@@ -694,16 +694,18 @@ export default {
   flex-display();
   flex-direction(column);
   flex-justify-content(space-between);
+  width: $sideBarWidth;
+  height: var(--layout-tree);
+  white-space: nowrap;
+  overflow: hidden;
   background-color: $white;
   color: $gray-black;
-  height: calc(100vh - 170px);
   .flex-page-tree-scroll {
     flex(1);
-    white-space: nowrap;
-    overflow: hidden;
     .el-scrollbar__wrap {
       overflow: scroll;
-      height: calc(100% + 17px);
+      width: calc($sideBarWidth - 20px)
+      height: calc(var(--layout-tree) + 20px)
       .el-scrollbar__view {
         background-color: $white;
         color: $gray-black;
@@ -714,81 +716,77 @@ export default {
           -moz-user-select: none; /* Firefox */
           -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; /* Non-prefixed version, currently */
-          width: 100%
+          display: inline-block;
+          min-width: 100%;
           el-tree-node__content {
             .tree-node-slot-span {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 14px;
-            padding-right: 8px;
-            .tree-node-context-menu {
-              position: absolute;
-              float: left;
-              width: 100px;
-              margin: 0 50px;
-              ul {
+              font-size: 14px;
+              padding-right: 8px;
+              .tree-node-context-menu {
                 position: absolute;
                 float: left;
-                list-style: none;
-                margin: 0;
-                padding: 0;
-                z-index: 3000;
-                font-size: 12px;
-                font-weight: 400;
-                color: #333 !important;
-                background: #fff !important;
-                border-radius: 4px;
-                border: 1px solid #ccc !important;
-                box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-                li {
+                width: 100px;
+                margin: 0 50px;
+                ul {
+                  position: absolute;
                   float: left;
-                  width: 100%;
-                  line-height: 25px;
-                  text-align: center;
-                  position: relative;
+                  list-style: none;
+                  margin: 0;
+                  padding: 0;
+                  z-index: 3000;
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #333 !important;
+                  background: #fff !important;
+                  border-radius: 4px;
                   border: 1px solid #ccc !important;
-                  a {
-                    text-decoration: none;
-                    color: #a8a8a8 !important;
-                    display: block;
-                    padding: 0 10px;
-                    &:hover {
-                      background-color: #2f4056 !important;
-                      color: #fff !important;
-                    }
-                  }
-                  ul {
+                  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+                  li {
                     float: left;
-                    position: absolute;
-                    display: none;
-                    padding: 0;
-                    li {
-                      float: none;
-                      width: 100%;
-                      line-height: 20px;
-                      text-align: left;
-                      a {
-                        text-decoration: none;
-                        color: #a8a8a8 !important;
-                        display: block;
-                        margin-left: 10px;
-                        padding: 0 10px;
-                        &:hover {
-                          background-color: #2f4056 !important;
-                          color: #fff !important;
+                    width: 100%;
+                    line-height: 25px;
+                    text-align: center;
+                    position: relative;
+                    border: 1px solid #ccc !important;
+                    a {
+                      text-decoration: none;
+                      color: #a8a8a8 !important;
+                      display: block;
+                      padding: 0 10px;
+                      &:hover {
+                        background-color: #2f4056 !important;
+                        color: #fff !important;
+                      }
+                    }
+                    ul {
+                      float: left;
+                      position: absolute;
+                      display: none;
+                      padding: 0;
+                      li {
+                        float: none;
+                        width: 100%;
+                        line-height: 20px;
+                        text-align: left;
+                        a {
+                          text-decoration: none;
+                          color: #a8a8a8 !important;
+                          display: block;
+                          margin-left: 10px;
+                          padding: 0 10px;
+                          &:hover {
+                            background-color: #2f4056 !important;
+                            color: #fff !important;
+                          }
                         }
                       }
                     }
-                  }
-                  &:hover ul {
-                    display: block;
+                    &:hover ul {
+                      display: block;
+                    }
                   }
                 }
               }
-            }
-
             }
           }
           .el-tree-node__content:hover {
@@ -799,20 +797,23 @@ export default {
       }
     }
     //定义滚动条宽高
-    > .el-scrollbar__bar {
+    >.el-scrollbar__bar {
       z-index: 9999;
-      &.is-horizontal {
+      .is-horizontal {
+        width: $sideBarWidth;
+        height: 8px;
+        background-color: transparent;
       }
-      &.is-vertical {
-        height: 100%;
-        width: 10px;
+      .is-vertical {
+        height: var(--layout-tree);
+        width: 8px;
         background-color: transparent;
       }
     }
     //定义滚动条里面的中间条颜色
     .el-scrollbar__thumb {
       background-color: $gray-white;
-      border-radius: 5px;
+      border-radius: 4px;
       transition: background 0.4s;
     }
     .el-scrollbar__thumb:hover {

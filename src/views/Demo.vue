@@ -22,15 +22,33 @@
         </el-select>
       </div>
       <div class="flex-menu" v-if="layoutShowBrowser">
-        <el-button type="success" class="text-title-16" plain size="mini" @click="clickToastUiEditor">
-          <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon> TuiEditor
-        </el-button>
-        <el-button type="success" class="text-title-16" plain size="mini" @click="clickToastUiGrid">
-          <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon> TuiGrid
-        </el-button>
-        <el-button type="success" class="text-title-16" plain size="mini" @click="clickToastUiChart">
-          <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon> TuiChart
-        </el-button>
+        <el-dropdown>
+          <el-button type="success" class="text-title-16" plain size="mini">
+            <svg-icon icon-class="sub-group" class-name="icon-size-16"></svg-icon> ToastUI
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item class="box-margin-top-10">
+              <el-button type="primary" class="text-title-16" plain size="mini" @click="clickToastUiViewer">
+                <svg-icon icon-class="sub-unit" class-name="icon-size-16"></svg-icon> TuiViewer
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item class="box-margin-top-10">
+              <el-button type="primary" class="text-title-16" plain size="mini" @click="clickToastUiEditor">
+                <svg-icon icon-class="sub-unit" class-name="icon-size-16"></svg-icon> TuiEditor
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item class="box-margin-top-10 box-margin-bottom-10">
+              <el-button type="primary" class="text-title-16" plain size="mini" @click="clickToastUiGrid">
+                <svg-icon icon-class="sub-unit" class-name="icon-size-16"></svg-icon> TuiGrid
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item class="box-margin-top-10 box-margin-bottom-10">
+              <el-button type="primary" class="text-title-16" plain size="mini" @click="clickToastUiChart">
+                <svg-icon icon-class="sub-unit" class-name="icon-size-16"></svg-icon> TuiChart
+              </el-button>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <el-dropdown class="box-margin-left-10">
           <el-button type="success" class="text-title-16" plain size="mini">
             <svg-icon icon-class="todo" class-name="icon-size-16"></svg-icon> 代办聚合
@@ -42,7 +60,7 @@
               </el-button>
             </el-dropdown-item>
             <el-dropdown-item class="box-margin-top-10">
-              <el-button type="success" class="text-title-16" plain size="mini" :disabled="!todoApiHolder" @click="clickSetTodoNumber">
+              <el-button type="warning" class="text-title-16" plain size="mini" :disabled="!todoApiHolder" @click="clickSetTodoNumber">
                 <svg-icon icon-class="todo-info" class-name="icon-size-16"></svg-icon>处理代办
               </el-button>
             </el-dropdown-item>
@@ -69,12 +87,12 @@
               </el-button>
             </el-dropdown-item>
             <el-dropdown-item class="box-margin-top-10">
-              <el-button type="success" class="text-title-16" plain size="mini" :disabled="!pressesRedFile" @click="clickUnreadRedFile">
+              <el-button type="warning" class="text-title-16" plain size="mini" :disabled="!pressesRedFile" @click="clickUnreadRedFile">
                 <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>已读红头
               </el-button>
             </el-dropdown-item>
             <el-dropdown-item class="box-margin-top-10">
-              <el-button type="success" class="text-title-16" plain size="mini" :disabled="!pressesRegGuide" @click="clickUnreadRegGuide">
+              <el-button type="warning" class="text-title-16" plain size="mini" :disabled="!pressesRegGuide" @click="clickUnreadRegGuide">
                 <svg-icon icon-class="presses-info" class-name="icon-size-16"></svg-icon>已读注册
               </el-button>
             </el-dropdown-item>
@@ -154,13 +172,24 @@ export default {
       todoNumber: 0,
       todoApiHolder: false,
       pressesRedFile: false,
-      pressesRegGuide: false
+      pressesRegGuide: false,
+      clientWidth: 0,
+      clientHeight: 0
     }
   },
   watch: {
     layoutShowBrowser: function () {
       this.$store.dispatch('updateLayoutDevice', this.layoutShowBrowser ? 'browse' : 'mobile')
       this.$store.dispatch('updateTabPaneName', this.layoutShowBrowser ? 'BrowserWeb' : 'BrowserApp')
+    },
+    boxShowAside: function () {
+      var root = document.body
+      this.clientWidth = root.clientWidth
+      this.clientHeight = root.clientHeight
+      var width = this.clientWidth - (this.boxShowAside ? 200 : 0)
+      var height = this.clientHeight
+      root.style.setProperty('--client-width', width + 'px')
+      root.style.setProperty('--client-height', height + 'px')
     }
   },
   beforeCreate () {
@@ -205,6 +234,24 @@ export default {
     if (this.$store.state.tabPanePressesName != null) {
       this.boxShowAside = false
       this.$store.dispatch('updateTabPaneName', this.$store.state.tabPanePressesName)
+    }
+
+    var root = document.body
+    this.clientWidth = root.clientWidth
+    this.clientHeight = root.clientHeight
+    var width = this.clientWidth - (this.boxShowAside ? 200 : 0)
+    var height = this.clientHeight
+    root.style.setProperty('--client-width', width + 'px')
+    root.style.setProperty('--client-height', height + 'px')
+    window.onresize = () => {
+      return (() => {
+        this.clientWidth = root.clientWidth
+        this.clientHeight = root.clientHeight
+        var width = this.clientWidth - (this.boxShowAside ? 200 : 0)
+        var height = this.clientHeight
+        root.style.setProperty('--client-width', width + 'px')
+        root.style.setProperty('--client-height', height + 'px')
+      })()
     }
   },
   methods: {
@@ -503,6 +550,9 @@ export default {
           console.log(err)
         })
     },
+    clickToastUiViewer () {
+      this.$store.dispatch('updateTabPaneName', 'TuiViewer')
+    },
     clickToastUiEditor () {
       this.$store.dispatch('updateTabPaneName', 'TuiEditor')
     },
@@ -517,6 +567,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  :root {
+    --client-width: 0px;
+    --client-height: 0px;
+  }
   .draw-enter-active, .draw-leave-active {
     transition: all 0.8s cubic-bezier(1.0, 0.5, 0.8, 1.0) ease;
   }

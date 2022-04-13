@@ -681,38 +681,38 @@ bg-gray() { /*灰*/
 }
 .flex(@val) {//定义父元素拉伸时子元素的放大、缩小、初始比例值
   flex:  @val;
-//-webkit-flex:  @val;
-//-moz-flex:  @val;
-//-webkit-box-flex: @val;
-//-moz-box-flex: @val;
-//-ms-flex:  @val;
+-webkit-flex:  @val;
+-moz-flex:  @val;
+-webkit-box-flex: @val;
+-moz-box-flex: @val;
+-ms-flex:  @val;
 }
 .flex-order(@val) {//定义子元素的排列顺序
   order: @val;
-//-webkit-order: @val;
-//-moz-order: @val;
-//-webkit-box-ordinal-group: @val;
-//-moz-box-ordinal-group: @val;
-//-ms-flex-order: @val;
+  -webkit-order: @val;
+  -moz-order: @val;
+  -webkit-box-ordinal-group: @val;
+  -moz-box-ordinal-group: @val;
+  -ms-flex-order: @val;
 }
 .flex-align-self(@val) {//定义单个子元素覆盖父元素align-items值的能力
   align-self:  @val;
-//-webkit-align-self:  @val;
-//-moz-align-self:  @val;
-//-ms-flex-item-align:  @val;
+  -webkit-align-self:  @val;
+  -moz-align-self:  @val;
+  -ms-flex-item-align:  @val;
 }
 .flex-calc(@prop, @val) {//定义各种版本calc属性计算
-{@prop}: 'calc(%s)' % @val
-//{@prop}: '-webkit-calc(%s)' % @val
-//{@prop}: '-moz-calc(%s)' % @val
+  {@prop}: 'calc(%s)' % @val
+  //{@prop}: '-webkit-calc(%s)' % @val
+  //{@prop}: '-moz-calc(%s)' % @val
 }
 .flex-calc-plus(@prop, @val1, @val2) {//定义各种版本calc属性计算
-{@prop}: 'calc(%s + %s)' % (@val1 @val2)
-//{@prop}: '-webkit-calc(%s + %s)' % (@val1 @val2)
-//{@prop}: '-moz-calc(%s + %s)' % (@val1 @val2)
+  {@prop}: 'calc(%s + %s)' % (@val1 @val2)
+  //{@prop}: '-webkit-calc(%s + %s)' % (@val1 @val2)
+  //{@prop}: '-moz-calc(%s + %s)' % (@val1 @val2)
 }
 .flex-calc-minus(@prop, @val1, @val2) {//定义各种版本calc属性计算
-{@prop}: 'calc(%s - %s)' % (@val1 @val2)
-//{@prop}: '-webkit-calc(%s - %s)' % (@val1 @val2)
-//{@prop}: '-moz-calc(%s - %s)' % (@val1 @val2)
+  {@prop}: 'calc(%s - %s)' % (@val1 @val2)
+  //{@prop}: '-webkit-calc(%s - %s)' % (@val1 @val2)
+  //{@prop}: '-moz-calc(%s - %s)' % (@val1 @val2)
 }

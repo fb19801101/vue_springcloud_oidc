@@ -3,7 +3,7 @@
 </template>
 <script>
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
-import '@toast-ui/editor/dist/toastui-editor.css'
+import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { optionsMixin } from './mixin/option'
 
 export default {

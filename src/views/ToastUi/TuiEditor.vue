@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-toast-container">
-    <toast-ui-editor class="flex-toast-body" :initialValue="content" height="100%" />
+  <div class="flex-container-toast">
+    <toast-ui-editor class="flex-toast-content" :initialValue="content" />
   </div>
 </template>
 
@@ -57,31 +57,4 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .flex-toast-container >>> {
-    margin-left: 5px;
-    background-color: $white;
-    color: $gray-black;
-    height: calc(100vh - 125px);
-    .flex-toast-body {
-      .ProseMirror::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-      .ProseMirror::-webkit-scrollbar-thumb {
-        background-color: $gray-white;
-        border-radius: 4px;
-        transition: background 0.4s;
-      }
-
-      .ProseMirror::-webkit-scrollbar-thumb:hover {
-        background: $gray;
-      }
-
-      .ProseMirror::-webkit-scrollbar-track {
-        width: 8px;
-        height: 8px;
-        background-color: transparent;
-      }
-    }
-  }
 </style>

@@ -1,36 +1,34 @@
 <template>
-  <div class="flex-container-body">
-    <div class="flex-body-table">
-      <div class="flex-table-title">
-        <div class="flex-title-left">
-          <span class="text-title-20">API注册信息</span>
-        </div>
-        <div class="flex-title-right">
-          <el-select v-model="uriFilter" placeholder="请选择调转地址类型" @change="uriChanged">
-            <el-option value="localhost" label="http://localhost/"></el-option>
-            <el-option value="197" label="http://192.168.100.197/"></el-option>
-            <el-option value="198" label="http://192.168.100.198/"></el-option>
-            <el-option value="199" label="http://192.168.100.199/"></el-option>
-            <el-option value="ldsc" label="http://ldsc.cr121.com/"></el-option>
-            <el-option value="ames" label="http://ames.cr121.com/"></el-option>
-          </el-select>
-        </div>
+  <div class="flex-container-table">
+    <div class="flex-table-title">
+      <div class="flex-title-left">
+        <span class="text-title-20">API注册信息</span>
       </div>
-      <div class="flex-table-content">
-        <page-table
-          ref="table"
-          :checkbox="false"
-          :cols="cols"
-          :rows="rows"
-          :refresh="refresh"
-          :page="page"
-          :toolbar="{show:{search: true}}"
-          :filters="filters"
-          @handleSize="handleSize"
-          @handlePage="handlePage"
-          @handleRow="handleRow"
-        />
+      <div class="flex-title-right">
+        <el-select v-model="uriFilter" placeholder="请选择调转地址类型" @change="uriChanged">
+          <el-option value="localhost" label="http://localhost/"></el-option>
+          <el-option value="197" label="http://192.168.100.197/"></el-option>
+          <el-option value="198" label="http://192.168.100.198/"></el-option>
+          <el-option value="199" label="http://192.168.100.199/"></el-option>
+          <el-option value="ldsc" label="http://ldsc.cr121.com/"></el-option>
+          <el-option value="ames" label="http://ames.cr121.com/"></el-option>
+        </el-select>
       </div>
+    </div>
+    <div class="flex-table-content">
+      <page-table
+        ref="table"
+        :checkbox="false"
+        :cols="cols"
+        :rows="rows"
+        :refresh="refresh"
+        :page="page"
+        :toolbar="{show:{search: true}}"
+        :filters="filters"
+        @handleSize="handleSize"
+        @handlePage="handlePage"
+        @handleRow="handleRow"
+      />
     </div>
   </div>
 </template>
