@@ -935,14 +935,14 @@ export default {
           }
           //表头滚动条
           .el-table__header-wrapper {
-            width: var(--layout-width);
+            width: var(--layout-table-width);
             overflow-x: hide;
           }
           //表格滚动条
           .el-table__body-wrapper {
             overflow: scroll;
-            width: var(--layout-width);
-            height: var(--layout-height);
+            width: var(--layout-table-width);
+            height: var(--layout-table-height);
           }
           //定义滚动条宽高
           .el-table__body-wrapper::-webkit-scrollbar {

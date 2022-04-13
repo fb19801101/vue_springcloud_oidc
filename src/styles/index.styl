@@ -300,8 +300,10 @@ for $size in $box-size {
     }
     .flex-tree-content {
       flex(1);
+      // scroll
+      flex-calc-minus('--layout-tree-width', $sideBarWidth, 20px);
       // header tabs title
-      flex-calc-minus('--layout-tree', var(--client-height), $headBarHeight + 50px + $textFlexRowHeight + 10px);
+      flex-calc-minus('--layout-tree-height', var(--client-height), $headBarHeight + 50px + $textFlexRowHeight + 10px);
       background-color: $white;
       color: $gray-black;
       border: 1px solid $gray-white;
@@ -345,10 +347,9 @@ for $size in $box-size {
     .flex-table-content {
       flex(1);
       // aside scroll
-      flex-calc-minus('--layout-width', var(--client-width), $sideBarWidth + 10px);
+      flex-calc-minus('--layout-table-width', var(--client-width), $sideBarWidth + 10px);
       // header tabs title toolbar column scroll pagination
-      flex-calc-minus('--layout-height', var(--client-height), $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
-      //width: calc(var(--client-width) + 10px);
+      flex-calc-minus('--layout-table-height', var(--client-height), $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
       background-color: $white;
       color: $gray-black;
     }
@@ -400,9 +401,9 @@ for $size in $box-size {
   .flex-table-content {
     flex(1);
     // aside scroll
-    flex-calc-minus('--layout-width', var(--client-width), 10px);
+    flex-calc-minus('--layout-table-width', var(--client-width), 10px);
     // header tabs toolbar column scroll pagination
-    flex-calc-minus('--layout-height', var(--client-height), $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
+    flex-calc-minus('--layout-table-height', var(--client-height), $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
     background-color: $white;
     color: $gray-black;
   }
@@ -447,9 +448,9 @@ for $size in $box-size {
   .flex-table-content {
     flex(1);
     // scroll
-    flex-calc-minus('--layout-width', 100vw, 10px);
+    flex-calc-minus('--layout-table-width', 100vw, 10px);
     // header toolbar column scroll pagination
-    flex-calc-minus('--layout-height', 100vh, $headBarHeight + 30px + 50px + 10px + 40px);
+    flex-calc-minus('--layout-table-height', 100vh, $headBarHeight + 30px + 50px + 10px + 40px);
     background-color: $white;
     color: $gray-black;
   }

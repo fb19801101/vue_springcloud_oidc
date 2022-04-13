@@ -299,6 +299,10 @@ each(@box-size {
     }
     .flex-tree-content {
       flex(1);
+      // scroll
+      flex-calc-minus('--layout-tree-width', @sideBarWidth, 20px);
+      // header tabs title
+      flex-calc-minus('--layout-tree-height', var(--client-height), @headBarHeight + 50px + @textFlexRowHeight + 10px);
       background-color: @white;
       color: @gray-black;
       border: 1px solid @gray-white;
@@ -342,9 +346,9 @@ each(@box-size {
     .flex-table-content {
       flex(1);
       // aside scroll
-      flex-calc-minus('--layout-width', 100vw, @sideBarWidth + 10px);
+      flex-calc-minus('--layout-table-width', var(--client-width), @sideBarWidth + 10px);
       // header tabs title toolbar column scroll pagination
-      flex-calc-minus('--layout-height', 100vh, @headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
+      flex-calc-minus('--layout-table-height', var(--client-height), @headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
       background-color: @white;
       color: @gray-black;
     }
@@ -396,9 +400,9 @@ each(@box-size {
   .flex-table-content {
     flex(1);
     // aside scroll
-    flex-calc-minus('--layout-width', 100vw, @sideBarWidth + 10px);
+    flex-calc-minus('--layout-table-width', var(--client-width), 10px);
     // header tabs toolbar column scroll pagination
-    flex-calc-minus('--layout-height', 100vh, @headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
+    flex-calc-minus('--layout-table-height', var(--client-height), @headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
     background-color: @white;
     color: @gray-black;
   }
@@ -443,9 +447,9 @@ each(@box-size {
   .flex-table-content {
     flex(1);
     // scroll
-    flex-calc-minus('--layout-width', 100vw, 10px);
-    // header tabs toolbar column scroll pagination
-    flex-calc-minus('--layout-height', 100vh, @headBarHeight + 30px + 50px + 10px + 40px);
+    flex-calc-minus('--layout-table-width', 100vw, 10px);
+    // header toolbar column scroll pagination
+    flex-calc-minus('--layout-table-height', 100vh, @headBarHeight + 30px + 50px + 10px + 40px);
     background-color: @white;
     color: @gray-black;
   }
@@ -455,7 +459,7 @@ each(@box-size {
   flex-direction(column);
   flex-justify-content(space-between);
   flex(1);
-  height: calc(100vh - 120px);
+  flex-calc-minus('height', 100vh, @headBarHeight + 50px + 5px);
   white-space: nowrap;
   overflow: hidden;
   background-color: @white;
@@ -488,29 +492,40 @@ each(@box-size {
     }
   }
   .flex-toast-scroll {
-    .el-scrollbar__wrap {
+    flex(1);
+    background-color: @white;
+    color: @gray-black;
+    .el-scrollbar__wrap  {
       overflow: scroll;
-      height: calc(100% + 17px);
+      //flex-calc-minus('width', 100vw, @sideBarWidth - 10px);
+      width: calc(var(--client-width) + 10px);
+      //flex-calc-minus('height', 100vh, @headBarHeight + 50px - 10px);
+      height: calc(var(--client-height) + 10px);
       .el-scrollbar__view {
         background-color: @white;
         color: @gray-black;
       }
     }
     //定义滚动条宽高
-    > .el-scrollbar__bar {
+    >.el-scrollbar__bar {
       z-index: 9999;
-      &.is-horizontal {
+      .is-horizontal {
+        //flex-calc-minus('width', 100vw, @sideBarWidth + 10px);
+        width: calc(var(--client-width) - 10px);
+        height: 8px;
+        background-color: transparent;
       }
-      &.is-vertical {
-        height: 100%;
-        width: 10px;
+      .is-vertical {
+        //flex-calc-minus('height', 100vh, @headBarHeight + 50px + 20px);
+        height: calc(var(--client-height) - 20px);
+        width: 8px;
         background-color: transparent;
       }
     }
     //定义滚动条里面的中间条颜色
     .el-scrollbar__thumb {
       background-color: @gray-white;
-      border-radius: 5px;
+      border-radius: 4px;
       transition: background 0.4s;
     }
     .el-scrollbar__thumb:hover {
