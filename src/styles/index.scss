@@ -292,7 +292,6 @@ body {
     @include flex(0 0 $sideBarWidth);
     background-color: $white;
     color: $gray-black;
-    min-height: $bodyTableHeight;
     .flex-tree-title {
       @include flex-align-self(center);
       @include flex(0 0 $textFlexRowHeight);
@@ -301,9 +300,9 @@ body {
     }
     .flex-tree-content {
       @include flex(1);
-      // scroll scroll
+      // scroll
       @include flex-calc('--layout-tree-width', $sideBarWidth);
-      // header tabs title
+      // header tabs title scroll
       @include flex-calc-minus('--layout-tree-height', 100vh, $headBarHeight + $tabsLabelHeight + $textFlexRowHeight + $scrollBarHeight);
       background-color: $white;
       color: $gray-black;
@@ -318,7 +317,7 @@ body {
     @include flex(1);
     background-color: $white;
     color: $gray-black;
-    margin: 0 5px 0 5px;
+    margin: 0 5px;
     .flex-table-title {
       @include flex-display();
       @include flex(0 0 $textFlexRowHeight);
@@ -348,7 +347,7 @@ body {
     .flex-table-content {
       @include flex(1);
       // aside scroll
-      @include flex-calc-minus('--layout-table-width', var(--client-width), $sideBarWidth + $scrollBarWidth);
+      @include flex-calc-minus('--layout-table-width', var(--client-width), $sideBarWidth + $scrollBarWidth * 2);
       // header tabs title toolbar column scroll pagination
       @include flex-calc-minus('--layout-table-height', 100vh, $headBarHeight + $tabsLabelHeight + $tableTitleHeight + $tableToolbarHeight + $tableColumnHeight + $scrollBarHeight + $tablePageHeight);
       background-color: $white;
@@ -372,7 +371,7 @@ body {
   overflow: hidden;
   background-color: $white;
   color: $gray-black;
-  margin: 0 5px 0 5px;
+  margin: 0 5px;
   .flex-table-title {
     @include flex-display();
     @include flex(0 0 $textFlexRowHeight);
@@ -419,7 +418,7 @@ body {
   overflow: hidden;
   background-color: $white;
   color: $gray-black;
-  margin: 0 5px 0 5px;
+  margin: 0 5px;
   .flex-table-title {
     @include flex-display();
     @include flex(0 0 $textFlexRowHeight);
@@ -461,13 +460,13 @@ body {
   @include flex-direction(column);
   @include flex-justify-content(space-between);
   @include flex(1);
-  // header tabs
-  @include flex-calc-minus('height', 100vh, $headBarHeight + $tabsLabelHeight + 10px);
+  // header tabs scroll
+  @include flex-calc-minus('height', 100vh, $headBarHeight + $tabsLabelHeight + $scrollBarHeight * 2);
   white-space: nowrap;
   overflow: hidden;
   background-color: $white;
   color: $gray-black;
-  margin: 0 5px 0 5px;
+  margin: 0 5px;
   .flex-toast-title {
     @include flex-display();
     @include flex(0 0 $textFlexRowHeight);
@@ -514,20 +513,20 @@ body {
       z-index: 9999;
       .is-horizontal {
         width: var(--client-width);
-        height: 8px;
+        height: $scrollBarHeight;
         background-color: transparent;
       }
       .is-vertical {
         // header tabs
         @include flex-calc-minus('height', 100vh, $headBarHeight + $tabsLabelHeight);
-        width: 8px;
+        width: $scrollBarWidth;
         background-color: transparent;
       }
     }
     //定义滚动条里面的中间条颜色
     .el-scrollbar__thumb {
       background-color: $gray-white;
-      border-radius: 4px;
+      border-radius: $scrollBarRadius;
       transition: background 0.4s;
     }
     .el-scrollbar__thumb:hover {
@@ -539,20 +538,20 @@ body {
     background-color: $white;
     color: $gray-black;
     .ProseMirror::-webkit-scrollbar, .toastui-editor-md-preview::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: $scrollBarWidth;
+      height: $scrollBarHeight;
     }
     .ProseMirror::-webkit-scrollbar-thumb, .toastui-editor-md-preview::-webkit-scrollbar-thumb {
       background-color: $gray-white;
-      border-radius: 4px;
+      border-radius: $scrollBarRadius;
       transition: background 0.4s;
     }
     .ProseMirror::-webkit-scrollbar-thumb:hover, .toastui-editor-md-preview::-webkit-scrollbar-thumb:hover {
       background: $gray;
     }
     .ProseMirror::-webkit-scrollbar-track, .toastui-editor-md-preview::-webkit-scrollbar-track {
-      width: 8px;
-      height: 8px;
+      width: $scrollBarWidth;
+      height: $scrollBarHeight;
       background-color: transparent;
     }
   }

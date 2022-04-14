@@ -177,15 +177,28 @@ export default {
 
 <style lang="stylus" scoped>
   .el-tabs >>> .el-tabs__header {
-    /*display: none*/
-    i, svg {
-      cursor: pointer
-      color: $black
-    }
-    i:hover, svg:hover {
-      background: $white;
-      opacity: 1;
-      color: $light-red
+    margin: 0;
+    .el-tabs__nav-wrap {
+      height: $tabsLabelHeight;
+      background-color: $white;
+      color: $gray-black;
+      i, svg {
+        cursor: pointer
+        color: $black
+      }
+      i:hover, svg:hover {
+        opacity: 1;
+        color: $light-red
+      }
+      .el-tabs__item:hover {
+        color: $gray-black;
+        font-weight: bold;
+      }
+      .el-tabs__item.is-active {
+        color: $black;
+        font-weight: bold;
+        font-size: 16px;
+      }
     }
   }
 </style>

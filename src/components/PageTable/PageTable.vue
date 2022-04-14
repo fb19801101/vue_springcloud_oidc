@@ -841,6 +841,7 @@ export default {
     flex-display();
     flex-direction(column);
     flex-justify-content(flex-start);
+    width: var(--layout-table-width);
     white-space: nowrap;
     overflow: hidden;
     .flex-page-table-toolbar {
@@ -881,172 +882,172 @@ export default {
       flex(1);
       background-color: $white;
       color: $gray-black;
-        &.el-table {
-          z-index: 2000;
-          //表格边框颜色,右边框要比左边框宽，下边框要比上边框高
-          border: 1px solid $grey;
-          //border-top: 1px solid #4e73ac;
-          //border-left: 1px solid #4e73ac;
-          //表格头部样式
-          .el-table__header-wrapper tr th {
-            background-color: $grey-white;
-            color: $grey;
+      &.el-table {
+        z-index: 2000;
+        //表格边框颜色,右边框要比左边框宽，下边框要比上边框高
+        border: 1px solid $grey;
+        //border-top: 1px solid #4e73ac;
+        //border-left: 1px solid #4e73ac;
+        //表格头部样式
+        .el-table__header-wrapper tr th {
+          background-color: $grey-white;
+          color: $grey;
+        }
+        //表格每行样式
+        .el-table__row {
+          background-color: $white;
+          color: $gray-black;
+        }
+        //表格每行hover样式
+        .el-table__body tr.current-row > td {
+          background-color: $white;
+          color: $gray-black;
+        }
+        .el-table__body tr:hover > td {
+          background-color: $gray-white;
+          color: $gray;
+        }
+        //表格每行边框的样式
+        td, th.is-leaf {
+          border-bottom: 1px solid $gray-white;
+          border-right: 1px solid $gray-white;
+        }
+        //表格每行的高度
+        .el-table__header tr, .el-table__header th {
+          height: $tableColumnHeight;
+          padding: 0;
+        }
+        .el-table__body tr, .el-table__body td {
+          height: $tableRowHeight;
+          padding: 0;
+        }
+        //表格每行第一列内容位置
+        .el-table__header th:first-child .cell {
+          padding-left: 20px;
+        }
+        .el-table__body td:first-child .cell {
+          padding-left: 20px;
+        }
+        .el-table--border::after, .el-table--group::after {
+          width: 0;
+        }
+        .el-table::before {
+          height: 0;
+        }
+        //表头滚动条
+        .el-table__header-wrapper {
+          overflow: hide;
+          width: var(--layout-table-width);
+        }
+        //表格滚动条
+        .el-table__body-wrapper {
+          overflow: scroll;
+          width: var(--layout-table-width);
+          height: var(--layout-table-height);
+        }
+        //定义滚动条宽高
+        .el-table__body-wrapper::-webkit-scrollbar {
+          width: $scrollBarWidth;
+          height: $scrollBarHeight;
+        }
+        //定义滚动条里面的中间条颜色
+        .el-table__body-wrapper::-webkit-scrollbar-thumb {
+          background-color: $gray-white;
+          border-radius: $scrollBarRadius;
+          transition: background 0.4s;
+        }
+        .el-table__body-wrapper::-webkit-scrollbar-thumb:hover {
+          background: $gray;
+        }
+        //定义滚动条轨道 内阴影+圆角,包裹中间条的地方
+        .el-table__body-wrapper::-webkit-scrollbar-track {
+          width: $scrollBarWidth;
+          height: $scrollBarHeight;
+          background-color: transparent;
+        }
+        //表格排序图标位置
+        .caret-wrapper {
+          height: 19px;
+        }
+        .sort-caret.ascending {
+          top: -3px;
+        }
+        .sort-caret.descending {
+          bottom: 0;
+        }
+        .el-button--text {
+          font-size: 12px;
+          color: #60c0bd;
+        }
+        .el-button--primary, .el-button--primary.is-round {
+          padding: 1;
+          margin-left: 1px
+        }
+        //表格展开样式
+        .el-table-expand {
+          font-size: 0;
+          margin-left: 200px;
+          label {
+            width: 200px;
+            color: #1e9fff !important;
           }
-          //表格每行样式
-          .el-table__row {
-            background-color: $white;
-            color: $gray-black;
-          }
-          //表格每行hover样式
-          .el-table__body tr.current-row > td {
-            background-color: $white;
-            color: $gray-black;
-          }
-          .el-table__body tr:hover > td {
-            background-color: $gray-white;
-            color: $gray;
-          }
-          //表格每行边框的样式
-          td, th.is-leaf {
-            border-bottom: 1px solid $gray-white;
-            border-right: 1px solid $gray-white;
-          }
-          //表格每行的高度
-          .el-table__header tr, .el-table__header th {
-            height: 50px;
-            padding: 0;
-          }
-          .el-table__body tr, .el-table__body td {
-            height: 40px;
-            padding: 0;
-          }
-          //表格每行第一列内容位置
-          .el-table__header th:first-child .cell {
-            padding-left: 20px;
-          }
-          .el-table__body td:first-child .cell {
-            padding-left: 20px;
-          }
-          .el-table--border::after, .el-table--group::after {
-            width: 0;
-          }
-          .el-table::before {
-            height: 0;
-          }
-          //表头滚动条
-          .el-table__header-wrapper {
-            width: var(--layout-table-width);
-            overflow-x: hide;
-          }
-          //表格滚动条
-          .el-table__body-wrapper {
-            overflow: scroll;
-            width: var(--layout-table-width);
-            height: var(--layout-table-height);
-          }
-          //定义滚动条宽高
-          .el-table__body-wrapper::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-          }
-          //定义滚动条里面的中间条颜色
-          .el-table__body-wrapper::-webkit-scrollbar-thumb {
-            background-color: $gray-white;
-            border-radius: 4px;
-            transition: background 0.4s;
-          }
-          .el-table__body-wrapper::-webkit-scrollbar-thumb:hover {
-            background: $gray;
-          }
-          //定义滚动条轨道 内阴影+圆角,包裹中间条的地方
-          .el-table__body-wrapper::-webkit-scrollbar-track {
-            width: 8px;
-            height: 8px;
-            background-color: transparent;
-          }
-          //表格排序图标位置
-          .caret-wrapper {
-            height: 19px;
-          }
-          .sort-caret.ascending {
-            top: -3px;
-          }
-          .sort-caret.descending {
-            bottom: 0;
-          }
-          .el-button--text {
-            font-size: 12px;
-            color: #60c0bd;
-          }
-          .el-button--primary, .el-button--primary.is-round {
-            padding: 1;
-            margin-left: 1px
-          }
-          //表格展开样式
-          .el-table-expand {
-            font-size: 0;
-            margin-left: 200px;
-            label {
+          .el-form-item {
+            span {
               width: 200px;
-              color: #1e9fff !important;
+              text-align: left;
+              display: inline-block;
             }
-            .el-form-item {
-              span {
-                width: 200px;
-                text-align: left;
-                display: inline-block;
-              }
-              .el-button {
-                width: 60px
-              }
+            .el-button {
+              width: 60px
             }
           }
-          .el-table__expand-icon {
-            border: 1px solid #e7e7e7;
-            padding: 1px;
+        }
+        .el-table__expand-icon {
+          border: 1px solid #e7e7e7;
+          padding: 1px;
+        }
+        .el-table__expand-icon--expanded {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        //表格树形图标样式
+        .el-table-tree-icon {
+          cursor: pointer;
+          color: #2196f3;
+        }
+        @keyframes el-table-tree-show {
+          from {
+            opacity: 0;
           }
-          .el-table__expand-icon--expanded {
-            -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+          to {
+            opacity: 1;
           }
-          //表格树形图标样式
-          .el-table-tree-icon {
-            cursor: pointer;
-            color: #2196f3;
+        }
+        @-webkit-keyframes el-table-tree-show {
+          from {
+            opacity: 0;
           }
-          @keyframes el-table-tree-show {
-            from {
-              opacity: 0;
-            }
-            to {
-              opacity: 1;
-            }
+          to {
+            opacity: 1;
           }
-          @-webkit-keyframes el-table-tree-show {
-            from {
-              opacity: 0;
-            }
-            to {
-              opacity: 1;
-            }
-          }
-          .el-icon-plus:before {
-            //content: "\e6d9" !important; // el-icon-plus
-            //content: "\e791" !important; // el-icon-caret-right
-            //content: "\e6dc" !important; //el-icon-d-arrow-right
-            content: "\e6e0" !important; // el-icon-arrow-right
-            border: 1px solid #ccc;
-            padding: 2px;
-          }
-          .el-icon-minus:before {
-            //content: "\e6d8" !important; // el-icon-minus
-            //content: "\e790" !important; // el-icon-caret-bottom
-            //content: "\e6dd" !important; //el-icon-d-arrow-left
-            content: "\e6df" !important; // el-icon-arrow-down
-            border: 1px solid #ccc;
-            padding: 2px;
-          }
-       }
+        }
+        .el-icon-plus:before {
+          //content: "\e6d9" !important; // el-icon-plus
+          //content: "\e791" !important; // el-icon-caret-right
+          //content: "\e6dc" !important; //el-icon-d-arrow-right
+          content: "\e6e0" !important; // el-icon-arrow-right
+          border: 1px solid #ccc;
+          padding: 2px;
+        }
+        .el-icon-minus:before {
+          //content: "\e6d8" !important; // el-icon-minus
+          //content: "\e790" !important; // el-icon-caret-bottom
+          //content: "\e6dd" !important; //el-icon-d-arrow-left
+          content: "\e6df" !important; // el-icon-arrow-down
+          border: 1px solid #ccc;
+          padding: 2px;
+        }
+      }
     }
     .flex-page-table-feedback {
       flex(0 0 40px);

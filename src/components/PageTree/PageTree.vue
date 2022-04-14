@@ -4,7 +4,7 @@
       :native = "false"
       v-loading="treeLoading"
       @contextmenu.prevent="handleTreeClick">
-      <el-tree ref="tree" class="flex-page-tree-body"
+      <el-tree ref="tree" class="flex-page-tree-content"
       highlight-current
       :node-key="nodeKey"
       :data="treeData"
@@ -709,7 +709,7 @@ export default {
       .el-scrollbar__view {
         background-color: $white;
         color: $gray-black;
-        .flex-page-tree-body {
+        .flex-page-tree-content {
           -webkit-touch-callout: none; /* iOS Safari */
           -webkit-user-select: none; /* Chrome/Safari/Opera */
           -khtml-user-select: none; /* Konqueror */
@@ -801,19 +801,19 @@ export default {
       z-index: 9999;
       .is-horizontal {
         width: calc(var(--layout-tree-width) - 10px);
-        height: 8px;
+        height: $scrollBarHeight;
         background-color: transparent;
       }
       .is-vertical {
         height: calc(var(--layout-tree-height) - 10px);
-        width: 8px;
+        width: $scrollBarWidth;
         background-color: transparent;
       }
     }
     //定义滚动条里面的中间条颜色
     .el-scrollbar__thumb {
       background-color: $gray-white;
-      border-radius: 4px;
+      border-radius: $scrollBarRadius;
       transition: background 0.4s;
     }
     .el-scrollbar__thumb:hover {

@@ -178,10 +178,12 @@ export default {
   },
   watch: {
     layoutShowBrowser: function () {
+      this.boxShowAside = !!this.layoutShowBrowser
       this.$store.dispatch('updateLayoutDevice', this.layoutShowBrowser ? 'browse' : 'mobile')
       this.$store.dispatch('updateTabPaneName', this.layoutShowBrowser ? 'BrowserWeb' : 'BrowserApp')
     },
     boxShowAside: function () {
+      console.log(this.boxShowAside)
       var root = document.body
       this.clientWidth = root.clientWidth
       var width = this.clientWidth - (this.boxShowAside ? 200 : 0)
