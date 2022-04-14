@@ -301,10 +301,10 @@ body {
     }
     .flex-tree-content {
       @include flex(1);
-      // scroll
-      @include flex-calc-minus('--layout-tree-width', $sideBarWidth, 20px);
+      // scroll scroll
+      @include flex-calc('--layout-tree-width', $sideBarWidth);
       // header tabs title
-      @include flex-calc-minus('--layout-tree-height', var(--client-height), $headBarHeight + 50px + $textFlexRowHeight + 10px);
+      @include flex-calc-minus('--layout-tree-height', 100vh, $headBarHeight + $tabsLabelHeight + $textFlexRowHeight + $scrollBarHeight);
       background-color: $white;
       color: $gray-black;
       border: 1px solid $gray-white;
@@ -348,9 +348,9 @@ body {
     .flex-table-content {
       @include flex(1);
       // aside scroll
-      @include flex-calc-minus('--layout-table-width', var(--client-width), $sideBarWidth + 10px);
+      @include flex-calc-minus('--layout-table-width', var(--client-width), $sideBarWidth + $scrollBarWidth);
       // header tabs title toolbar column scroll pagination
-      @include flex-calc-minus('--layout-table-height', var(--client-height), $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
+      @include flex-calc-minus('--layout-table-height', 100vh, $headBarHeight + $tabsLabelHeight + $tableTitleHeight + $tableToolbarHeight + $tableColumnHeight + $scrollBarHeight + $tablePageHeight);
       background-color: $white;
       color: $gray-black;
     }
@@ -402,9 +402,9 @@ body {
   .flex-table-content {
     @include flex(1);
     // aside scroll
-    @include flex-calc-minus('--layout-table-width', var(--client-width), 10px);
-    // header tabs toolbar column scroll pagination
-    @include flex-calc-minus('--layout-table-height', var(--client-height), $headBarHeight + 50px + 40px + 30px + 50px + 10px + 40px);
+    @include flex-calc-minus('--layout-table-width', var(--client-width), $scrollBarWidth);
+    // header tabs title toolbar column scroll pagination
+    @include flex-calc-minus('--layout-table-height', 100vh, $headBarHeight + $tabsLabelHeight + $tableTitleHeight + $tableToolbarHeight + $tableColumnHeight + $scrollBarHeight + $tablePageHeight);
     background-color: $white;
     color: $gray-black;
   }
@@ -449,9 +449,9 @@ body {
   .flex-table-content {
     @include flex(1);
     // scroll
-    @include flex-calc-minus('--layout-table-width', 100vw, 10px);
-    // header toolbar column scroll pagination
-    @include flex-calc-minus('--layout-table-height', 100vh, $headBarHeight + 30px + 50px + 10px + 40px);
+    @include flex-calc-minus('--layout-table-width', var(--client-width), $scrollBarWidth);
+    // header pagination toolbar column scroll
+    @include flex-calc-minus('--layout-table-height', 100vh, $headBarHeight + $tablePageHeight + $tableToolbarHeight + $tableColumnHeight + $scrollBarHeight);
     background-color: $white;
     color: $gray-black;
   }
@@ -461,7 +461,8 @@ body {
   @include flex-direction(column);
   @include flex-justify-content(space-between);
   @include flex(1);
-  @include flex-calc-minus('height', 100vh, $headBarHeight + 50px + 5px);
+  // header tabs
+  @include flex-calc-minus('height', 100vh, $headBarHeight + $tabsLabelHeight + 10px);
   white-space: nowrap;
   overflow: hidden;
   background-color: $white;
@@ -499,10 +500,10 @@ body {
     color: $gray-black;
     .el-scrollbar__wrap  {
       overflow: scroll;
-      //flex-calc-minus('width', 100vw, $sideBarWidth - 10px);
-      width: calc(var(--client-width) + 10px);
-      //flex-calc-minus('height', 100vh, $headBarHeight + 50px - 10px);
-      height: calc(var(--client-height) + 10px);
+      // scroll
+      width: calc(var(--client-width) + #{$scrollBarWidth});
+      // header tabs scroll
+      @include flex-calc-minus('height', 100vh, $headBarHeight + $tabsLabelHeight - $scrollBarHeight);
       .el-scrollbar__view {
         background-color: $white;
         color: $gray-black;
@@ -512,14 +513,13 @@ body {
     >.el-scrollbar__bar {
       z-index: 9999;
       .is-horizontal {
-        //flex-calc-minus('width', 100vw, $sideBarWidth + 10px);
-        width: calc(var(--client-width) - 10px);
+        width: var(--client-width);
         height: 8px;
         background-color: transparent;
       }
       .is-vertical {
-        //flex-calc-minus('height', 100vh, $headBarHeight + 50px + 20px);
-        height: calc(var(--client-height) - 20px);
+        // header tabs
+        @include flex-calc-minus('height', 100vh, $headBarHeight + $tabsLabelHeight);
         width: 8px;
         background-color: transparent;
       }

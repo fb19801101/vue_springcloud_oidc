@@ -173,8 +173,7 @@ export default {
       todoApiHolder: false,
       pressesRedFile: false,
       pressesRegGuide: false,
-      clientWidth: 0,
-      clientHeight: 0
+      clientWidth: 0
     }
   },
   watch: {
@@ -185,11 +184,8 @@ export default {
     boxShowAside: function () {
       var root = document.body
       this.clientWidth = root.clientWidth
-      this.clientHeight = root.clientHeight
       var width = this.clientWidth - (this.boxShowAside ? 200 : 0)
-      var height = this.clientHeight
       root.style.setProperty('--client-width', width + 'px')
-      root.style.setProperty('--client-height', height + 'px')
     }
   },
   beforeCreate () {
@@ -238,19 +234,13 @@ export default {
 
     var root = document.body
     this.clientWidth = root.clientWidth
-    this.clientHeight = root.clientHeight
     var width = this.clientWidth - (this.boxShowAside ? 200 : 0)
-    var height = this.clientHeight
     root.style.setProperty('--client-width', width + 'px')
-    root.style.setProperty('--client-height', height + 'px')
     window.onresize = () => {
       return (() => {
         this.clientWidth = root.clientWidth
-        this.clientHeight = root.clientHeight
         var width = this.clientWidth - (this.boxShowAside ? 200 : 0)
-        var height = this.clientHeight
         root.style.setProperty('--client-width', width + 'px')
-        root.style.setProperty('--client-height', height + 'px')
       })()
     }
   },
@@ -569,7 +559,6 @@ export default {
 <style lang="stylus" scoped>
   :root {
     --client-width: 0px;
-    --client-height: 0px;
   }
   .draw-enter-active, .draw-leave-active {
     transition: all 0.8s cubic-bezier(1.0, 0.5, 0.8, 1.0) ease;

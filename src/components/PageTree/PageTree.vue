@@ -694,7 +694,7 @@ export default {
   flex-display();
   flex-direction(column);
   flex-justify-content(space-between);
-  width: $sideBarWidth;
+  width: var(--layout-tree-width);
   height: var(--layout-tree-height);
   white-space: nowrap;
   overflow: hidden;
@@ -704,8 +704,8 @@ export default {
     flex(1);
     .el-scrollbar__wrap {
       overflow: scroll;
-      width: var(--layout-tree-height-width);
-      height: calc(var(--layout-tree-height-height) + 20px);
+      width: calc(var(--layout-tree-width) + 20px);
+      height: calc(var(--layout-tree-height) + 20px);
       .el-scrollbar__view {
         background-color: $white;
         color: $gray-black;
@@ -800,12 +800,12 @@ export default {
     >.el-scrollbar__bar {
       z-index: 9999;
       .is-horizontal {
-        width: $sideBarWidth;
+        width: calc(var(--layout-tree-width) - 10px);
         height: 8px;
         background-color: transparent;
       }
       .is-vertical {
-        height: var(--layout-tree-height-height);
+        height: calc(var(--layout-tree-height) - 10px);
         width: 8px;
         background-color: transparent;
       }
