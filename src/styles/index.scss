@@ -501,7 +501,7 @@ body {
     .el-scrollbar__wrap  {
       overflow: scroll;
       // scroll
-      width: calc(var(--client-width) + #{$scrollBarWidth});
+      @include flex-calc-plus('width', var(--client-width), $scrollBarWidth);
       // header tabs scroll
       @include flex-calc-minus('height', 100vh, $headBarHeight + $tabsLabelHeight - $scrollBarHeight);
       .el-scrollbar__view {
